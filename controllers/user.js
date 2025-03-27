@@ -7,6 +7,8 @@ import { createToken } from "../utils/token.js";
 import { randomToken } from "../utils/randomToken.js";
 import mongoose from "mongoose";
 import { SendEmail } from "../utils/emailActive.js";
+import { deleteImage, uploadAvatat } from "../utils/cloudinary.js";
+import fs from "fs/promises";
 
 export const createAccount = async (req, res) => {
   const { name, username, email, password } = req.body;
@@ -284,5 +286,75 @@ export const resetPassword = async (req, res) => {
     return res
       .status(500)
       .json({ message: "حدث خطأ داخلي في الخادم", error: error.message });
+  }
+};
+
+export const createAvatar = async (req, res) => {
+  const { email } = req.user;
+
+  // التحقق من وجود الملف في الطلب أو وجود خطأ في الملف
+  if (!req.file) {
+    return res
+      .status(400)
+      .json({ message: "يرجى تحميل صورة شخصية أو هناك خطأ في الملف." });
+  }
+  try {
+    // محاولة إيجاد المستخدم وتحديث الصورة
+    const existingUser = await User.findOne({ email });
+
+    if (!existingUser) {
+      return res.status(404).json({ message: "المستخدم غير موجود." });
+    }
+
+    // التحقق من وجود الصورة القديمة وحذفها
+    if (existingUser.avatar && existingUser.avatar.idOfImage) {
+      await deleteImage(existingUser.avatar.idOfImage);
+    }
+
+    // رفع الصورة الجديدة
+    const { public_id, secure_url } = await uploadAvatat(req.file.path);
+    existingUser.avatar = {
+      img: secure_url,
+      idOfImage: public_id,
+    };
+    await existingUser.save();
+    await fs.unlink(req.file.path);
+    return res.json({
+      message: "تم تحديث الصورة الشخصية بنجاح.",
+      avatar: existingUser.avatar,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "حدث خطأ داخلي في الخادم. الرجاء المحاولة لاحقًا.",
+      error: error.message,
+    });
+  }
+};
+export const deleteAvatar = async (req, res) => {
+  const { email } = req.user;
+
+  try {
+    // البحث عن المستخدم باستخدام البريد الإلكتروني
+    const existingUser = await User.findOne({ email });
+
+    if (!existingUser) {
+      return res.status(404).json({ message: "المستخدم غير موجود." });
+    }
+
+    // التحقق من وجود الصورة القديمة وحذفها
+    if (existingUser.avatar && existingUser.avatar.idOfImage) {
+      // استدعاء دالة حذف الصورة
+      await deleteImage(existingUser.avatar.idOfImage);
+      existingUser.avatar = {
+        img: "https://th.bing.com/th/id/OIP.Zvs5IHgOO5kip7A32UwZJgHaHa?rs=1&pid=ImgDetMain",
+        idOfImage: null,
+      };
+      await existingUser.save();
+      return res.status(200).json({ message: "تم حذف الصورة بنجاح." });
+    } else {
+      return res.status(404).json({ message: "لا يوجد صورة لحذفها." });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: "حدث خطأ غير متوقع." });
   }
 };

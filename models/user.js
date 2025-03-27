@@ -24,6 +24,13 @@ const UserSchema = new Schema(
       minlength: [3, "اسم المستخدم يجب أن يكون على الأقل 3 حروف"],
       maxlength: [20, "اسم المستخدم يجب أن لا يتجاوز 20 حرفًا"],
     },
+    avatar: {
+      type: Object,
+      default: {
+        img: "https://th.bing.com/th/id/OIP.Zvs5IHgOO5kip7A32UwZJgHaHa?rs=1&pid=ImgDetMain",
+        idOfImage: null,
+      },
+    },
     isActive: {
       type: Boolean,
       default: false,
