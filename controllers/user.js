@@ -5,7 +5,6 @@ import { comparePassword } from "../utils/comparePassword.js";
 import { hashPassword } from "../utils/hasePassword.js";
 import { createToken } from "../utils/token.js";
 import { randomToken } from "../utils/randomToken.js";
-import mongoose from "mongoose";
 import { SendEmail } from "../utils/emailActive.js";
 import { deleteImage, uploadAvatat } from "../utils/cloudinary.js";
 import fs from "fs/promises";
@@ -62,7 +61,7 @@ export const createAccount = async (req, res) => {
     await activeUser.save();
 
     // إنشاء رابط التفعيل
-    const activeLink = `${process.env.DOMAIN}:${process.env.PORT}/account_id/${newUser._id}/active_account/${token}`;
+    const activeLink = `${process.env.DOMAIN}/account_id/${newUser._id}/active_account/${token}`;
 
     // إرسال رابط التفعيل إلى البريد الإلكتروني
     await SendEmail(email, activeLink);
@@ -112,7 +111,7 @@ export const loginAccount = async (req, res) => {
       await activeUser.save();
 
       // إنشاء رابط التفعيل
-      const activeLink = `${process.env.DOMAIN}:${process.env.PORT}/account_id/${user._id}/active_account/${token}`;
+      const activeLink = `${process.env.DOMAIN}/account_id/${user._id}/active_account/${token}`;
       // إرسال رابط التفعيل إلى البريد الإلكتروني
       await SendEmail(email, activeLink);
 
@@ -152,11 +151,6 @@ export const activeAccount = async (req, res) => {
     // التحقق من وجود البيانات المطلوبة
     if (!token || !id) {
       return res.status(400).json({ message: "الطلب غير صالح" });
-    }
-
-    // التحقق من صحة معرف المستخدم
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: "معرف المستخدم غير صالح" });
     }
 
     // البحث عن سجل التحقق
@@ -208,7 +202,7 @@ export const sendEmailForgetPassword = async (req, res) => {
     await resetPassword.save();
 
     // إنشاء رابط التفعيل
-    const activeLink = `${process.env.DOMAIN}:${process.env.PORT}/resetPassword/account_id/${existingUser._id}/token/${token}`;
+    const activeLink = `${process.env.DOMAIN}/account_id/${existingUser._id}/check_link/${token}`;
 
     // إرسال رابط التفعيل إلى البريد الإلكتروني
     await SendEmail(email, activeLink);
@@ -230,11 +224,6 @@ export const checkLinkForgetPassword = async (req, res) => {
     if (!token || !id) {
       return res.status(400).json({ message: "الطلب غير صالح" });
     }
-
-    // التحقق من صحة معرف المستخدم
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: "معرف المستخدم غير صالح" });
-    }
     // البحث عن سجل التحقق
     const verificationRecord = await VerifyAny.findOne({
       user_id: id,
@@ -254,17 +243,13 @@ export const checkLinkForgetPassword = async (req, res) => {
   }
 };
 export const resetPassword = async (req, res) => {
-  const { password, conformPassword, user_id, token } = req.body;
+  const { password, conformPassword } = req.body;
+  const { token, id } = req.params;
   try {
-    if (!password || !conformPassword || !user_id || !token) {
+    if (!password || !conformPassword || !id || !token) {
       return res.status(400).json({ message: "الطلب غير صالح" });
     }
-
-    // التحقق من صحة معرف المستخدم
-    if (!mongoose.Types.ObjectId.isValid(user_id)) {
-      return res.status(400).json({ message: "معرف المستخدم غير صالح" });
-    }
-    const check = await VerifyAny.findOne({ user_id, user_token: token });
+    const check = await VerifyAny.findOne({ user_id: id, user_token: token });
     if (!check) {
       return res
         .status(400)
@@ -275,12 +260,13 @@ export const resetPassword = async (req, res) => {
     }
     const newPassword = await hashPassword(password);
     await User.findByIdAndUpdate(
-      user_id,
+      { _id: id },
       {
         password: newPassword,
       },
       { new: true }
     );
+    await VerifyAny.findOneAndDelete({ user_id: id, user_token: token });
     return res.json({ message: "تم تحديث كلمه المرور" });
   } catch (error) {
     return res
