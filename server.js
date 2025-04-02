@@ -36,13 +36,13 @@ const corsOptions = {
 
 server.use(cors(corsOptions));
 
-// Set up routes
-routes(server);
-
 // Default route for the server
 server.get("/", (req, res) => {
   res.send("Hello, World!");
 });
+
+// Set up routes
+routes(server);
 
 // Error handling middleware
 server.use((err, req, res, next) => {
@@ -53,5 +53,5 @@ server.use((err, req, res, next) => {
 // Start the server and connect to the database
 server.listen(port, () => {
   dbConnection(url);
-  console.log(`Server is running on ${domain}:${port}`);
+  console.log(`Server is running on ${domain} :${port}`);
 });
