@@ -60,7 +60,7 @@ export const createBrand = async (req, res) => {
 export const deleteBrand = async (req, res) => {
   const { id } = req.params;
   try {
-    const brand = await Brand.findByIdAndDelete({ _id: id });
+    const brand = await Brand.findOne({ _id: id });
     if (!brand) {
       return res.status(404).json({
         status: "fail",
@@ -70,11 +70,7 @@ export const deleteBrand = async (req, res) => {
     // حذف الصورة من Cloudinary
     const publicId = brand.image.idOfImage;
     await deleteImage(publicId);
-    brand.image = {
-      img: "https://th.bing.com/th/id/OIP.Zvs5IHgOO5kip7A32UwZJgHaHa?rs=1&pid=ImgDetMain",
-      idOfImage: null,
-    };
-    await brand.save();
+    await Brand.findOneAndDelete({ _id: id });
     return res.status(201).json({
       status: "removed successfully",
       data: brand,
