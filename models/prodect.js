@@ -9,27 +9,72 @@ const productSchema = new Schema({
   },
   price: {
     type: Number,
-    min: [0, 'السعر يجب أن يكون أكبر من أو يساوي صفر'],
+    min: [1, "السعر يجب أن يكون أكبر من صفر"],
   },
   discount: {
     type: Number,
-    min: [0, 'الخصم يجب أن يكون أكبر من أو يساوي صفر'],
-    max: [100, 'الخصم لا يمكن أن يتجاوز 100%'],
+    min: [1, "الخصم يجب أن يكون أكبر من  صفر"],
+    max: [100, "الخصم لا يمكن أن يتجاوز 100%"],
   },
-  colors: [
-    {
-      color: { type: String, required: true },
-      images: {
-        type: [
-          {
-            img: { type: String, required: true },
-            idOfImage: { type: String },  // أو يمكن أن يكون ObjectId هنا
-          },
-        ],
-        required: true,
+  finalPrice: {
+    type: Number,
+    required: true,
+    default: function () {
+      if (this.discount > 0) {
+        return this.price - (this.price * this.discount) / 100;
+      }
+      return this.price;
+    },
+  },
+  colors: {
+    type: [
+      {
+        color: { type: String, required: [true, "الرجاء تحديد اللون."] },
+        images: {
+          type: [
+            {
+              img: { type: String, required: [true, "الرجاء إضافة صورة."] },
+              idOfImage: { type: String },
+            },
+          ],
+          required: [true, "الرجاء إضافة صور للمنتج."],
+        },
       },
+    ],
+    required: [true, "يجب إضافة الألوان والصور."],
+  },
+  sizes: {
+    type: [String],
+  },
+  brand: {
+    type: String,
+  },
+  specifications: [
+    {
+      key: { type: String, required: true },
+      value: { type: String, required: true },
     },
   ],
+  overview: [
+    {
+      key: { type: String, required: true },
+      value: { type: [String], required: true },
+    },
+  ],
+  category: {
+    type: String, 
+    required: [true, "نوع المنتج مطلوب"]
+  },
+});
+
+// نحدد عملية حساب السعر النهائي قبل حفظ المنتج
+productSchema.pre("save", function (next) {
+  if (this.discount > 0) {
+    this.finalPrice = this.price - (this.price * this.discount) / 100;
+  } else {
+    this.finalPrice = this.price;
+  }
+  next();
 });
 
 export const Product = model("Product", productSchema);
