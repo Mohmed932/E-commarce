@@ -61,19 +61,27 @@ const productSchema = new Schema({
       value: { type: [String], required: true },
     },
   ],
-  category: {
-    type: String, 
-    required: [true, "نوع المنتج مطلوب"]
+  quantity: {
+    type: Number,
+    required: [true, "الكمية مطلوبة"],
+    min: [0, "الكمية يجب أن تكون أكبر من أو تساوي صفر"],
+    default: 0,
+  },
+  available: {
+    type: Boolean,
+    default: function () {
+      return this.quantity > 0;
+    },
   },
 });
 
-// نحدد عملية حساب السعر النهائي قبل حفظ المنتج
 productSchema.pre("save", function (next) {
   if (this.discount > 0) {
     this.finalPrice = this.price - (this.price * this.discount) / 100;
   } else {
     this.finalPrice = this.price;
   }
+  this.available = this.quantity > 0;
   next();
 });
 
