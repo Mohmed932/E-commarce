@@ -2,7 +2,7 @@ import multer from "multer";
 import path from "path";
 
 // تحديد تنسيقات الصور المسموح بها
-const fileTypes = /jpeg|jpg|png|gif/;
+const fileTypes = /jpeg|jpg|png|gif|avif/;
 
 // إعداد التخزين
 const storage = multer.diskStorage({
@@ -25,10 +25,16 @@ const fileFilter = (req, file, cb) => {
   if (extname && mimetype) {
     return cb(null, true);
   } else {
-    req.fileValidationError = "فقط الصور بصيغ jpeg, jpg, png, gif مسموح بها";
-    return cb(new Error("فقط الصور بصيغ jpeg, jpg, png, gif مسموح بها"), false);
+    req.fileValidationError =
+      "فقط الصور بصيغ jpeg, jpg, png, gif, avif مسموح بها";
+    return cb(
+      new Error("فقط الصور بصيغ jpeg, jpg, png, gif, avif مسموح بها"),
+      false
+    );
   }
 };
+
+
 
 // تحديد أقصى حجم للملف
 export const upload = multer({
@@ -36,6 +42,12 @@ export const upload = multer({
   fileFilter,
   limits: { fileSize: 5 * 1024 * 1024 }, // الحد الأقصى للحجم 5 ميجابايت
 }).single("avatar");
+
+export const uploadMultipleImages = multer({
+  storage,
+  fileFilter,
+  limits: { fileSize: 1 * 1024 * 1024 },
+}).array('images', 10); 
 
 // معالجة الأخطاء في التطبيق
 export const handleFileUploadError = (err, req, res, next) => {

@@ -1,14 +1,17 @@
 import { Schema, model } from "mongoose";
 
+
+
 const productSchema = new Schema({
   title: {
     type: String,
     required: [true, "العنوان مطلوب "],
-    minlength: [3, "يجب أن يكون العنوان أقل من 3 حروف"],
+    minlength: [3, "يجب أن يكون العنوان اكبر من 3 حروف"],
     maxlength: [150, "يجب أن يكون العنوان أقل من 150 حرفا "],
   },
   price: {
     type: Number,
+    required: [true, "يجب اضافه سعر للمنتج"],
     min: [1, "السعر يجب أن يكون أكبر من صفر"],
   },
   discount: {
@@ -42,6 +45,12 @@ const productSchema = new Schema({
       },
     ],
     required: [true, "يجب إضافة الألوان والصور."],
+    validate: {
+      validator: function (v) {
+        return v && v.length > 0; 
+      },
+      message: "يجب إضافة الألوان والصور."
+    }
   },
   sizes: {
     type: [String],
@@ -64,8 +73,7 @@ const productSchema = new Schema({
   quantity: {
     type: Number,
     required: [true, "الكمية مطلوبة"],
-    min: [0, "الكمية يجب أن تكون أكبر من أو تساوي صفر"],
-    default: 0,
+    min: [1, "الكمية يجب أن تكون أكبر من صفر"],
   },
   available: {
     type: Boolean,

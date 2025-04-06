@@ -29,6 +29,21 @@ export const uploadAvatat = async (url) => {
   }
 };
 
+export const uploadMultipleImages = async (files) => {
+  try {
+    // رفع كل صورة باستخدام Promise.all
+    const uploadPromises = files.map(file => cloudinary.uploader.upload(file.path));
+    
+    // انتظر رفع جميع الصور
+    const uploadResults = await Promise.all(uploadPromises);
+    
+    console.log('تم رفع الصور بنجاح:', uploadResults);
+    return uploadResults;
+  } catch (error) {
+    console.error('حدث خطأ أثناء رفع الصور:', error);
+  }
+};
+
 export const deleteImage = async (publicId) => {
   try {
     const result = await new Promise((resolve, reject) => {
