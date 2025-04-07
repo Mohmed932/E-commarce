@@ -25,11 +25,12 @@ const server = express();
 
 // Middleware setup
 server.use(express.json());
+server.use(express.urlencoded({ extended: true }));
 server.use(cookieParser());
 
 // CORS configuration
 const corsOptions = {
-  origin: domain,
+  origin:"*",
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };

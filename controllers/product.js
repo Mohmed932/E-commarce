@@ -1,7 +1,6 @@
 import { Product } from "../models/product.js";
-import { validateProduct } from "../services/roductValidator.js";
 import { uploadMultipleImages } from "../utils/cloudinary.js";
-
+import { validateProduct } from "../services/productValidator.js";
 
 export const createProduct = async (req, res) => {
   const {
@@ -14,24 +13,20 @@ export const createProduct = async (req, res) => {
     overview,
     quantity,
     colors,
-  } = req.body;
-    // تأكد أن المستخدم قد أرسل ألوانًا وصورًا
-    if (!colors || colors.length === 0) {
-      return res.status(400).json({ message: "يجب إضافة الألوان." });
-    }
-  
-    if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ message: "يجب إضافة صور." });
-    }
-    // التحقق من صحة البيانات
-    const { error } = validateProduct(req.body);
-  
-    if (error) {
-      // إذا كانت هناك أخطاء، قم بإرجاع الرسائل للمستخدم
-      return res
-        .status(400)
-        .json({ message: error.details.map((detail) => detail.message) });
-    }
+  } = JSON.parse(req.body.data);
+
+  if (!req.files || req.files.length === 0) {
+    return res.status(400).json({ message: "يجب إضافة صور." });
+  }
+  const data = JSON.parse(req.body.data);
+  // const { error } = validateProduct(data);
+
+  // if (error) {
+  //   // إذا كانت هناك أخطاء، قم بإرجاع الرسائل للمستخدم
+  //   return res
+  //     .status(400)
+  //     .json({ message: error.details.map((detail) => detail.message) });
+  // }
   try {
     const images = req.files.map((img) => {
       return { path: img.path };
@@ -64,7 +59,8 @@ export const createProduct = async (req, res) => {
       colors: images_color,
     });
     await saveProduct.save();
-    return res.json({ message: saveProduct });
+    console.log(saveProduct)
+    return res.json({ message: "saveProduct" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إرسال بيانات وصور</title>
+  </head>
+  <body>
+    <input type="file" id="images" accept="image/*" multiple />
+
+    <script>
+      const data = {
+        title: "سراويل صيفية...",
+        price: 898.11,
+        discount: 35,
+        quantity: 78,
+        sizes: ["m", "l", "xl", "xxl"],
+        colors: ["احمر", "ابيض", "بني", "اسود"],
+        brand: "Applicable Scene",
+        specifications: [
+          { key: "الموسم المتوافق", value: "spring" },
+          { key: "الموسم المتوافق", value: "spring" },
+        ],
+        overview: [
+          {
+            key: "Help",
+            value: ["Pусский, Portuguese...", "Alibaba Group Website..."],
+          },
+        ],
+      };
+
+      const imagesInput = document.getElementById("images");
+
+      imagesInput.addEventListener("change", async (e) => {
+        const files = e.target.files;
+        const formData = new FormData();
+
+        // نضيف الصور إلى FormData
+        for (let i = 0; i < files.length; i++) {
+          formData.append("images", files[i]); // تأكد من أن السيرفر يتوقع هذا الاسم
+        }
+
+        // نضيف الـ JSON إلى الـ FormData
+        formData.append("data", JSON.stringify(data));
+
+        try {
+          const response = await fetch("http://localhost:5000/api/v1/product", {
+            method: "POST",
+            body: formData, // ارسال FormData مباشرة بدون حاجة لتعريف Content-Type
+          });
+
+          const result = await response.json();
+          console.log("تم الإرسال:", result);
+        } catch (error) {
+          console.error("حصل خطأ أثناء الإرسال:", error);
+        }
+      });
+    </script>
+  </body>
+</html>
