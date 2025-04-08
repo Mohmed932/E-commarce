@@ -1,24 +1,5 @@
 import Joi from "joi";
 
-const colorSchema = Joi.object({
-  color: Joi.string().required().messages({
-    "any.required": "الرجاء تحديد اللون.",
-  }),
-  images: Joi.array()
-    .items(
-      Joi.object({
-        img: Joi.string().required().messages({
-          "any.required": "الرجاء إضافة صورة.",
-        }),
-        idOfImage: Joi.string(),
-      })
-    )
-    .required()
-    .messages({
-      "any.required": "الرجاء إضافة صور للمنتج.",
-    }),
-});
-
 const productValidationSchema = Joi.object({
   title: Joi.string()
     .min(3)
@@ -51,16 +32,12 @@ const productValidationSchema = Joi.object({
     }),
 
   finalPrice: Joi.number().optional(),
-
-  colors: Joi.array()
-  .items(colorSchema)
-  .min(1)
-  .required()
-  .messages({
-    "any.required": "يجب إضافة الألوان والصور.",
-    "array.min": "يجب إضافة الألوان والصور.",
+  colors: Joi.array().required().messages({
+    "any.required": "الرجاء تحديد اللون.",
   }),
-
+  files: Joi.array().required().messages({
+    "any.required": "الرجاء تحديد لون للصوره.",
+  }),
   sizes: Joi.array()
     .items(Joi.string())
     .optional(),
@@ -104,6 +81,7 @@ const productValidationSchema = Joi.object({
 
   available: Joi.boolean().optional(),
 });
-export const validateProduct = (productData) => {
+export const validateProduct = (data, files) => {
+  const productData = { ...data, files }; 
   return productValidationSchema.validate(productData, { abortEarly: false });
 };

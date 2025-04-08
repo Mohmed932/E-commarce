@@ -32,15 +32,21 @@ export const uploadAvatat = async (url) => {
 export const uploadMultipleImages = async (files) => {
   try {
     // رفع كل صورة باستخدام Promise.all
-    const uploadPromises = files.map(file => cloudinary.uploader.upload(file.path));
-    
+    const uploadPromises = files.map((file) =>
+      cloudinary.uploader.upload(file.path, {
+        public_id: `products/${file.original_filename}`,
+        use_filename: true,
+        unique_filename: false,
+      })
+    );
+
     // انتظر رفع جميع الصور
     const uploadResults = await Promise.all(uploadPromises);
-    
-    console.log('تم رفع الصور بنجاح:', uploadResults);
+
+    // console.log("تم رفع الصور بنجاح:", uploadResults);
     return uploadResults;
   } catch (error) {
-    console.error('حدث خطأ أثناء رفع الصور:', error);
+    console.error("حدث خطأ أثناء رفع الصور:", error);
   }
 };
 
