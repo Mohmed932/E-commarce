@@ -48,7 +48,7 @@ export const uploadMultipleImages = multer({
   storage,
   fileFilter,
   limits: { fileSize: 1 * 1024 * 1024 },
-}).array('images', 10); 
+}).array('images', 15); 
 
 // معالجة الأخطاء في التطبيق
 export const handleFileUploadError = (err, req, res, next) => {

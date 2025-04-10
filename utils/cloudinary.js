@@ -31,10 +31,12 @@ export const uploadAvatat = async (url) => {
 
 export const uploadMultipleImages = async (files) => {
   try {
+    const timeStamp = Date.now();
+    const randomSuffix = Math.floor(Math.random() * 1000);
     // رفع كل صورة باستخدام Promise.all
     const uploadPromises = files.map((file) =>
       cloudinary.uploader.upload(file.path, {
-        public_id: `products/${file.original_filename}`,
+        public_id: `products/${timeStamp}_${randomSuffix}_${file.original_filename}`,
         use_filename: true,
         unique_filename: false,
       })

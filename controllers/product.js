@@ -1,5 +1,5 @@
 import { Product } from "../models/product.js";
-import { uploadMultipleImages } from "../utils/cloudinary.js";
+import { deleteImages, uploadMultipleImages } from "../utils/cloudinary.js";
 import { validateProduct } from "../services/productValidator.js";
 import { unlink } from "fs/promises";
 
@@ -95,7 +95,7 @@ export const deleteProduct = async (req, res) => {
     const images = check.colors.flatMap((color) => {
       return color.images.map((img) => img.idOfImage);
     });
-    await deleteImages(publicIds);
+    await deleteImages(images);
     await check.deleteOne();
     return res.json({ images });
   } catch (error) {
