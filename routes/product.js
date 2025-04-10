@@ -20,7 +20,6 @@ productRoute
 
 productRoute
   .route("/product/:id")
-  .get(validateUserId, getProduct)
   .get(validateUserId, getSingleProduct)
   .delete(verifyUser, validateUserId, deleteProduct);
 
