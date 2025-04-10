@@ -2,6 +2,7 @@ import { Product } from "../models/product.js";
 import { deleteImages, uploadMultipleImages } from "../utils/cloudinary.js";
 import { validateProduct } from "../services/productValidator.js";
 import { unlink } from "fs/promises";
+import mongoose from "mongoose";
 
 export const createProduct = async (req, res) => {
   const data = JSON.parse(req.body.data);
@@ -117,11 +118,14 @@ export const getSingleProduct = async (req, res) => {
 };
 
 export const getProduct = async (req, res) => {
-  const { id } = req.params;
+  const { category } = req.params;
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
   try {
-    const items = await Product.find({category:id})
+    if (!mongoose.Types.ObjectId.isValid(category)) {
+      return res.status(400).json({ message: "معرف المستخدم غير صالح", category });
+    }
+    const items = await Product.find({ category })
       .skip((page - 1) * limit)
       .limit(limit);
 

@@ -1,5 +1,10 @@
 import { Router } from "express";
-import { createProduct, deleteProduct, getProduct, getSingleProduct } from "../controllers/product.js";
+import {
+  createProduct,
+  deleteProduct,
+  getProduct,
+  getSingleProduct,
+} from "../controllers/product.js";
 import {
   handleFileUploadError,
   uploadMultipleImages,
@@ -11,10 +16,12 @@ export const productRoute = Router();
 
 productRoute
   .route("/product")
-  .post(verifyUser,uploadMultipleImages,handleFileUploadError, createProduct);
+  .post(verifyUser, uploadMultipleImages, handleFileUploadError, createProduct);
 
 productRoute
   .route("/product/:id")
-  .get(validateUserId,getProduct)
+  .get(validateUserId, getProduct)
   .get(validateUserId, getSingleProduct)
-  .delete(verifyUser,validateUserId, deleteProduct);
+  .delete(verifyUser, validateUserId, deleteProduct);
+
+productRoute.route("/product/:category").get(validateUserId, getProduct);
