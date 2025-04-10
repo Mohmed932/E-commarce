@@ -73,3 +73,34 @@ export const deleteImage = async (publicId) => {
     throw error; // إرسال الخطأ مرة أخرى لتتم معالجته في الكود الرئيسي
   }
 };
+
+export const deleteImages = async (publicIds) => {
+  try {
+    const results = await Promise.all(
+      publicIds.map((publicId) => {
+        return new Promise((resolve, reject) => {
+          cloudinary.uploader.destroy(publicId, (error, result) => {
+            if (error) {
+              reject(`خطأ في حذف الصورة (${publicId}): ${error}`);
+            } else {
+              resolve({ publicId, result });
+            }
+          });
+        });
+      })
+    );
+
+    results.forEach(({ publicId, result }) => {
+      if (result.result === "ok") {
+        console.log(`✅ تم حذف الصورة (${publicId}) بنجاح.`);
+      } else {
+        console.warn(`⚠️ لم يتم حذف الصورة (${publicId}):`, result);
+      }
+    });
+
+    return results;
+  } catch (error) {
+    console.error("❌ حدث خطأ أثناء حذف الصور:", error);
+    throw error;
+  }
+};
