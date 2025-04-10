@@ -1,17 +1,20 @@
 import { Router } from "express";
-import { createProduct, deleteProduct } from "../controllers/product.js";
+import { createProduct, deleteProduct, getProduct, getSingleProduct } from "../controllers/product.js";
 import {
   handleFileUploadError,
   uploadMultipleImages,
 } from "../middleware/upload.js";
 import { validateUserId } from "../middleware/validateUserId.js";
+import { verifyUser } from "../middleware/verifyUser.js";
 
 export const productRoute = Router();
 
 productRoute
   .route("/product")
-  .post(uploadMultipleImages,handleFileUploadError, createProduct);
+  .post(verifyUser,uploadMultipleImages,handleFileUploadError, createProduct);
 
 productRoute
   .route("/product/:id")
-  .delete(validateUserId, deleteProduct);
+  .get(validateUserId,getProduct)
+  .get(validateUserId, getSingleProduct)
+  .delete(verifyUser,validateUserId, deleteProduct);

@@ -20,7 +20,8 @@ const productSchema = new Schema({
     max: [100, "الخصم لا يمكن أن يتجاوز 100%"],
   },
   category:{
-    type:String,
+    type: Schema.Types.ObjectId,
+    ref: "Category",
     required:[true,"يجب ادخال فئه الممنتج"]
   },
   finalPrice: {
