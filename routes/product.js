@@ -24,4 +24,4 @@ productRoute
   .get(validateUserId, getSingleProduct)
   .delete(verifyUser, validateUserId, deleteProduct);
 
-productRoute.route("/product/:category").get(validateUserId, getProduct);
+productRoute.route("/product/:category").get(getProduct);
