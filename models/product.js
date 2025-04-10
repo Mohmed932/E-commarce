@@ -19,6 +19,10 @@ const productSchema = new Schema({
     min: [1, "الخصم يجب أن يكون أكبر من  صفر"],
     max: [100, "الخصم لا يمكن أن يتجاوز 100%"],
   },
+  category:{
+    type:String,
+    required:[true,"يجب ادخال فئه الممنتج"]
+  },
   finalPrice: {
     type: Number,
     required: true,
