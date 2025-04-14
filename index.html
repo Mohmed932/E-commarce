@@ -1,4 +1,4 @@
- <!-- <!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -62,15 +62,6 @@
 
  -->
 
- 
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -82,77 +73,98 @@
     <input type="file" id="images" accept="image/*" multiple />
 
     <script>
-      const data = {
-        title: "سراويل شتويه...",
-        price: 888.11,
-        discount: 20,
-        quantity: 78,
-        category: "67e78d6b590f7744d58d228e",
-        sizes: ["m", "l", "xl", "xxl"],
-        // colors: ["احمر", "ابيض", "بني", "اسود"],
-        brand: "Applicable Scene",
-        specifications: [
-          { key: "الموسم المتوافق", value: "spring" },
-          { key: "الموسم المتوافق", value: "spring" },
-        ],
-        overview: [
-          {
-            key: "Help",
-            value: ["Pусский, Portuguese...", "Alibaba Group Website..."],
-          },
-        ],
-      };
+      // const data = {
+      //   title: "سراويل شتويه...",
+      //   price: 888.11,
+      //   discount: 20,
+      //   quantity: 78,
+      //   category: "67e78d6b590f7744d58d228e",
+      //   sizes: ["m", "l", "xl", "xxl"],
+      //   // colors: ["احمر", "ابيض", "بني", "اسود"],
+      //   brand: "Applicable Scene",
+      //   specifications: [
+      //     { key: "الموسم المتوافق", value: "spring" },
+      //     { key: "الموسم المتوافق", value: "spring" },
+      //   ],
+      //   overview: [
+      //     {
+      //       key: "Help",
+      //       value: ["Pусский, Portuguese...", "Alibaba Group Website..."],
+      //     },
+      //   ],
+      // };
 
-      const imagesInput = document.getElementById("images");
+      // const imagesInput = document.getElementById("images");
 
-      imagesInput.addEventListener("change", async (e) => {
-        const files = e.target.files;
-        const formData = new FormData();
+      // imagesInput.addEventListener("change", async (e) => {
+      //   const files = e.target.files;
+      //   const formData = new FormData();
 
-        // نضيف الصور إلى FormData
-        for (let i = 0; i < files.length; i++) {
-          formData.append("images", files[i]); // تأكد من أن السيرفر يتوقع هذا الاسم
-        }
+      //   // نضيف الصور إلى FormData
+      //   for (let i = 0; i < files.length; i++) {
+      //     formData.append("images", files[i]); // تأكد من أن السيرفر يتوقع هذا الاسم
+      //   }
 
-        // نضيف الـ JSON إلى الـ FormData
-        const colors = ["احمر",  "اسود"];
-        formData.append("colors", JSON.stringify(colors));
+      //   // نضيف الـ JSON إلى الـ FormData
+      //   const colors = ["احمر",  "اسود"];
+      //   formData.append("colors", JSON.stringify(colors));
 
+      //   try {
+      //     const response = await fetch(
+      //       "http://localhost:5000/api/v1/product/images_color/67fad2cacdebdca19e817d65",
+      //       {
+      //         method: "POST",
+      //         body: formData, // ارسال FormData مباشرة بدون حاجة لتعريف Content-Type
+      //       }
+      //     );
+
+      //     const result = await response.json();
+      //     console.log("تم الإرسال:", result);
+      //   } catch (error) {
+      //     console.error("حصل خطأ أثناء الإرسال:", error);
+      //   }
+
+      /////
+      //   try {
+      //     const response = await fetch(
+      //       "http://localhost:5000/api/v1/product/67fad2cacdebdca19e817d65",
+      //       {
+      //         method: "PUT",
+      //         headers: {
+      //           "Content-Type": "application/json",
+      //         },
+      //         body: JSON.stringify(data),
+      //       }
+      //     );
+
+      //     const result = await response.json();
+      //     console.log("تم الإرسال بدون صور:", result);
+      //   } catch (error) {
+      //     console.error("حصل خطأ أثناء الإرسال:", error);
+      //   }
+      // });
+      (async () => {
+        const idOfImages = [
+          { idOfImage: "products/1744491208444_72_Ø§Ø³ÙØ¯2.avif" },
+          { idOfImage: "products/1744491297416_759_Ø§Ø³ÙØ¯.avif" },
+        ];
         try {
-          const response = await fetch(
+          const req = await fetch(
             "http://localhost:5000/api/v1/product/images_color/67fad2cacdebdca19e817d65",
             {
-              method: "POST",
-              body: formData, // ارسال FormData مباشرة بدون حاجة لتعريف Content-Type
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(idOfImages), // ✅ هنا التصحيح
             }
           );
-
-          const result = await response.json();
-          console.log("تم الإرسال:", result);
+          const res = await req.json();
+          console.log(res.data);
         } catch (error) {
-          console.error("حصل خطأ أثناء الإرسال:", error);
+          console.log(error);
         }
-
-        /////
-        //   try {
-        //     const response = await fetch(
-        //       "http://localhost:5000/api/v1/product/67fad2cacdebdca19e817d65",
-        //       {
-        //         method: "PUT",
-        //         headers: {
-        //           "Content-Type": "application/json",
-        //         },
-        //         body: JSON.stringify(data),
-        //       }
-        //     );
-
-        //     const result = await response.json();
-        //     console.log("تم الإرسال بدون صور:", result);
-        //   } catch (error) {
-        //     console.error("حصل خطأ أثناء الإرسال:", error);
-        //   }
-      });
+      })();
     </script>
   </body>
-</html> 
- 
+</html>

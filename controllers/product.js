@@ -126,6 +126,7 @@ export const getSingleProduct = async (req, res) => {
 
 export const getProduct = async (req, res) => {
   const { category } = req.params;
+  console.log(category, category);
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
   try {
@@ -207,14 +208,16 @@ export const updateProduct = async (req, res) => {
 export const addImagesColorProduct = async (req, res) => {
   const { id } = req.params;
   const colors = JSON.parse(req.body.colors);
-  
+
   if (!req.files || req.files.length === 0) {
     return res.status(400).json({ message: "يجب إضافة صور." });
   }
-  
+
   const { error } = addImagesValidateProduct(colors, req.files);
   if (error) {
-    return res.status(400).json({ message: error.details.map((detail) => detail.message) });
+    return res
+      .status(400)
+      .json({ message: error.details.map((detail) => detail.message) });
   }
 
   try {
@@ -246,7 +249,9 @@ export const addImagesColorProduct = async (req, res) => {
         });
       }
 
-      const colorExist = checkProduct.colors.find(item => item.color === colors[i]);
+      const colorExist = checkProduct.colors.find(
+        (item) => item.color === colors[i]
+      );
       if (colorExist) {
         colorExist.images = colorExist.images.concat(filtered);
       } else {
@@ -271,5 +276,44 @@ export const addImagesColorProduct = async (req, res) => {
         }
       })
     );
+  }
+};
+
+export const deleteImagesColorProduct = async (req, res) => {
+  const { id } = req.params;
+  const idOfImages = req.body; // array of { idOfImage: "..." }
+
+  if (idOfImages.length === 0) {
+    return res.status(400).json({ message: "يجب اضافه الصور التي تريد حذفها" });
+  }
+
+  try {
+    const product = await Product.findById(id);
+    if (!product) {
+      return res.status(404).json({ message: "This product is not found" });
+    }
+
+    // استخراج قائمة بالـ id الخاص بالصور اللي عايزين نحذفها
+    const idsToDelete = idOfImages.map((img) => img.idOfImage);
+
+    // حذف الصور من كل لون
+    product.colors = product.colors
+      .map((color) => {
+        color.images = color.images.filter(
+          // هنا بيرجع كل الصور ما عدا اللي الid  بتاعها  موجود في ال array دا idsToDelete
+          // او بتقلو جبلي كل الايدي اللي في اللي في الصور التي لا تحتوي علي الايدي اللي في  idsToDelete
+          (image) => !idsToDelete.includes(image.idOfImage)
+        );
+        return color;
+      })
+      .filter((color) => color.images.length > 0); // نحذف الألوان اللي مفيهاش صور
+
+    // حفظ التعديلات في قاعدة البيانات
+    await product.save();
+    await deleteImages(idsToDelete);
+
+    return res.json({ message: "تم حذف الصور بنجاح", product });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
   }
 };

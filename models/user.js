@@ -43,7 +43,7 @@ const UserSchema = new Schema(
     role: {
       type: String,
       enum: {
-        values: ["user", "admin"],
+        values: ["user", "admin","owner"],
         message: "{VALUE} ليس دورًا صالحًا",
       },
       default: "user",

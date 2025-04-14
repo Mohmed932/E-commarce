@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   addImagesColorProduct,
   createProduct,
+  deleteImagesColorProduct,
   deleteProduct,
   getProduct,
   getSingleProduct,
@@ -13,22 +14,23 @@ import {
 } from "../middleware/upload.js";
 import { validateUserId } from "../middleware/validateUserId.js";
 import { verifyUser } from "../middleware/verifyUser.js";
+import { verifyPermission } from "../middleware/verifyPermission.js";
 
 export const productRoute = Router();
 
 productRoute
   .route("/product")
-  // post(verifyUser, uploadMultipleImages, handleFileUploadError, createProduct);
-  .post(uploadMultipleImages, handleFileUploadError, createProduct);
+  .post(verifyUser,verifyPermission,uploadMultipleImages, handleFileUploadError, createProduct);
 
 productRoute
   .route("/product/:id")
   .get(validateUserId, getSingleProduct)
-  .delete(verifyUser, validateUserId, deleteProduct)
-  .put(validateUserId, updateProduct);
+  .delete(verifyUser,verifyPermission, validateUserId, deleteProduct)
+  .put(verifyUser,verifyPermission,validateUserId, updateProduct);
 
 productRoute
   .route("/product/images_color/:id")
-  .post(validateUserId,uploadMultipleImages, handleFileUploadError, addImagesColorProduct);
+  .post(verifyUser,verifyPermission,validateUserId,uploadMultipleImages, handleFileUploadError, addImagesColorProduct)
+  .delete(verifyUser,verifyPermission,validateUserId, deleteImagesColorProduct);
 
-productRoute.route("/product/:category").get(getProduct);
+productRoute.route("/product/category/:category").get(getProduct);
