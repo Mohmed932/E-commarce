@@ -1,4 +1,5 @@
 import { brandRoute } from "./brand.js";
+import { cartRoute } from "./cart.js";
 import { categoryRoute } from "./category.js";
 import { productRoute } from "./product.js";
 import { subCategoryRoute } from "./subCategory.js";
@@ -11,4 +12,5 @@ export const routes = (server) => {
   server.use(`${path}`, categoryRoute);
   server.use(`${path}`, subCategoryRoute);
   server.use(`${path}`, brandRoute);
+  server.use(`${path}`, cartRoute);
 };
