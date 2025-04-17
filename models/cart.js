@@ -15,14 +15,23 @@ const cartSchema = new Schema(
             required: [true, "يجب إضافة منتج واحد على الأقل"],
             min: [1, "الكمية يجب أن تكون واحد على الأقل"],
           },
+          sizes: {
+            type: [String],
+          },
           colors: {
             type: [
               {
-                color: { type: String, required: [true, "الرجاء تحديد اللون."] },
+                color: {
+                  type: String,
+                  required: [true, "الرجاء تحديد اللون."],
+                },
                 images: {
                   type: [
                     {
-                      img: { type: String, required: [true, "الرجاء إضافة صورة."] },
+                      img: {
+                        type: String,
+                        required: [true, "الرجاء إضافة صورة."],
+                      },
                       idOfImage: { type: String },
                     },
                   ],
@@ -33,10 +42,10 @@ const cartSchema = new Schema(
             required: [true, "يجب إضافة الألوان والصور."],
             validate: {
               validator: function (v) {
-                return v && v.length > 0; 
+                return v && v.length > 0;
               },
-              message: "يجب إضافة الألوان والصور."
-            }
+              message: "يجب إضافة الألوان والصور.",
+            },
           },
           price: {
             type: Number,
@@ -59,10 +68,10 @@ const cartSchema = new Schema(
       min: [0, "السعر الكلي لا يمكن أن يكون صفر او اقل منه"],
     },
     user: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-      },
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   { timestamps: true }
 );
