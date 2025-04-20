@@ -31,9 +31,9 @@ export const createOrder = async (req, res) => {
     let totalPrice = 0;
 
     productsData.forEach((item) => {
-      const matchedProduct = products
-        .find((p) => p._id.toString() === item.product_id)
-        .filter((id) => mongoose.Types.ObjectId.isValid(id));
+      const matchedProduct = products.find(
+        (p) => p._id.toString() === item.product_id
+      );
 
       if (matchedProduct && item.quantity > 0) {
         const itemTotal = Math.ceil(item.quantity * matchedProduct.finalPrice);
@@ -83,6 +83,10 @@ export const updateOrder = async (req, res) => {
     const order = await Order.findOne({ _id: id });
     if (!order) {
       return res.status(400).json({ message: "لم يتم العثور علي الطلب" });
+    }
+    if (order.isPaid) {
+      order.deliveredAt = Date.now();
+      order.paidAt = Date.now();
     }
     order.isPaid = true;
     order.totalPricePaid = totalPricePaid;
