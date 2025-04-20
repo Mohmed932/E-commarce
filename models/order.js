@@ -5,7 +5,7 @@ const orderSchema = new Schema(
     products: {
       type: [
         {
-          product: {
+          product_id: {
             type: Schema.Types.ObjectId,
             ref: "Product",
             required: true,
@@ -79,21 +79,67 @@ const orderSchema = new Schema(
     },
     paymentMethod: {
       type: String,
-      enum: ["cash", "credit_card", "paypal", "vodafone_cash"],
-      default: "cash",
+      enum: ["cash", "credit_card", "wallet_cash"],
+      required: [true, "يجب اختيار طريقه دفع"],
+    },
+    confirmOrder: {
+      type: Boolean,
+      default: false,
     },
     isPaid: { type: Boolean, default: false },
+    totalPricePaid: {
+      type: Number,
+    },
     paidAt: Date,
+    paidBy: String,
     deliveredAt: Date,
-    trackingNumber: String,
-    notes: String,
     shippingAddress: {
-      fullName: String,
-      phone: String,
-      addressLine: String,
-      city: String,
-      country: String,
-      postalCode: String,
+      type: [
+        {
+          governorate: {
+            type: String,
+            required: [true, "المحافظة مطلوبة"],
+          },
+          center: {
+            type: String,
+            required: [true, "المركز مطلوب"],
+          },
+          landmark: {
+            type: String,
+            required: [true, "المعلم مطلوب"],
+          },
+          fullName: {
+            type: String,
+            required: [true, "يجب ادخال الاسم كامل"],
+          },
+          primaryPhone: {
+            type: String,
+            match: [/^\+?[0-9]{10,15}$/, "رقم الهاتف غير صالح"],
+            required: [true, "رقم الهاتف مطلوب"],
+          },
+          extraPhone: {
+            type: String,
+            match: [/^\+?[0-9]{10,15}$/, "رقم الهاتف غير صالح"],
+          },
+        },
+      ],
+      validate: {
+        validator: function (value) {
+          if (value && value.length > 0) {
+            return value.every(
+              (address) =>
+                address.governorate &&
+                address.center &&
+                address.fullName &&
+                address.landmark &&
+                address.primaryPhone // تأكد من أن يكون `primaryPhone` بدلاً من `phone`
+            );
+          }
+          return true;
+        },
+        message:
+          "جميع حقول العنوان (المحافظة، المركز، القرية، المعلم، ورقم الهاتف) مطلوبة عند إضافة عنوان",
+      },
     },
   },
   { timestamps: true }

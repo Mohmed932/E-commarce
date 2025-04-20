@@ -43,7 +43,7 @@ const UserSchema = new Schema(
     role: {
       type: String,
       enum: {
-        values: ["user", "admin","owner"],
+        values: ["user", "admin", "owner"],
         message: "{VALUE} ليس دورًا صالحًا",
       },
       default: "user",
@@ -59,15 +59,20 @@ const UserSchema = new Schema(
             type: String,
             required: [true, "المركز مطلوب"],
           },
-          village: {
-            type: String,
-            required: [true, "القرية مطلوبة"],
-          },
           landmark: {
             type: String,
             required: [true, "المعلم مطلوب"],
           },
-          phone: {
+          fullName: {
+            type: String,
+            required: [true, "يجب ادخال الاسم كامل"],
+          },
+          primaryPhone: {
+            type: String,
+            match: [/^\+?[0-9]{10,15}$/, "رقم الهاتف غير صالح"],
+            required: [true, "رقم الهاتف مطلوب"],
+          },
+          extraPhone: {
             type: String,
             match: [/^\+?[0-9]{10,15}$/, "رقم الهاتف غير صالح"],
           },
@@ -80,9 +85,9 @@ const UserSchema = new Schema(
               (address) =>
                 address.governorate &&
                 address.center &&
-                address.village &&
+                address.fullName &&
                 address.landmark &&
-                address.phone
+                address.primaryPhone // تأكد من أن يكون `primaryPhone` بدلاً من `phone`
             );
           }
           return true;

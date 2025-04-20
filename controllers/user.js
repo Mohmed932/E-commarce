@@ -344,3 +344,92 @@ export const deleteAvatar = async (req, res) => {
     return res.status(500).json({ message: "حدث خطأ غير متوقع." });
   }
 };
+
+export const addAddress = async (req, res) => {
+  const { email } = req.user;
+  const { governorate, center, landmark, primaryPhone, extraPhone, fullName } =
+    req.body;
+
+  try {
+    // البحث عن المستخدم باستخدام البريد الإلكتروني
+    const existingUser = await User.findOne({ email });
+
+    if (!existingUser) {
+      return res.status(404).json({ message: "المستخدم غير موجود." });
+    }
+    existingUser.adress.push({
+      governorate,
+      center,
+      landmark,
+      primaryPhone,
+      extraPhone,
+      fullName,
+    });
+    await existingUser.save();
+    return res.json(existingUser);
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+};
+
+export const remevoAddress = async (req, res) => {
+  const { email } = req.user;
+  const { id } = req.params;
+
+  try {
+    // البحث عن المستخدم باستخدام البريد الإلكتروني
+    const existingUser = await User.findOne({ email });
+
+    if (!existingUser) {
+      return res.status(404).json({ message: "المستخدم غير موجود." });
+    }
+    existingUser.adress.pull({ _id: id });
+    await existingUser.save();
+    return res.json(existingUser);
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+};
+
+export const updateAddress = async (req, res) => {
+  const { email } = req.user;
+  const { id } = req.params;
+  const { governorate, center, landmark, primaryPhone, extraPhone, fullName } =
+    req.body;
+
+  try {
+    // البحث عن المستخدم باستخدام البريد الإلكتروني
+    const existingUser = await User.findOne({ email });
+
+    if (!existingUser) {
+      return res.status(404).json({ message: "المستخدم غير موجود." });
+    }
+
+    // العثور على العنوان باستخدام المعرّف وتحديثه
+    const addressIndex = existingUser.adress.findIndex(
+      (address) => address._id.toString() === id
+    );
+
+    if (addressIndex === -1) {
+      return res.status(404).json({ message: "العنوان غير موجود." });
+    }
+
+    // تحديث العنوان
+    existingUser.adress[addressIndex] = {
+      ...existingUser.adress[addressIndex],
+      governorate,
+      center,
+      landmark,
+      primaryPhone,
+      extraPhone,
+      fullName,
+    };
+
+    // حفظ التغييرات
+    await existingUser.save();
+
+    return res.json(existingUser);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};

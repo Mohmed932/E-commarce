@@ -1,13 +1,16 @@
 import { Router } from "express";
 import {
   activeAccount,
+  addAddress,
   checkLinkForgetPassword,
   createAccount,
   createAvatar,
   deleteAvatar,
   loginAccount,
+  remevoAddress,
   resetPassword,
   sendEmailForgetPassword,
+  updateAddress,
 } from "../controllers/user.js";
 import { verifyUser } from "../middleware/verifyUser.js";
 import { validateUserId } from "../middleware/validateUserId.js";
@@ -31,3 +34,9 @@ uesrRouter
   .route("/avatar")
   .post(verifyUser, upload, handleFileUploadError, createAvatar)
   .delete(verifyUser, deleteAvatar);
+
+uesrRouter.route("/address").post(verifyUser, addAddress);
+uesrRouter
+  .route("/address/:id")
+  .put(validateUserId, verifyUser, updateAddress)
+  .delete(validateUserId, verifyUser, remevoAddress);
