@@ -31,9 +31,10 @@ export const createOrder = async (req, res) => {
     let totalPrice = 0;
 
     productsData.forEach((item) => {
-      const matchedProduct = products.find(
-        (p) => p._id.toString() === item.product_id
-      );
+      const matchedProduct = products
+        .find((p) => p._id.toString() === item.product_id)
+        .filter((id) => mongoose.Types.ObjectId.isValid(id));
+
       if (matchedProduct && item.quantity > 0) {
         const itemTotal = Math.ceil(item.quantity * matchedProduct.finalPrice);
         totalPrice += itemTotal;
