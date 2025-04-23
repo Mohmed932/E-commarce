@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 
-const orderSchema = new Schema(
+const cachingOrderSchema = new Schema(
   {
     products: {
       type: [
@@ -72,34 +72,6 @@ const orderSchema = new Schema(
       ref: "User",
       required: true,
     },
-    status: {
-      type: String,
-      enum: ["pending", "processing", "shipped", "delivered", "cancelled"],
-      default: "pending",
-    },
-    paymentMethod: {
-      type: String,
-      enum: ["cash", "credit_card", "wallet_cash"],
-      required: [true, "يجب اختيار طريقه دفع"],
-    },
-    shippingCost: {
-      type: Number,
-      enum: [50, 0],
-      min: [0, "قيمة الشحن لا يمكن أن تكون أقل من صفر"],
-      default: 0,
-    },
-    taxes: {
-      type: Number,
-      min: [0, "قيمة الضريبة لا يمكن أن تكون أقل من صفر"],
-    },
-    confirmOrder: {
-      type: Boolean,
-      default: false,
-    },
-    isPaid: { type: Boolean, default: false },
-    paidAt: Date,
-    paidBy: String,
-    deliveredAt: Date,
     shippingAddress: {
       type: [
         {
@@ -148,8 +120,23 @@ const orderSchema = new Schema(
           "جميع حقول العنوان (المحافظة، المركز، القرية، المعلم، ورقم الهاتف) مطلوبة عند إضافة عنوان",
       },
     },
+    shippingCost: {
+      type: Number,
+      enum: [50, 0],
+      min: [0, "قيمة الشحن لا يمكن أن تكون أقل من صفر"],
+      default: 0,
+    },
+    taxes: {
+      type: Number,
+      min: [0, "قيمة الضريبة لا يمكن أن تكون أقل من صفر"],
+    },
+    expiresAt: {
+      type: Date,
+      default: () => new Date(Date.now() + 5 * 60 * 100),
+      expires: 0,
+    },
   },
   { timestamps: true }
 );
 
-export const Order = model("Order", orderSchema);
+export const CachingOrder = model("CachingOrder", cachingOrderSchema);
