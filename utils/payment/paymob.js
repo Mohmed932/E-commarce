@@ -3,8 +3,7 @@ const getPaymobToken = async () => {
   myHeaders.append("Content-Type", "application/json");
 
   const raw = JSON.stringify({
-    api_key:
-      "ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmpiR0Z6Y3lJNklrMWxjbU5vWVc1MElpd2ljSEp2Wm1sc1pWOXdheUk2TVRBek1qUTJNeXdpYm1GdFpTSTZJbWx1YVhScFlXd2lmUS5vTjJtcF94LTdtQmFlWjdWRXM5N0NXLXhaaFlyNWphRzJ4bXJjODNpdTlzeF9LeFFFY21zdkFwdnFrSERNeFhtNVc1ak1JMjJBaHlsVmcxMVRxZFgxZw==",
+    api_key: `ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmpiR0Z6Y3lJNklrMWxjbU5vWVc1MElpd2ljSEp2Wm1sc1pWOXdheUk2TVRBek1qUTJNeXdpYm1GdFpTSTZJbWx1YVhScFlXd2lmUS5vTjJtcF94LTdtQmFlWjdWRXM5N0NXLXhaaFlyNWphRzJ4bXJjODNpdTlzeF9LeFFFY21zdkFwdnFrSERNeFhtNVc1ak1JMjJBaHlsVmcxMVRxZFgxZw==`,
   });
 
   const requestOptions = {
@@ -19,47 +18,109 @@ const getPaymobToken = async () => {
       "https://accept.paymob.com/api/auth/tokens",
       requestOptions
     );
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     const result = await response.json();
-    console.log("Token received:", result.token);
+    // console.log("Token received:", result.token);
     return result.token;
   } catch (error) {
     console.error("Error fetching token:", error);
   }
 };
 
-const createPaymobOrder = async () => {
-  const authToken = await getPaymobToken();
-  var myHeaders = new Headers();
+const createPaymobOrder = async (authToken) => {
+  const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
-  var raw = JSON.stringify({
+  const raw = JSON.stringify({
     auth_token: authToken,
-    product_name: "Product_NAME",
+    delivery_needed: false,
     amount_cents: "4000",
     currency: "EGP",
-    inventory: "1",
-    delivery_needed: "false",
-    integrations: [123, 786],
-    allow_quantity_edit: "false",
-    product_description: "Product_Description",
+    items: [
+      {
+        name: "Product_NAME",
+        amount_cents: "4000",
+        description: "Product_Description",
+        quantity: 1,
+      },
+    ],
   });
 
-  var requestOptions = {
+  const requestOptions = {
     method: "POST",
     headers: myHeaders,
     body: raw,
     redirect: "follow",
   };
 
-  fetch("https://accept.paymob.com/api/ecommerce/products", requestOptions)
-    .then((response) => response.text())
-    .then((result) => console.log(result))
-    .catch((error) => console.log("error", error));
+  try {
+    const response = await fetch(
+      "https://accept.paymob.com/api/ecommerce/orders",
+      requestOptions
+    );
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    const result = await response.json();
+    // console.log("Order created:", result.id);
+    return result.id; // ده الـ order ID اللي هتحتاجه في الخطوة الجاية
+  } catch (error) {
+    console.error("Error creating order:", error);
+  }
 };
 
-createPaymobOrder();
+const createPaymentKey = async () => {
+  const authToken = await getPaymobToken();
+  const orderId = await createPaymobOrder(authToken);
+  const Wallet = "5025897";
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+
+  const raw = JSON.stringify({
+    auth_token: authToken,
+    amount_cents: "4000",
+    expiration: 3600,
+    order_id: orderId,
+    billing_data: {
+      apartment: "803",
+      email: "user@example.com",
+      floor: "42",
+      first_name: "John",
+      street: "Main St.",
+      building: "123",
+      phone_number: "+201234567890",
+      shipping_method: "PKG",
+      postal_code: "12345",
+      city: "Cairo",
+      country: "EG",
+      last_name: "Doe",
+      state: "Cairo",
+    },
+    currency: "EGP",
+    integration_id: Wallet,
+    lock_order_when_paid: "false",
+  });
+
+  const requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: raw,
+    redirect: "follow",
+  };
+
+  try {
+    const response = await fetch(
+      "https://accept.paymob.com/api/acceptance/payment_keys",
+      requestOptions
+    );
+    const result = await response.json();
+    // console.log("Payment Key created:", result.token);
+    // const iframeId = "909120";
+    const iframeId = "909119";
+    const link = `https://accept.paymob.com/api/acceptance/iframes/${iframeId}?payment_token=${result.token}`;
+    console.log(link);
+    return link;
+  } catch (error) {
+    console.error("Error creating payment key:", error);
+  }
+};
+
+createPaymentKey();
