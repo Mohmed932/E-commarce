@@ -1,4 +1,4 @@
-const getPaymobToken = async () => {
+export const getPaymobToken = async () => {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
@@ -27,7 +27,7 @@ const getPaymobToken = async () => {
   }
 };
 
-const createPaymobOrder = async (authToken) => {
+export const createPaymobOrder = async (authToken) => {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
@@ -67,10 +67,10 @@ const createPaymobOrder = async (authToken) => {
   }
 };
 
-const createPaymentKey = async () => {
+export const createPaymentKey = async () => {
   const authToken = await getPaymobToken();
   const orderId = await createPaymobOrder(authToken);
-  const Wallet = "5025897";
+  const Card = "5023244";
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
@@ -95,7 +95,7 @@ const createPaymentKey = async () => {
       state: "Cairo",
     },
     currency: "EGP",
-    integration_id: Wallet,
+    integration_id: Card,
     lock_order_when_paid: "false",
   });
 
@@ -113,14 +113,42 @@ const createPaymentKey = async () => {
     );
     const result = await response.json();
     // console.log("Payment Key created:", result.token);
-    // const iframeId = "909120";
-    const iframeId = "909119";
+    const iframeId = "909120";
+    // const iframeId = "909119";
     const link = `https://accept.paymob.com/api/acceptance/iframes/${iframeId}?payment_token=${result.token}`;
     console.log(link);
-    return link;
+    return result.token;
   } catch (error) {
     console.error("Error creating payment key:", error);
   }
 };
 
-createPaymentKey();
+const createPaymentWallet = async () => {
+  try {
+    const token = await createPaymentKey();
+
+    const req = await fetch(
+      "https://accept.paymob.com/api/acceptance/payments/pay",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          source: {
+            identifier: "01064702174", // رقم الموبايل هنا
+            subtype: "WALLET",
+          },
+          payment_token: token,
+        }),
+      }
+    );
+
+    const res = await req.json();
+    console.log(res);
+  } catch (error) {
+    console.error("Error in createPaymentWallet:", error);
+  }
+};
+
+createPaymentWallet();

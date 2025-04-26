@@ -3,6 +3,11 @@ import { Order } from "../models/order.js";
 import { Product } from "../models/product.js";
 import { User } from "../models/user.js";
 import { CachingOrder } from "../models/cachingOrder.js";
+import {
+  createPaymentKey,
+  createPaymobOrder,
+  getPaymobToken,
+} from "../utils/payment/paymob.js";
 
 export const getOrders = async (req, res) => {
   const { _id } = req.user;
@@ -72,6 +77,9 @@ export const createOrder = async (req, res) => {
         shippingAddress: user.adress,
         products: productsData,
       });
+      const authToken = await getPaymobToken();
+      const orderId = await createPaymobOrder(authToken);
+      const payment_token = await createPaymentKey(orderId);
     }
     await saveOrder.save();
     return res.json({ saveOrder });
