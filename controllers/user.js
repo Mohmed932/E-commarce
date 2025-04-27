@@ -8,6 +8,7 @@ import { randomToken } from "../utils/randomToken.js";
 import { SendEmail } from "../utils/emailActive.js";
 import { deleteImage, uploadAvatat } from "../utils/cloudinary.js";
 import fs from "fs/promises";
+import { addressVaildator } from "../services/addressVaildator.js";
 
 export const createAccount = async (req, res) => {
   const { name, username, email, password } = req.body;
@@ -349,11 +350,23 @@ export const addAddress = async (req, res) => {
   const { email } = req.user;
   const { governorate, center, landmark, primaryPhone, extraPhone, fullName } =
     req.body;
-
+  const data = {
+    governorate,
+    center,
+    landmark,
+    primaryPhone,
+    extraPhone,
+    fullName,
+  };
+  const { error } = addressVaildator(data);
+  if (error) {
+    return res
+      .status(400)
+      .json({ message: error.details.map((detail) => detail.message) });
+  }
   try {
     // البحث عن المستخدم باستخدام البريد الإلكتروني
     const existingUser = await User.findOne({ email });
-
     if (!existingUser) {
       return res.status(404).json({ message: "المستخدم غير موجود." });
     }
@@ -396,7 +409,20 @@ export const updateAddress = async (req, res) => {
   const { id } = req.params;
   const { governorate, center, landmark, primaryPhone, extraPhone, fullName } =
     req.body;
-
+  const data = {
+    governorate,
+    center,
+    landmark,
+    primaryPhone,
+    extraPhone,
+    fullName,
+  };
+  const { error } = addressVaildator(data);
+  if (error) {
+    return res
+      .status(400)
+      .json({ message: error.details.map((detail) => detail.message) });
+  }
   try {
     // البحث عن المستخدم باستخدام البريد الإلكتروني
     const existingUser = await User.findOne({ email });

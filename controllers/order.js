@@ -8,6 +8,7 @@ import {
   createPaymobOrder,
   getPaymobToken,
 } from "../utils/payment/paymob.js";
+import { orderValidator } from "../services/orderVaildator.js";
 
 export const getOrders = async (req, res) => {
   const { _id } = req.user;
@@ -25,20 +26,21 @@ export const getOrders = async (req, res) => {
 export const createOrder = async (req, res) => {
   const { _id } = req.user;
   const { productsData, paymentMethod } = req.body;
-
+  const { error } = orderValidator({ productsData, paymentMethod });
+  if (error) {
+    return res
+      .status(400)
+      .json({ message: error.details.map((detail) => detail.message) });
+  }
   try {
     const products_id = productsData
       .map((item) => item.product_id)
       .filter((id) => mongoose.Types.ObjectId.isValid(id));
-
     const products = await Product.find({ _id: { $in: products_id } });
-
     if (products.length === 0) {
       return res.status(400).json({ message: "No valid products found" });
     }
-
     let totalPrice = 0;
-
     productsData.forEach((item) => {
       const matchedProduct = products.find(
         (p) => p._id.toString() === item.product_id
@@ -49,7 +51,6 @@ export const createOrder = async (req, res) => {
         item.price = Math.ceil(matchedProduct.finalPrice); // تم التعديل هنا أيضًا
       }
     });
-
     const user = await User.findOne({ _id });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
