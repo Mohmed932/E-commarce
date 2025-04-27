@@ -79,7 +79,7 @@ const orderSchema = new Schema(
     },
     paymentMethod: {
       type: String,
-      enum: ["cash", "credit_card", "wallet_cash"],
+      enum: ["cash", "credit_card"],
       required: [true, "يجب اختيار طريقه دفع"],
     },
     shippingCost: {

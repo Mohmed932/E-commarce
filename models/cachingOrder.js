@@ -132,7 +132,7 @@ const cachingOrderSchema = new Schema(
     },
     expiresAt: {
       type: Date,
-      default: () => new Date(Date.now() + 5 * 60 * 100),
+      default: () => new Date(Date.now() + 5 * 60 * 1000),
       expires: 0,
     },
   },

@@ -1,6 +1,11 @@
 import { Router } from "express";
 import { verifyUser } from "../middleware/verifyUser.js";
-import { createOrder, getOrders, updateOrder } from "../controllers/order.js";
+import {
+  createOrder,
+  getOrders,
+  updateOrder,
+  paymentProcess,
+} from "../controllers/order.js";
 import { validateUserId } from "../middleware/validateUserId.js";
 
 export const orderRoute = Router();
@@ -11,3 +16,5 @@ orderRoute
   .post(verifyUser, createOrder);
 
 orderRoute.route("/order/:id").put(validateUserId, verifyUser, updateOrder);
+
+orderRoute.route("/order/paymentprocess").post(paymentProcess);

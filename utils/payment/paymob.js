@@ -27,23 +27,20 @@ export const getPaymobToken = async () => {
   }
 };
 
-export const createPaymobOrder = async (authToken) => {
+export const createPaymobOrder = async (
+  authToken,
+  amount_cents,
+  merchant_order_id
+) => {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
   const raw = JSON.stringify({
     auth_token: authToken,
     delivery_needed: false,
-    amount_cents: "4000",
+    amount_cents: amount_cents * 100,
     currency: "EGP",
-    items: [
-      {
-        name: "Product_NAME",
-        amount_cents: "4000",
-        description: "Product_Description",
-        quantity: 1,
-      },
-    ],
+    merchant_order_id,
   });
 
   const requestOptions = {
@@ -60,39 +57,42 @@ export const createPaymobOrder = async (authToken) => {
     );
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     const result = await response.json();
-    // console.log("Order created:", result.id);
+    // console.log("Order created:", result);
     return result.id; // ده الـ order ID اللي هتحتاجه في الخطوة الجاية
   } catch (error) {
     console.error("Error creating order:", error);
   }
 };
 
-export const createPaymentKey = async () => {
-  const authToken = await getPaymobToken();
-  const orderId = await createPaymobOrder(authToken);
+export const createPaymentKey = async (
+  authToken,
+  orderId,
+  user,
+  totalPrice
+) => {
   const Card = "5023244";
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
-
+  const price = totalPrice * 100;
   const raw = JSON.stringify({
     auth_token: authToken,
-    amount_cents: "4000",
+    amount_cents: `${price}`,
     expiration: 3600,
     order_id: orderId,
     billing_data: {
       apartment: "803",
-      email: "user@example.com",
+      email: user.email,
       floor: "42",
-      first_name: "John",
-      street: "Main St.",
+      first_name: user.name,
+      street: `nkjh ${user.adress.landmark}`,
       building: "123",
-      phone_number: "+201234567890",
+      phone_number: `+2${user.adress.primaryPhone}`,
       shipping_method: "PKG",
       postal_code: "12345",
-      city: "Cairo",
+      city: `dfgd ${user.adress.governorate}`,
       country: "EG",
-      last_name: "Doe",
-      state: "Cairo",
+      last_name: user.name,
+      state: user.adress.center,
     },
     currency: "EGP",
     integration_id: Card,
@@ -112,43 +112,12 @@ export const createPaymentKey = async () => {
       requestOptions
     );
     const result = await response.json();
-    // console.log("Payment Key created:", result.token);
-    const iframeId = "909120";
-    // const iframeId = "909119";
+    // console.log("Payment Key created:", result);
+    // const iframeId = "909120";
+    const iframeId = "909119";
     const link = `https://accept.paymob.com/api/acceptance/iframes/${iframeId}?payment_token=${result.token}`;
-    console.log(link);
-    return result.token;
+    return link;
   } catch (error) {
     console.error("Error creating payment key:", error);
   }
 };
-
-const createPaymentWallet = async () => {
-  try {
-    const token = await createPaymentKey();
-
-    const req = await fetch(
-      "https://accept.paymob.com/api/acceptance/payments/pay",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          source: {
-            identifier: "01064702174", // رقم الموبايل هنا
-            subtype: "WALLET",
-          },
-          payment_token: token,
-        }),
-      }
-    );
-
-    const res = await req.json();
-    console.log(res);
-  } catch (error) {
-    console.error("Error in createPaymentWallet:", error);
-  }
-};
-
-createPaymentWallet();
