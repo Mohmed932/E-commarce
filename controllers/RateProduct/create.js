@@ -33,6 +33,7 @@ export const addRateProduct = async (req, res) => {
       const rateSaved = new RateProduct({
         product_id: id,
         rating: [ratingData],
+        average: rate,
       });
       await rateSaved.save();
     }

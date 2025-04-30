@@ -126,7 +126,6 @@ export const getSingleProduct = async (req, res) => {
 
 export const getProduct = async (req, res) => {
   const { category } = req.params;
-  console.log(category, category);
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
   try {
