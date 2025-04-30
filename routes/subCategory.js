@@ -7,12 +7,13 @@ import {
   deletesubCategory,
   updatesubCategory,
 } from "../controllers/subCategory.js";
+import { uploadImage } from "../middleware/upload.js";
 
 export const subCategoryRoute = Router();
 
 subCategoryRoute
   .route("/subcategory/:id")
   .get(validateUserId, collectsubCategory)
-  .post(verifyUser, validateUserId, createsubCategory)
+  .post(verifyUser, validateUserId, uploadImage, createsubCategory)
   .delete(verifyUser, validateUserId, deletesubCategory)
-  .put(verifyUser, validateUserId, updatesubCategory);
+  .put(verifyUser, validateUserId, uploadImage, updatesubCategory);

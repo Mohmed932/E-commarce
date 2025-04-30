@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
     const timeStamp = Date.now();
     const randomSuffix = Math.floor(Math.random() * 1000);
     const extname = path.extname(file.originalname);
-    const name = path.basename(file.originalname, path.extname(file.originalname));
+    const name = path.basename(file.originalname, extname);
     cb(null, `${name}-${timeStamp}-${randomSuffix}${extname}`);
   },
 });
@@ -35,8 +35,6 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-
-
 // تحديد أقصى حجم للملف
 export const upload = multer({
   storage,
@@ -44,11 +42,18 @@ export const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }, // الحد الأقصى للحجم 5 ميجابايت
 }).single("avatar");
 
+// تحديد أقصى حجم للملف
+export const uploadImage = multer({
+  storage,
+  fileFilter,
+  limits: { fileSize: 5 * 1024 * 1024 }, // الحد الأقصى للحجم 5 ميجابايت
+}).single("image");
+
 export const uploadMultipleImages = multer({
   storage,
   fileFilter,
   limits: { fileSize: 1 * 1024 * 1024 },
-}).array('images', 15); 
+}).array("images", 15);
 
 // معالجة الأخطاء في التطبيق
 export const handleFileUploadError = (err, req, res, next) => {
@@ -59,7 +64,7 @@ export const handleFileUploadError = (err, req, res, next) => {
       if (err.code === "LIMIT_FILE_SIZE") {
         return res
           .status(400)
-          .json({ message: "الملف أكبر من الحد المسموح به (5 ميجابايت)" });
+          .json({ message: "الملف أكبر من الحد المسموح به" });
       }
     } else if (err.message === "فقط الصور بصيغ jpeg, jpg, png, gif مسموح بها") {
       return res.status(400).json({ message: err.message });

@@ -6,7 +6,7 @@ import { config } from "dotenv";
 import { dbConnection } from "./config/db.js";
 import { routes } from "./routes/route.js";
 
-// Initialize dotenv to load environment variables
+// Load environment variables
 config();
 
 // Fetch environment variables
@@ -24,13 +24,13 @@ if (!port || !domain || !url) {
 const server = express();
 
 // Middleware setup
-server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
+server.use(express.json());
 server.use(cookieParser());
 
 // CORS configuration
 const corsOptions = {
-  origin:"*",
+  origin: "*",
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };
@@ -47,12 +47,21 @@ routes(server);
 
 // Error handling middleware
 server.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Something went wrong!");
+  // console.error(err.stack);
+  res.status(500).send("Something went wrong!", err.stack);
 });
 
 // Start the server and connect to the database
-server.listen(port, () => {
-  dbConnection(url);
-  console.log(`Server is running on ${domain}`);
-});
+const startServer = async () => {
+  try {
+    await dbConnection(url);
+    server.listen(port, () => {
+      console.log(`✅ Server is running on ${domain}`);
+    });
+  } catch (err) {
+    console.error("❌ Failed to connect to database:", err);
+    process.exit(1);
+  }
+};
+
+startServer();

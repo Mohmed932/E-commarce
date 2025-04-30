@@ -18,6 +18,16 @@ const subCategory = new Schema({
     ref: "User",
     required: true,
   },
+  image: {
+    img: {
+      type: String,
+      default: "https://example.com/default.jpg",
+    },
+    idOfImage: {
+      type: String,
+      default: null,
+    },
+  },
 });
 
 export const SubCategory = model("SubCategory", subCategory);
