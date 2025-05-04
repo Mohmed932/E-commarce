@@ -1,11 +1,10 @@
 import { Router } from "express";
+
 import { verifyUser } from "../middleware/verifyUser.js";
-import {
-  addProductToCart,
-  deleteProductFromCart,
-  getCart,
-} from "../controllers/cart.js";
 import { validateUserId } from "../middleware/validateUserId.js";
+import { getCart } from "../controllers/cart/read.js";
+import { addProductToCart } from "../controllers/cart/create.js";
+import { deleteProductFromCart } from "../controllers/cart/delete.js";
 
 export const cartRoute = Router();
 

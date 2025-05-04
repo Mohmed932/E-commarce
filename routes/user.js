@@ -1,20 +1,18 @@
 import { Router } from "express";
-import {
-  activeAccount,
-  addAddress,
-  checkLinkForgetPassword,
-  createAccount,
-  createAvatar,
-  deleteAvatar,
-  loginAccount,
-  remevoAddress,
-  resetPassword,
-  sendEmailForgetPassword,
-  updateAddress,
-} from "../controllers/user.js";
+
 import { verifyUser } from "../middleware/verifyUser.js";
 import { validateUserId } from "../middleware/validateUserId.js";
 import { handleFileUploadError, upload } from "../middleware/upload.js";
+
+import { createAccount } from "../controllers/user/auth/createAccount.js";
+import { loginAccount } from "../controllers/user/auth/loginAccount.js";
+import { activeAccount } from "../controllers/user/auth/activeAccount.js";
+import { sendEmailForgetPassword } from "../controllers/user/auth/sendEmailForgetPassword.js";
+import { checkLinkForgetPassword } from "../controllers/user/auth/checkLinkForgetPassword.js";
+import { resetPassword } from "../controllers/user/auth/resetPassword.js";
+import { addAddress, createAvatar } from "../controllers/user/create.js";
+import { deleteAvatar, remevoAddress } from "../controllers/user/delete.js";
+import { updateAddress } from "../controllers/user/update.js";
 
 export const uesrRouter = Router();
 
