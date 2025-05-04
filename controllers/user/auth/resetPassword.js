@@ -1,6 +1,6 @@
 import { User } from "../../../models/user.js";
 import { VerifyAny } from "../../../models/verify.js";
-import { hashPassword } from "../../../utils/hasePassword.js";
+import { hashPassword } from "../../../utils/password/hasePassword.js";
 
 export const resetPassword = async (req, res) => {
   const { password, conformPassword } = req.body;

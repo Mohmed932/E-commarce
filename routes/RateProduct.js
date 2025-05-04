@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { addRateProduct } from "../controllers/RateProduct/create.js";
-import { validateUserId } from "../middleware/validateUserId.js";
 import { verifyUser } from "../middleware/verifyUser.js";
+import { validateId } from "../middleware/validateId.js";
 import {
   averageRateProduct,
   readRateProduct,
@@ -12,13 +12,13 @@ import { updateRateProduct } from "../controllers/RateProduct/update.js";
 export const RateProductRoute = Router();
 
 RateProductRoute.route("/product/rate/:id")
-  .get(validateUserId, readRateProduct)
-  .post(verifyUser, validateUserId, addRateProduct);
+  .get(validateId, readRateProduct)
+  .post(verifyUser, validateId, addRateProduct);
 
 RateProductRoute.route("/product/rate/average/:id").get(
-  validateUserId,
+  validateId,
   averageRateProduct
 );
 RateProductRoute.route("/product/rate/:id/rate_id/:rate_id")
-  .put(verifyUser, validateUserId, updateRateProduct)
-  .delete(verifyUser, validateUserId, deleteRateProduct);
+  .put(verifyUser, validateId, updateRateProduct)
+  .delete(verifyUser, validateId, deleteRateProduct);

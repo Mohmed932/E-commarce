@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 // Middleware للتحقق من صحة معرف المستخدم
-export const validateUserId = (req, res, next) => {
+export const validateId = (req, res, next) => {
   const { id } = req.params;
   // التحقق من صلاحية معرف المستخدم
   if (!mongoose.Types.ObjectId.isValid(id)) {

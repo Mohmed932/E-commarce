@@ -1,9 +1,9 @@
 import { User } from "../../../models/user.js";
 import { VerifyAny } from "../../../models/verify.js";
 import { signUpVaildator } from "../../../services/uservalidator.js";
-import { SendEmail } from "../../../utils/emailActive.js";
-import { hashPassword } from "../../../utils/hasePassword.js";
-import { randomToken } from "../../../utils/randomToken.js";
+import { SendEmail } from "../../../utils/email/emailActive.js";
+import { hashPassword } from "../../../utils/password/hasePassword.js";
+import { randomToken } from "../../../utils/token/randomToken.js";
 
 export const createAccount = async (req, res) => {
   const { name, username, email, password } = req.body;
@@ -57,10 +57,11 @@ export const createAccount = async (req, res) => {
     await activeUser.save();
 
     // إنشاء رابط التفعيل
-    const activeLink = `${process.env.DOMAIN}/account_id/${newUser._id}/active_account/${token}`;
+    const activeLink = `${process.env.DOMAIN}/api/v1/auth/account_id/${newUser._id}/active_account/${token}`;
 
     // إرسال رابط التفعيل إلى البريد الإلكتروني
-    await SendEmail(email, activeLink);
+    const kind = "activeAccount";
+    await SendEmail(email, activeLink, kind);
 
     return res.status(201).json({
       message: "تم إرسال رابط تفعيل الحساب إلى بريدك الإلكتروني",

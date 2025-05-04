@@ -48,7 +48,7 @@ const UserSchema = new Schema(
       },
       default: "user",
     },
-    adress: {
+    address: {
       type: [
         {
           governorate: {

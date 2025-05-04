@@ -1,5 +1,5 @@
 import { Product } from "../../models/product.js";
-import { deleteImages } from "../../utils/cloudinary.js";
+import { deleteImages } from "../../utils/upload/cloudinary.js";
 
 export const deleteProduct = async (req, res) => {
   const { id } = req.params;

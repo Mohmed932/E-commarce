@@ -1,7 +1,7 @@
 import { SubCategory } from "../../models/subCategory.js";
 import { User } from "../../models/user.js";
 import { categoryVaildator } from "../../services/categoryVaildator.js";
-import { uploadAvatat } from "../../utils/cloudinary.js";
+import { uploadAvatat } from "../../utils/upload/cloudinary.js";
 import { unlink } from "fs/promises";
 
 export const createsubCategory = async (req, res) => {

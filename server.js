@@ -51,6 +51,10 @@ server.use((err, req, res, next) => {
   res.status(500).send("Something went wrong!", err.stack);
 });
 
+server.use("*", (req, res) => {
+  return res.json({ message: "لا يوجد api لهذا العنوان" });
+});
+
 // Start the server and connect to the database
 const startServer = async () => {
   try {

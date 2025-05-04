@@ -1,10 +1,10 @@
 import { User } from "../../../models/user.js";
 import { VerifyAny } from "../../../models/verify.js";
 import { loginVaildator } from "../../../services/uservalidator.js";
-import { comparePassword } from "../../../utils/comparePassword.js";
-import { SendEmail } from "../../../utils/emailActive.js";
-import { randomToken } from "../../../utils/randomToken.js";
-import { createToken } from "../../../utils/token.js";
+import { comparePassword } from "../../../utils/password/comparePassword.js";
+import { SendEmail } from "../../../utils/email/emailActive.js";
+import { randomToken } from "../../../utils/token/randomToken.js";
+import { createToken } from "../../../utils/token/token.js";
 
 export const loginAccount = async (req, res) => {
   const { email, password } = req.body;
@@ -42,9 +42,11 @@ export const loginAccount = async (req, res) => {
       await activeUser.save();
 
       // إنشاء رابط التفعيل
-      const activeLink = `${process.env.DOMAIN}/account_id/${user._id}/active_account/${token}`;
+      const activeLink = `${process.env.DOMAIN}/api/v1/auth/account_id/${user._id}/active_account/${token}`;
+
       // إرسال رابط التفعيل إلى البريد الإلكتروني
-      await SendEmail(email, activeLink);
+      const kind = "activeAccount";
+      await SendEmail(email, activeLink, kind);
 
       return res.json({
         message: "تم إرسال رابط تفعيل الحساب إلى بريدك الإلكتروني",
@@ -68,7 +70,7 @@ export const loginAccount = async (req, res) => {
         maxAge: 10 * 24 * 60 * 60 * 1000, // 10 أيام
         httpOnly: true, // منع الوصول إلى الكوكيز من JavaScript
       })
-      .json({ message: "تم تسجيل الدخول بنجاح" });
+      .json({ message: "تم تسجيل الدخول بنجاح", token });
   } catch (error) {
     console.error("Error during login:", error.message);
     return res.status(500).json({ message: "حدث خطأ أثناء تسجيل الدخول" });

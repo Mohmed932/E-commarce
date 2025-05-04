@@ -1,6 +1,6 @@
 import { Product } from "../../models/product.js";
 import { validateProduct } from "../../services/productValidator.js";
-import { uploadMultipleImages } from "../../utils/cloudinary.js";
+import { uploadMultipleImages } from "../../utils/upload/cloudinary.js";
 import fs from "fs/promises";
 
 export const createProduct = async (req, res) => {

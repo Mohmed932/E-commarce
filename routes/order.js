@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { validateUserId } from "../middleware/validateUserId.js";
+import { validateId } from "../middleware/validateId.js";
 import { verifyUser } from "../middleware/verifyUser.js";
 import { getOrders } from "../controllers/order/read.js";
 import { createOrder } from "../controllers/order/create.js";
@@ -17,6 +17,6 @@ orderRoute
 
 orderRoute
   .route("/order/:id")
-  .put(validateUserId, verifyUser, verifyPermission, updateOrder);
+  .put(validateId, verifyUser, verifyPermission, updateOrder);
 
 orderRoute.route("/order/paymentprocess").post(paymentProcess);

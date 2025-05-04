@@ -1,6 +1,6 @@
 import { User } from "../../models/user.js";
 import { addressVaildator } from "../../services/addressVaildator.js";
-import { deleteImage, uploadAvatat } from "../../utils/cloudinary.js";
+import { deleteImage, uploadAvatat } from "../../utils/upload/cloudinary.js";
 import fs from "fs/promises";
 
 export const createAvatar = async (req, res) => {
@@ -63,7 +63,7 @@ export const addAddress = async (req, res) => {
     if (!existingUser) {
       return res.status(404).json({ message: "المستخدم غير موجود." });
     }
-    existingUser.adress.push({
+    existingUser.address.push({
       governorate,
       center,
       landmark,
@@ -72,7 +72,7 @@ export const addAddress = async (req, res) => {
       fullName,
     });
     await existingUser.save();
-    return res.json(existingUser);
+    return res.json(existingUser.address);
   } catch (error) {
     return res.status(500).json({ message: error });
   }

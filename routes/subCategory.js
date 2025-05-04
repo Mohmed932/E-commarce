@@ -1,9 +1,9 @@
 import { Router } from "express";
 
 import { verifyUser } from "../middleware/verifyUser.js";
-import { validateUserId } from "../middleware/validateUserId.js";
-import { uploadImage } from "../middleware/upload.js";
+import { validateId } from "../middleware/validateId.js";
 import { verifyPermission } from "../middleware/verifyPermission.js";
+import { uploadImage } from "../utils/upload/upload.js";
 
 import { collectsubCategory } from "../controllers/subCategory/read.js";
 import { createsubCategory } from "../controllers/subCategory/create.js";
@@ -14,18 +14,18 @@ export const subCategoryRoute = Router();
 
 subCategoryRoute
   .route("/subcategory/:id")
-  .get(validateUserId, collectsubCategory)
+  .get(validateId, collectsubCategory)
   .post(
     verifyUser,
-    validateUserId,
+    validateId,
     verifyPermission,
     uploadImage,
     createsubCategory
   )
-  .delete(verifyUser, validateUserId, verifyPermission, deletesubCategory)
+  .delete(verifyUser, validateId, verifyPermission, deletesubCategory)
   .put(
     verifyUser,
-    validateUserId,
+    validateId,
     verifyPermission,
     uploadImage,
     updatesubCategory

@@ -27,7 +27,7 @@ export const addProductToCart = async (req, res) => {
     if (checkUserCart) {
       // إضافة المنتج
       checkUserCart.products.push({
-        product: product_id,
+        product_id,
         quantity,
         colors,
         sizes,

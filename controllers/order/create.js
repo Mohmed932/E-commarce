@@ -7,7 +7,7 @@ import {
   createPaymentKey,
   createPaymobOrder,
   getPaymobToken,
-} from "../../utils/payment/paymob.js";
+} from "../../payment/paymob.js";
 
 export const createOrder = async (req, res) => {
   const { _id } = req.user;

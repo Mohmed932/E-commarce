@@ -22,7 +22,7 @@ export const updateAddress = async (req, res) => {
     }
 
     // العثور على العنوان باستخدام المعرّف وتحديثه
-    const addressIndex = existingUser.adress.findIndex(
+    const addressIndex = existingUser.address.findIndex(
       (address) => address._id.toString() === id
     );
 
@@ -31,8 +31,8 @@ export const updateAddress = async (req, res) => {
     }
 
     // تحديث العنوان
-    existingUser.adress[addressIndex] = {
-      ...existingUser.adress[addressIndex],
+    existingUser.address[addressIndex] = {
+      ...existingUser.address[addressIndex],
       governorate,
       center,
       landmark,
@@ -44,7 +44,7 @@ export const updateAddress = async (req, res) => {
     // حفظ التغييرات
     await existingUser.save();
 
-    return res.json(existingUser);
+    return res.json(existingUser.address);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

@@ -1,6 +1,6 @@
 import { SubCategory } from "../../models/subCategory.js";
 import { User } from "../../models/user.js";
-import { deleteImage } from "../../utils/cloudinary.js";
+import { deleteImage } from "../../utils/upload/cloudinary.js";
 
 export const deletesubCategory = async (req, res) => {
   const { id } = req.params;

@@ -3,6 +3,7 @@ import { VerifyAny } from "../../../models/verify.js";
 
 export const activeAccount = async (req, res) => {
   const { token, id } = req.params;
+  console.log(token, id);
 
   try {
     // التحقق من وجود البيانات المطلوبة

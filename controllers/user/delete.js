@@ -1,5 +1,5 @@
 import { User } from "../../models/user.js";
-import { deleteImage } from "../../utils/cloudinary.js";
+import { deleteImage } from "../../utils/upload/cloudinary.js";
 
 export const deleteAvatar = async (req, res) => {
   const { email } = req.user;
@@ -30,21 +30,38 @@ export const deleteAvatar = async (req, res) => {
   }
 };
 
-export const remevoAddress = async (req, res) => {
+export const removeAddress = async (req, res) => {
   const { email } = req.user;
   const { id } = req.params;
 
   try {
-    // البحث عن المستخدم باستخدام البريد الإلكتروني
     const existingUser = await User.findOne({ email });
 
     if (!existingUser) {
       return res.status(404).json({ message: "المستخدم غير موجود." });
     }
-    existingUser.adress.pull({ _id: id });
+
+    const addressExists = existingUser.address.some(
+      (i) => i._id.toString() === id
+    );
+
+    if (!addressExists) {
+      return res.status(404).json({ message: "العنوان غير موجود." });
+    }
+
+    existingUser.address = existingUser.address.filter(
+      (i) => i._id.toString() !== id
+    );
+
     await existingUser.save();
-    return res.json(existingUser);
+
+    return res.json({
+      message: "تم حذف العنوان بنجاح",
+      address: existingUser.address,
+    });
   } catch (error) {
-    return res.status(500).json({ message: error });
+    return res
+      .status(500)
+      .json({ message: "خطأ في السيرفر", error: error.message });
   }
 };

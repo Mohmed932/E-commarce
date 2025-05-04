@@ -1,6 +1,12 @@
 import { Schema, model } from "mongoose";
 
 const brandSchema = new Schema({
+  name: {
+    type: String,
+    required: [true, "يجب اضافه اسم للبراند"],
+    minlength: [3, "يجب أن يكون الاسم على الأقل 3 حروف"],
+    maxlength: [50, "يجب أن يكون الاسم على الأقل 50 حرفا"],
+  },
   image: {
     type: Object,
     default: {
@@ -12,7 +18,6 @@ const brandSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Category",
     required: true,
-    autopopulate: true,
   },
   createdBy: {
     type: Schema.Types.ObjectId,

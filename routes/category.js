@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { verifyUser } from "../middleware/verifyUser.js";
-import { validateUserId } from "../middleware/validateUserId.js";
+import { validateId } from "../middleware/validateId.js";
 import { collectCategory } from "../controllers/category/read.js";
 import { createCategory } from "../controllers/category/create.js";
 import { deleteCategory } from "../controllers/category/delete.js";
@@ -16,5 +16,5 @@ categoryRoute
 
 categoryRoute
   .route("/category/:id")
-  .delete(verifyUser, validateUserId, verifyPermission, deleteCategory)
-  .put(verifyUser, validateUserId, verifyPermission, updateCategory);
+  .delete(verifyUser, validateId, verifyPermission, deleteCategory)
+  .put(verifyUser, validateId, verifyPermission, updateCategory);

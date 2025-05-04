@@ -1,7 +1,7 @@
 import { SubCategory } from "../../models/subCategory.js";
 import { User } from "../../models/user.js";
 import { categoryVaildator } from "../../services/categoryVaildator.js";
-import { deleteImage, uploadAvatat } from "../../utils/cloudinary.js";
+import { deleteImage, uploadAvatat } from "../../utils/upload/cloudinary.js";
 import { unlink } from "fs/promises";
 
 export const updatesubCategory = async (req, res) => {
@@ -24,12 +24,6 @@ export const updatesubCategory = async (req, res) => {
     const existingUser = await User.findById(_id);
     if (!existingUser) {
       return res.status(404).json({ message: "المستخدم غير موجود." });
-    }
-
-    if (existingUser.role === "user") {
-      return res
-        .status(403)
-        .json({ message: "ليس لديك صلاحية لتحديث هذا القسم." });
     }
 
     const result = await SubCategory.findById(id);
