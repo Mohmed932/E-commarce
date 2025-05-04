@@ -21,7 +21,7 @@ export const SendEmail = async (to, activeLink, kind) => {
     const info = await transporter.sendMail({
       from: `support@${email}`,
       to,
-      subject: "Hello World",
+      subject: kind,
       html:
         kind === "resetPassword"
           ? emailTempelateForgetPassword(activeLink)
