@@ -25,9 +25,6 @@ const rateProductSchema = new Schema({
       },
     },
   ],
-  average: {
-    type: Number,
-  },
 });
 
 export const RateProduct = model("RateProduct", rateProductSchema);

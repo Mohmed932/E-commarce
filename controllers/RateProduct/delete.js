@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { RateProduct } from "../../models/rateProduct.js";
+import { Product } from "../../models/product.js";
 
 export const deleteRateProduct = async (req, res) => {
   const { id, rate_id } = req.params;
@@ -10,6 +11,10 @@ export const deleteRateProduct = async (req, res) => {
   }
 
   try {
+    const product = await Product.findById(id);
+    if (!product) {
+      return res.status(400).json({ message: "لم يتم العثور علي هذا المنتج" });
+    }
     const globalRating = await RateProduct.findOne({ product_id: id });
 
     if (!globalRating) {
@@ -32,11 +37,13 @@ export const deleteRateProduct = async (req, res) => {
     globalRating.rating = globalRating.rating.filter(
       (i) => i._id.toString() !== rate_id
     );
+    // clac average rating
     const allRates = globalRating.rating.map((i) => i.rate);
     const total = allRates.reduce((sum, r) => sum + r, 0);
     const average = allRates.length ? +(total / allRates.length).toFixed(1) : 0;
-    globalRating.average = average;
+    product.average_rate = average;
     await globalRating.save();
+    await product.save();
 
     return res.json({ message: "تم حذف التقييم بنجاح" });
   } catch (error) {

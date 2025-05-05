@@ -1,7 +1,5 @@
 import { Schema, model } from "mongoose";
 
-
-
 const productSchema = new Schema({
   title: {
     type: String,
@@ -19,10 +17,13 @@ const productSchema = new Schema({
     min: [1, "الخصم يجب أن يكون أكبر من  صفر"],
     max: [100, "الخصم لا يمكن أن يتجاوز 100%"],
   },
-  category:{
+  category: {
     type: Schema.Types.ObjectId,
     ref: "Category",
-    required:[true,"يجب ادخال فئه الممنتج"]
+    required: [true, "يجب ادخال فئه الممنتج"],
+  },
+  average_rate: {
+    type: Number,
   },
   finalPrice: {
     type: Number,
@@ -52,10 +53,10 @@ const productSchema = new Schema({
     required: [true, "يجب إضافة الألوان والصور."],
     validate: {
       validator: function (v) {
-        return v && v.length > 0; 
+        return v && v.length > 0;
       },
-      message: "يجب إضافة الألوان والصور."
-    }
+      message: "يجب إضافة الألوان والصور.",
+    },
   },
   sizes: {
     type: [String],

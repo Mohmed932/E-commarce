@@ -10,11 +10,6 @@ export const deletesubCategory = async (req, res) => {
     if (!existingUser) {
       return res.status(404).json({ message: "المستخدم غير موجود." });
     }
-    if (existingUser.role === "user") {
-      return res
-        .status(403)
-        .json({ message: "ليس لديك صلاحيه لحذف هذا القسم." });
-    }
     const result = await SubCategory.findByIdAndDelete(id);
     await deleteImage(result.image.idOfImage);
     return res.json({ result, message: "subCategory deleted" });

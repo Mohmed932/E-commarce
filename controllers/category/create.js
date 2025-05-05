@@ -1,3 +1,4 @@
+import { Category } from "../../models/category.js";
 import { User } from "../../models/user.js";
 import { categoryVaildator } from "../../services/categoryVaildator.js";
 

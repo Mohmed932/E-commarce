@@ -16,15 +16,13 @@ import {
 
 export const productRoute = Router();
 
-productRoute
-  .route("/product")
-  .post(
-    verifyUser,
-    verifyPermission,
-    uploadMultipleImages,
-    handleFileUploadError,
-    createProduct
-  );
+productRoute.route("/product").post(
+  // verifyUser,
+  // verifyPermission,
+  uploadMultipleImages,
+  handleFileUploadError,
+  createProduct
+);
 
 productRoute
   .route("/product/:id")

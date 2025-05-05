@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import { RateProduct } from "../../models/rateProduct.js";
+import { Product } from "../../models/product.js";
+import { addRateProductVaildator } from "../../services/RateProductVailldator.js/addRateProduct.js";
 
 export const updateRateProduct = async (req, res) => {
   const { id, rate_id } = req.params;
@@ -9,8 +11,22 @@ export const updateRateProduct = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(rate_id)) {
     return res.status(400).json({ message: "معرف التقييم غير صالح" });
   }
+  const { error } = addRateProductVaildator.validate(req.body, {
+    abortEarly: false,
+  });
+
+  if (error) {
+    return res
+      .status(400)
+      .json({ message: error.details.map((detail) => detail.message) });
+  }
 
   try {
+    const product = await Product.findById(id);
+    if (!product) {
+      return res.status(400).json({ message: "لم يتم العثور علي هذا المنتج" });
+    }
+
     const globalRating = await RateProduct.findOne({ product_id: id });
     if (!globalRating) {
       return res
@@ -30,14 +46,14 @@ export const updateRateProduct = async (req, res) => {
     targetRating.rate = rate;
     if (comment) targetRating.comment = comment;
 
+    // clac average rating
     const allRates = globalRating.rating.map((i) => i.rate);
-    const average =
-      allRates.length > 0
-        ? +(allRates.reduce((a, b) => a + b, 0) / allRates.length).toFixed(1)
-        : 0;
-    globalRating.average = average;
-
+    const total = allRates.reduce((sum, r) => sum + r, 0);
+    const average = allRates.length ? +(total / allRates.length).toFixed(1) : 0;
+    product.average_rate = average;
     await globalRating.save();
+    await product.save();
+
     return res.json({ globalRating });
   } catch (error) {
     return res.status(500).json({ message: error.message });

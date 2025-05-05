@@ -21,7 +21,7 @@ export const createProduct = async (req, res) => {
   if (!req.files || req.files.length === 0) {
     return res.status(400).json({ message: "يجب إضافة صور." });
   }
-  const { error } = validateProduct(data, req.files);
+  const { error } = validateProduct(data);
 
   if (error) {
     return res

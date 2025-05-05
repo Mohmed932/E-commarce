@@ -22,7 +22,6 @@ export const addProductToCart = async (req, res) => {
     if (!cartProduct) {
       return res.status(404).json({ message: "لم يتم العثور على المنتج." });
     }
-
     const checkUserCart = await Cart.findOne({ user: _id });
     if (checkUserCart) {
       // إضافة المنتج
@@ -40,7 +39,7 @@ export const addProductToCart = async (req, res) => {
         0
       );
 
-      checkUserCart.totalPrice = Math.ceil(totalPrice);
+      checkUserCart.totalPrice = Math.ceil(totalPrice * 10) / 10;
 
       await checkUserCart.save();
 
@@ -53,14 +52,14 @@ export const addProductToCart = async (req, res) => {
         user: _id,
         products: [
           {
-            product: product_id,
+            product_id,
             quantity,
             colors,
             sizes,
             price: cartProduct.finalPrice,
           },
         ],
-        totalPrice: Math.ceil(quantity * cartProduct.finalPrice),
+        totalPrice: Math.ceil(quantity * cartProduct.finalPrice * 10) / 10,
       });
 
       await newCart.save();

@@ -42,8 +42,9 @@ export const addRateProduct = async (req, res) => {
     const allRates = globalRateing.rating.map((i) => i.rate);
     const total = allRates.reduce((sum, r) => sum + r, 0);
     const average = allRates.length ? +(total / allRates.length).toFixed(1) : 0;
-    globalRateing.average = average;
+    product.average_rate = average;
     await globalRateing.save();
+    await product.save();
     return res.json({ globalRateing });
   } catch (error) {
     return res.status(500).json({ message: error.message });

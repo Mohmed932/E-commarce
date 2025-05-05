@@ -25,13 +25,8 @@ const productValidationSchema = Joi.object({
     "number.min": "الخصم يجب أن يكون أكبر من صفر",
     "number.max": "الخصم لا يمكن أن يتجاوز 100%",
   }),
-
-  finalPrice: Joi.number().optional(),
   colors: Joi.array().required().messages({
     "any.required": "الرجاء تحديد اللون.",
-  }),
-  files: Joi.array().required().messages({
-    "any.required": "الرجاء تحديد لون للصوره.",
   }),
   sizes: Joi.array().items(Joi.string()).optional(),
 
@@ -68,11 +63,8 @@ const productValidationSchema = Joi.object({
     "number.min": "الكمية يجب أن تكون أكبر من صفر",
     "any.required": "الكمية مطلوبة",
   }),
-
-  available: Joi.boolean().optional(),
 });
-export const validateProduct = (data, files) => {
-  const productData = { ...data, files };
+export const validateProduct = (productData) => {
   return productValidationSchema.validate(productData, { abortEarly: false });
 };
 
@@ -150,7 +142,9 @@ const addImagesProductValidationSchema = Joi.object({
   }),
 });
 
-export const addImagesValidateProduct = (colors,files) => {
+export const addImagesValidateProduct = (colors, files) => {
   const productData = { colors, files };
-  return addImagesProductValidationSchema.validate(productData, { abortEarly: false });
+  return addImagesProductValidationSchema.validate(productData, {
+    abortEarly: false,
+  });
 };

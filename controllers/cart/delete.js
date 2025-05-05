@@ -22,7 +22,13 @@ export const deleteProductFromCart = async (req, res) => {
     cartProduct.products = cartProduct.products.filter(
       (item) => item._id.toString() !== id
     );
+    // تحديث السعر الإجمالي
+    const totalPrice = cartProduct.products.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
 
+    cartProduct.totalPrice = Math.ceil(totalPrice * 10) / 10;
     await cartProduct.save();
 
     return res.json({ message: "تم حذف المنتج من السلة", cart: cartProduct });
