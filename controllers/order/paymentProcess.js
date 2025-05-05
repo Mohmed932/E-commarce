@@ -34,8 +34,8 @@ export const paymentProcess = async (req, res) => {
         paidBy: product.user,
         isPaid: true,
         paidAt: Date.now(),
+        total_price_paid: req.body.obj.amount_cents / 100,
       });
-
       await saveOrder.save();
       await CachingOrder.deleteOne({
         _id: req.body.obj.order.merchant_order_id,

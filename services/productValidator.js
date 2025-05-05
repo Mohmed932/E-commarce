@@ -137,14 +137,10 @@ const addImagesProductValidationSchema = Joi.object({
   colors: Joi.array().required().messages({
     "any.required": "الرجاء تحديد اللون.",
   }),
-  files: Joi.array().required().messages({
-    "any.required": "الرجاء تحديد لون للصوره.",
-  }),
 });
 
-export const addImagesValidateProduct = (colors, files) => {
-  const productData = { colors, files };
-  return addImagesProductValidationSchema.validate(productData, {
+export const addImagesValidateProduct = (colors) => {
+  return addImagesProductValidationSchema.validate(colors, {
     abortEarly: false,
   });
 };

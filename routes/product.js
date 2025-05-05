@@ -16,13 +16,15 @@ import {
 
 export const productRoute = Router();
 
-productRoute.route("/product").post(
-  // verifyUser,
-  // verifyPermission,
-  uploadMultipleImages,
-  handleFileUploadError,
-  createProduct
-);
+productRoute
+  .route("/product")
+  .post(
+    verifyUser,
+    verifyPermission,
+    uploadMultipleImages,
+    handleFileUploadError,
+    createProduct
+  );
 
 productRoute
   .route("/product/:id")
@@ -40,6 +42,6 @@ productRoute
     handleFileUploadError,
     addImagesColorProduct
   )
-  .delete(verifyUser, verifyPermission, validateId, deleteImagesColorProduct);
+  .delete(deleteImagesColorProduct);
 
 productRoute.route("/product/category/:category").get(getProduct);

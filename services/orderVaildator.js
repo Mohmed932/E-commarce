@@ -17,11 +17,11 @@ const orderValidatorSchema = Joi.object({
         sizes: Joi.array().items(Joi.string()).optional().messages({
           "array.base": "الأحجام يجب أن تكون مصفوفة من النصوص.",
         }),
-        price: Joi.number().required().min(0).messages({
-          "number.base": "السعر يجب أن يكون رقمًا.",
-          "number.min": "السعر لا يمكن أن يكون بالسالب.",
-          "any.required": "يجب تحديد السعر.",
-        }),
+        // price: Joi.number().required().min(0).messages({
+        //   "number.base": "السعر يجب أن يكون رقمًا.",
+        //   "number.min": "السعر لا يمكن أن يكون بالسالب.",
+        //   "any.required": "يجب تحديد السعر.",
+        // }),
         colors: Joi.array()
           .items(
             Joi.object({

@@ -2,7 +2,7 @@ import multer from "multer";
 import path from "path";
 
 // تحديد تنسيقات الصور المسموح بها
-const fileTypes = /jpeg|jpg|png|gif|avif/;
+const fileTypes = /jpeg|jpg|png|gif|webp|avif/;
 
 // إعداد التخزين
 const storage = multer.diskStorage({

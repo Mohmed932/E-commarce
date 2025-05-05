@@ -48,7 +48,7 @@ routes(server);
 // Error handling middleware
 server.use((err, req, res, next) => {
   // console.error(err.stack);
-  res.status(500).send("Something went wrong!", err.stack);
+  res.status(500).send("Something went wrong!", req.body);
 });
 
 server.use("*", (req, res) => {

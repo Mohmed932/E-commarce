@@ -3,8 +3,30 @@ import { validateProduct } from "../../services/productValidator.js";
 import { uploadMultipleImages } from "../../utils/upload/cloudinary.js";
 import fs from "fs/promises";
 
+// دالة لحذف الصور من السيرفر
+const deleteUploadedFiles = async (files) => {
+  for (const img of files || []) {
+    if (img?.path) {
+      try {
+        await fs.unlink(img.path);
+      } catch (err) {
+        console.error("فشل حذف الصورة:", err);
+      }
+    }
+  }
+};
+
 export const createProduct = async (req, res) => {
-  const data = JSON.parse(req.body.data);
+  let data;
+
+  // محاولة قراءة البيانات القادمة
+  try {
+    data = JSON.parse(req.body.data);
+  } catch (e) {
+    await deleteUploadedFiles(req.files);
+    return res.status(400).json({ message: "صيغة البيانات غير صحيحة." });
+  }
+
   const {
     title,
     price,
@@ -18,34 +40,45 @@ export const createProduct = async (req, res) => {
     category,
   } = data;
 
+  // التأكد من وجود صور
   if (!req.files || req.files.length === 0) {
+    await deleteUploadedFiles(req.files);
     return res.status(400).json({ message: "يجب إضافة صور." });
   }
-  const { error } = validateProduct(data);
 
+  // التحقق من صحة البيانات
+  const { error } = validateProduct(data);
   if (error) {
+    await deleteUploadedFiles(req.files);
     return res
       .status(400)
       .json({ message: error.details.map((detail) => detail.message) });
   }
 
   try {
-    const images = req.files.map((img) => {
-      return { path: img.path, original_filename: img.originalname };
-    });
+    // تجهيز الصور للرفع
+    const images = req.files.map((img) => ({
+      path: img.path,
+      original_filename: img.originalname,
+    }));
+
+    // رفع الصور إلى Cloudinary
     const uploadImages = await uploadMultipleImages(images);
-    const imageLinks = uploadImages.map((img) => {
-      return {
-        img: img.secure_url,
-        idOfImage: img.public_id,
-        original_filename: img.original_filename,
-      };
-    });
+
+    // تجهيز روابط الصور
+    const imageLinks = uploadImages.map((img) => ({
+      img: img.secure_url,
+      idOfImage: img.public_id,
+      original_filename: img.original_filename,
+    }));
+
+    // ربط الصور بالألوان
     const images_color = [];
     for (let i = 0; i < colors.length; i++) {
       const filtered = imageLinks.filter(({ original_filename }) =>
         original_filename.includes(colors[i])
       );
+
       if (filtered.length === 0) {
         return res.status(400).json({
           message: `يجب رفع صور للون: ${colors[i]}`,
@@ -58,6 +91,7 @@ export const createProduct = async (req, res) => {
       });
     }
 
+    // حفظ المنتج في قاعدة البيانات
     const saveProduct = new Product({
       title,
       price,
@@ -70,19 +104,13 @@ export const createProduct = async (req, res) => {
       category,
       colors: images_color,
     });
-    await saveProduct.save();
-    return res.json({ message: saveProduct });
-  } catch (error) {
-    // حذف الصور في حال حدوث أي خطأ أثناء العملية
 
+    await saveProduct.save();
+    return res.json({ message: "تم حفظ المنتج بنجاح" });
+  } catch (error) {
     return res.status(500).json({ message: error.message });
   } finally {
-    for (const img of req.files) {
-      try {
-        await fs.unlink(img.path);
-      } catch (err) {
-        console.error("فشل حذف الصورة:", err);
-      }
-    }
+    // حذف الصور المؤقتة في جميع الحالات
+    await deleteUploadedFiles(req.files);
   }
 };

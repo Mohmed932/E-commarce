@@ -86,7 +86,7 @@ const UserSchema = new Schema(
                 address.governorate &&
                 address.center &&
                 address.fullName &&
-                address.landmark &&
+                // address.landmark &&
                 address.primaryPhone // تأكد من أن يكون `primaryPhone` بدلاً من `phone`
             );
           }

@@ -3,7 +3,10 @@ import {
   addImagesValidateProduct,
   updateValidateProduct,
 } from "../../services/productValidator.js";
-import { uploadMultipleImages } from "../../utils/upload/cloudinary.js";
+import {
+  deleteImages,
+  uploadMultipleImages,
+} from "../../utils/upload/cloudinary.js";
 import fs from "fs/promises";
 
 export const updateProduct = async (req, res) => {
@@ -68,7 +71,7 @@ export const addImagesColorProduct = async (req, res) => {
     return res.status(400).json({ message: "يجب إضافة صور." });
   }
 
-  const { error } = addImagesValidateProduct(colors, req.files);
+  const { error } = addImagesValidateProduct(colors);
   if (error) {
     return res
       .status(400)
@@ -94,24 +97,24 @@ export const addImagesColorProduct = async (req, res) => {
       };
     });
 
-    for (let i = 0; i < colors.length; i++) {
+    for (let i = 0; i < colors.colors.length; i++) {
       const filtered = imageLinks.filter(({ original_filename }) =>
-        original_filename.includes(colors[i])
+        original_filename.includes(colors.colors[i])
       );
       if (filtered.length === 0) {
         return res.status(400).json({
-          message: `يجب رفع صور للون: ${colors[i]}`,
+          message: `يجب رفع صور للون: ${colors.colors[i]}`,
         });
       }
 
       const colorExist = checkProduct.colors.find(
-        (item) => item.color === colors[i]
+        (item) => item.color === colors.colors[i]
       );
       if (colorExist) {
         colorExist.images = colorExist.images.concat(filtered);
       } else {
         checkProduct.colors.push({
-          color: colors[i],
+          color: colors.colors[i],
           images: filtered,
         });
       }
@@ -136,39 +139,49 @@ export const addImagesColorProduct = async (req, res) => {
 
 export const deleteImagesColorProduct = async (req, res) => {
   const { id } = req.params;
-  const idOfImages = req.body; // array of { idOfImage: "..." }
+  const idOfImages = req.body;
 
-  if (idOfImages.length === 0) {
+  if (!Array.isArray(idOfImages) || idOfImages.length === 0) {
     return res.status(400).json({ message: "يجب اضافه الصور التي تريد حذفها" });
   }
 
   try {
     const product = await Product.findById(id);
     if (!product) {
-      return res.status(404).json({ message: "This product is not found" });
+      return res.status(404).json({ message: "المنتج غير موجود" });
     }
 
-    // استخراج قائمة بالـ id الخاص بالصور اللي عايزين نحذفها
-    const idsToDelete = idOfImages.map((img) => img.idOfImage);
+    const idsToDelete = idOfImages.map((id) => id.toString());
 
-    // حذف الصور من كل لون
-    product.colors = product.colors
+    const updatedColors = product.colors
       .map((color) => {
-        color.images = color.images.filter(
-          // هنا بيرجع كل الصور ما عدا اللي الid  بتاعها  موجود في ال array دا idsToDelete
-          // او بتقلو جبلي كل الايدي اللي في اللي في الصور التي لا تحتوي علي الايدي اللي في  idsToDelete
-          (image) => !idsToDelete.includes(image.idOfImage)
+        color.images = color.images.filter((img) =>
+          typeof img === "string"
+            ? !idsToDelete.includes(img)
+            : !idsToDelete.includes(img._id.toString())
         );
         return color;
       })
-      .filter((color) => color.images.length > 0); // نحذف الألوان اللي مفيهاش صور
+      .filter(
+        (color) => Array.isArray(color.images) && color.images.length > 0
+      );
 
-    // حفظ التعديلات في قاعدة البيانات
+    const totalImagesRemaining = updatedColors.reduce(
+      (acc, color) => acc + color.images.length,
+      0
+    );
+
+    if (totalImagesRemaining === 0) {
+      return res.status(400).json({ message: "لا يمكن ترك المنتج بدون صور" });
+    }
+
+    product.colors = updatedColors;
     await product.save();
     await deleteImages(idsToDelete);
 
     return res.json({ message: "تم حذف الصور بنجاح", product });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    console.error(error);
+    return res.status(500).json({ message: "حدث خطأ أثناء حذف الصور" });
   }
 };

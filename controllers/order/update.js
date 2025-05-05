@@ -3,7 +3,6 @@ import { User } from "../../models/user.js";
 
 export const updateOrder = async (req, res) => {
   const { email } = req.user;
-  // const { totalPricePaid } = req.body;
   const { id } = req.params;
   try {
     const user = await User.findOne({ email });
@@ -20,7 +19,7 @@ export const updateOrder = async (req, res) => {
       order.deliveredAt = Date.now();
     } else {
       order.isPaid = true;
-      // order.totalPricePaid = totalPricePaid;
+      order.total_price_paid = order.totalPrice;
       order.paidBy = email;
       order.deliveredAt = Date.now();
       order.paidAt = Date.now();

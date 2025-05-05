@@ -3,118 +3,102 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>رفع صور مع ألوان</title>
+    <title>رفع منتج متعدد الألوان</title>
   </head>
   <body>
-    <h1>رفع منتج مع صور وألوان</h1>
+    <h2>رفع منتج جديد</h2>
+    <form id="productForm">
+      <label>اسم المنتج:</label>
+      <input type="text" id="title" required /><br />
 
-    <form id="productForm" enctype="multipart/form-data">
-      <!-- بيانات المنتج -->
-      <label for="title">اسم المنتج:</label>
-      <input
-        type="text"
-        id="title"
-        name="title"
-        value="تيشيرت رجالي"
-        required
-      /><br /><br />
+      <label>السعر:</label>
+      <input type="number" id="price" required /><br />
 
-      <label for="price">السعر:</label>
-      <input
-        type="number"
-        id="price"
-        name="price"
-        value="100"
-        required
-      /><br /><br />
+      <div id="colorInputs"></div>
 
-      <label for="colors">الألوان (يمكنك اختيار أكثر من لون):</label>
-      <select id="colors" name="colors" multiple required>
-        <option value="red">أحمر</option>
-        <option value="blue">أزرق</option></select
+      <button type="button" onclick="addColorInput()">+ إضافة لون</button
       ><br /><br />
-
-      <!-- رفع الصور -->
-      <label for="images">اختار الصور:</label>
-      <input
-        type="file"
-        id="images"
-        name="images"
-        multiple
-        required
-      /><br /><br />
-
       <button type="submit">رفع المنتج</button>
     </form>
 
     <script>
+      let colorCount = 0;
+
+      function addColorInput() {
+        const container = document.getElementById("colorInputs");
+
+        const div = document.createElement("div");
+        div.innerHTML = `
+        <hr />
+        <label>اللون:</label>
+        <input type="text" name="colorName${colorCount}" required />
+        <label>صور هذا اللون:</label>
+        <input type="file" name="colorImages${colorCount}" multiple required /><br/><br/>
+      `;
+        container.appendChild(div);
+        colorCount++;
+      }
+
       document
         .getElementById("productForm")
         .addEventListener("submit", function (event) {
-          event.preventDefault(); // منع إرسال النموذج بالطريقة التقليدية
+          event.preventDefault();
 
-          // إنشاء كائن FormData
+          const title = document.getElementById("title").value;
+          const price = document.getElementById("price").value;
+
           const formData = new FormData();
+          const colors = [];
 
-          const colors = Array.from(
-            document.getElementById("colors").selectedOptions
-          ).map((option) => option.value);
+          for (let i = 0; i < colorCount; i++) {
+            const colorName = document.querySelector(
+              `input[name="colorName${i}"]`
+            ).value;
+            const files = document.querySelector(
+              `input[name="colorImages${i}"]`
+            ).files;
+            for (let file of files) {
+              const uniqueName = `${colorName}_${file.name}`;
+              formData.append("images", file, uniqueName); // Attach with custom name
+            }
+
+            colors.push(colorName);
+          }
 
           formData.append(
-            "data",
-            JSON.stringify({
-              category: "67e78d6b590f7744d58d228e",
-              title: title,
-              price: price,
-              discount: 10,
-              colors: colors,
-              sizes: ["S", "M", "L", "XL", "XXL"],
-              brand: "Twon Team",
-              specifications: [
-                { key: "الخامة", value: "100% قطن ناعم ومتين" },
-                { key: "نوع الياقة", value: "ياقة دائرية مضللة بخياطة مزدوجة" },
-                {
-                  key: "نمط الأكمام",
-                  value: "أكمام قصيرة بفتحات مريحة للحركة",
-                },
-                { key: "الوزن", value: "180 جرام" },
-                { key: "نوع القماش", value: "قماش مسامي عالي الجودة" },
-              ],
-              overview: [
-                {
-                  key: "المميزات",
-                  value: [
-                    "تصميم عصري يناسب الاستخدام اليومي",
-                    "راحة مثالية في درجات الحرارة المختلفة",
-                    "مقاوم للتقلص بعد الغسيل",
-                    "تفاصيل دقيقة وخياطة متقنة",
-                  ],
-                },
-              ],
-              quantity: 20,
-            })
+            // "data",
+            // JSON.stringify({
+            // title,
+            // price,
+            // discount: 10,
+            // category: "67e78d6b590f7744d58d228e",
+            // brand: "Twon Team",
+            // sizes: ["S", "M", "L", "XL", "XXL"],
+            // quantity: 20,
+            // specifications: [
+            //   { key: "الخامة", value: "100% قطن ناعم ومتين" },
+            //   { key: "نوع الياقة", value: "ياقة دائرية مضللة بخياطة مزدوجة" },
+            // ],
+            // overview: [
+            //   {
+            //     key: "المميزات",
+            //     value: ["مريح", "مقاوم للتقلص", "تصميم عصري"],
+            //   },
+            // ],
+            // colors,
+            // })
+            JSON.stringify("colors", colors)
           );
-
-          // إضافة الصور مع اللون التابع لها
-          const images = document.getElementById("images").files;
-          Array.from(images).forEach((file, index) => {
-            const color = colors[index % colors.length]; // نحدد اللون بناءً على ترتيب الصور
-            formData.append("images", file);
-            formData.append("imageColors", color); // نفس ترتيب الصور
-          });
-
-          // إرسال البيانات باستخدام Fetch
-          fetch("http://localhost:5000/api/v1/product", {
-            method: "POST",
-            body: formData,
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              console.log("نجحت العملية:", data);
-            })
-            .catch((error) => {
-              console.error("حدث خطأ:", error);
-            });
+          fetch(
+            "http://localhost:5000/api/v1/product/images_color/6818f72e4bdfbd78f2281d56",
+            {
+              method: "POST",
+              body: formData,
+            }
+          )
+            .then((res) => res.json())
+            .then((data) => console.log("تم رفع المنتج:", data))
+            .catch((err) => console.error("خطأ:", err));
         });
     </script>
   </body>

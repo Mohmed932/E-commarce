@@ -101,52 +101,10 @@ const orderSchema = new Schema(
     paidBy: String,
     deliveredAt: Date,
     shippingAddress: {
-      type: [
-        {
-          governorate: {
-            type: String,
-            required: [true, "المحافظة مطلوبة"],
-          },
-          center: {
-            type: String,
-            required: [true, "المركز مطلوب"],
-          },
-          landmark: {
-            type: String,
-            required: [true, "المعلم مطلوب"],
-          },
-          fullName: {
-            type: String,
-            required: [true, "يجب ادخال الاسم كامل"],
-          },
-          primaryPhone: {
-            type: String,
-            match: [/^\+?[0-9]{10,15}$/, "رقم الهاتف غير صالح"],
-            required: [true, "رقم الهاتف مطلوب"],
-          },
-          extraPhone: {
-            type: String,
-            match: [/^\+?[0-9]{10,15}$/, "رقم الهاتف غير صالح"],
-          },
-        },
-      ],
-      validate: {
-        validator: function (value) {
-          if (value && value.length > 0) {
-            return value.every(
-              (address) =>
-                address.governorate &&
-                address.center &&
-                address.fullName &&
-                address.landmark &&
-                address.primaryPhone // تأكد من أن يكون `primaryPhone` بدلاً من `phone`
-            );
-          }
-          return true;
-        },
-        message:
-          "جميع حقول العنوان (المحافظة، المركز، القرية، المعلم، ورقم الهاتف) مطلوبة عند إضافة عنوان",
-      },
+      type: Object,
+    },
+    total_price_paid: {
+      type: Number,
     },
   },
   { timestamps: true }
