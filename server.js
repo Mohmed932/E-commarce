@@ -5,6 +5,10 @@ import cookieParser from "cookie-parser";
 import { config } from "dotenv";
 import { dbConnection } from "./config/db.js";
 import { routes } from "./routes/route.js";
+import { apiLimiter } from "./middleware/rateLimit.js";
+import csurf from "csurf";
+import compression from "compression";
+import { errorhandeler } from "./middleware/error_handling.js";
 
 // Load environment variables
 config();
@@ -13,6 +17,7 @@ config();
 const port = process.env.PORT;
 const domain = process.env.DOMAIN;
 const url = process.env.MONGODB_URL;
+const csrfProtection = csurf({ cookie: true });
 
 // Check if all required environment variables are provided
 if (!port || !domain || !url) {
@@ -27,6 +32,8 @@ const server = express();
 server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
 server.use(cookieParser());
+server.use(apiLimiter);
+server.get(compression());
 
 // CORS configuration
 const corsOptions = {
@@ -34,8 +41,16 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };
-
 server.use(cors(corsOptions));
+
+// Apply CSRF Protection to non-GET routes only
+server.use((req, res, next) => {
+  if (req.method !== "GET") {
+    csrfProtection(req, res, next);
+  } else {
+    next();
+  }
+});
 
 // Default route for the server
 server.get("/", (req, res) => {
@@ -46,13 +61,11 @@ server.get("/", (req, res) => {
 routes(server);
 
 // Error handling middleware
-server.use((err, req, res, next) => {
-  // console.error(err.stack);
-  res.status(500).send("Something went wrong!", req.body);
-});
+server.use(errorhandeler);
 
+// Handle undefined routes
 server.use("*", (req, res) => {
-  return res.json({ message: "لا يوجد api لهذا العنوان" });
+  res.status(404).json({ message: "لا يوجد api لهذا العنوان" });
 });
 
 // Start the server and connect to the database

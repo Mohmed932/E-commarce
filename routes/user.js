@@ -15,21 +15,24 @@ import { updateAddress } from "../controllers/user/update.js";
 import { upload } from "../utils/upload/upload.js";
 import { handleFileUploadError } from "../middleware/handleFileUploadError.js";
 import { readProfile } from "../controllers/user/read.js";
+import { apiLimiterAuth } from "../middleware/rateLimit.js";
 
 export const uesrRouter = Router();
 
-uesrRouter.route("/create_account").post(createAccount);
-uesrRouter.route("/login_account").post(loginAccount);
+uesrRouter.route("/create_account").post(apiLimiterAuth, createAccount);
+uesrRouter.route("/login_account").post(apiLimiterAuth, loginAccount);
 uesrRouter
   .route("/account_id/:id/active_account/:token")
-  .post(validateId, activeAccount);
-uesrRouter.route("/forget_password").post(sendEmailForgetPassword);
+  .post(apiLimiterAuth, validateId, activeAccount);
+uesrRouter
+  .route("/forget_password")
+  .post(apiLimiterAuth, sendEmailForgetPassword);
 uesrRouter
   .route("/account_id/:id/check_link/:token")
   .get(validateId, checkLinkForgetPassword);
 uesrRouter
   .route("/account_id/:id/reset_password/:token")
-  .put(validateId, resetPassword);
+  .put(apiLimiterAuth, validateId, resetPassword);
 uesrRouter.route("/profile").get(verifyUser, readProfile);
 uesrRouter
   .route("/avatar")
