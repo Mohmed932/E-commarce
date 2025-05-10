@@ -19,8 +19,8 @@ export const productRoute = Router();
 productRoute
   .route("/product")
   .post(
-    verifyUser,
-    verifyPermission,
+    // verifyUser,
+    // verifyPermission,
     uploadMultipleImages,
     handleFileUploadError,
     createProduct

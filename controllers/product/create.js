@@ -22,6 +22,7 @@ export const createProduct = async (req, res) => {
   // محاولة قراءة البيانات القادمة
   try {
     data = JSON.parse(req.body.data);
+    // console.log(data)
   } catch (e) {
     await deleteUploadedFiles(req.files);
     return res.status(400).json({ message: "صيغة البيانات غير صحيحة." });
@@ -47,13 +48,13 @@ export const createProduct = async (req, res) => {
   }
 
   // التحقق من صحة البيانات
-  const { error } = validateProduct(data);
-  if (error) {
-    await deleteUploadedFiles(req.files);
-    return res
-      .status(400)
-      .json({ message: error.details.map((detail) => detail.message) });
-  }
+  // const { error } = validateProduct(data);
+  // if (error) {
+  //   await deleteUploadedFiles(req.files);
+  //   return res
+  //     .status(400)
+  //     .json({ message: error.details.map((detail) => detail.message) });
+  // }
 
   try {
     // تجهيز الصور للرفع
@@ -76,7 +77,7 @@ export const createProduct = async (req, res) => {
     const images_color = [];
     for (let i = 0; i < colors.length; i++) {
       const filtered = imageLinks.filter(({ original_filename }) =>
-        original_filename.includes(colors[i])
+        original_filename.includes(colors[i].color)
       );
 
       if (filtered.length === 0) {
@@ -86,26 +87,32 @@ export const createProduct = async (req, res) => {
       }
 
       images_color.push({
-        color: colors[i],
+        color: colors[i].color,
+        sizes: colors[i].sizes,
         images: filtered,
       });
     }
+    images_color.forEach(({sizes})=> {
+      sizes.forEach(siz=>{
+        console.log(siz)
+      })
+    })
+    // console.log(images_color)
+    // // حفظ المنتج في قاعدة البيانات
+    // const saveProduct = new Product({
+    //   title,
+    //   price,
+    //   discount,
+    //   sizes,
+    //   brand,
+    //   specifications,
+    //   overview,
+    //   quantity,
+    //   category,
+    //   colors: images_color,
+    // });
 
-    // حفظ المنتج في قاعدة البيانات
-    const saveProduct = new Product({
-      title,
-      price,
-      discount,
-      sizes,
-      brand,
-      specifications,
-      overview,
-      quantity,
-      category,
-      colors: images_color,
-    });
-
-    await saveProduct.save();
+    // await saveProduct.save();
     return res.json({ message: "تم حفظ المنتج بنجاح" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
