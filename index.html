@@ -13,9 +13,6 @@
     <label>اسم المنتج:</label>
     <input type="text" id="title" required /><br />
 
-    <label>السعر:</label>
-    <input type="number" id="price" required /><br />
-
     <div id="colorInputs"></div>
 
     <button type="button" onclick="addColorInput()">+ إضافة لون</button><br /><br />
@@ -32,61 +29,106 @@
       div.innerHTML = `
         <hr />
         <label>اللون:</label>
-        <input type="text" name="colorName${colorCount}" required />
+        <input type="text" name="colorName${colorCount}" required /><br/>
+
         <label>صور هذا اللون:</label>
-        <input type="file" name="colorImages${colorCount}" multiple required /><br/><br/>
+        <input type="file" name="colorImages${colorCount}" multiple required /><br/>
+
+        <label>المقاسات والأسعار:</label><br/>
+        <div id="sizeInputs${colorCount}">
+          <button type="button" onclick="addSizeInput(${colorCount})">+ إضافة مقاس</button><br/>
+        </div>
+        <br/>
       `;
       container.appendChild(div);
       colorCount++;
     }
+
+    function addSizeInput(colorCount) {
+      const sizeContainer = document.getElementById(`sizeInputs${colorCount}`);
+
+      const sizeDiv = document.createElement("div");
+      sizeDiv.innerHTML = `
+    <label>مقاس جديد:</label>
+    <input type="text" name="sizeName${colorCount}_${sizeContainer.children.length - 1}" placeholder="اسم المقاس" required />
+    <label>السعر:</label>
+    <input type="number" name="sizePrice${colorCount}_${sizeContainer.children.length - 1}" placeholder="السعر للمقاس" required />
+    <label>الكمية:</label>
+    <input type="number" name="sizeQuantity${colorCount}_${sizeContainer.children.length - 1}" placeholder="الكمية للمقاس" required /><br/><br/>
+  `;
+      sizeContainer.appendChild(sizeDiv);
+    }
+
     document.getElementById("productForm").addEventListener("submit", function (event) {
       event.preventDefault();
 
       const title = document.getElementById("title").value;
-      const price = document.getElementById("price").value;
 
       const formData = new FormData();
-      const colorsSizwprice = [];
+      const colorsSizePrice = [];
 
       for (let i = 0; i < colorCount; i++) {
-        const colorName = document.querySelector(`input[name="colorName${i}"]`).value;
-        const files = document.querySelector(`input[name="colorImages${i}"]`).files;
+        const colorNameInput = document.querySelector(`input[name="colorName${i}"]`);
+        const filesInput = document.querySelector(`input[name="colorImages${i}"]`);
 
-        for (let file of files) {
-          const uniqueName = `${colorName}_${file.name}`;
-          formData.append("images", file, uniqueName); // Attach with custom name
+        // التحقق من وجود الحقول قبل الوصول إليها
+        if (colorNameInput && filesInput) {
+          const colorName = colorNameInput.value;
+          const files = filesInput.files;
+
+          // جمع بيانات المقاسات والأسعار الخاصة بكل لون
+          const sizesAndPrices = [];
+          const sizeInputs = document.getElementById(`sizeInputs${i}`);
+          const sizeInputsArray = Array.from(sizeInputs.children);
+          const divs = sizeInputsArray.filter((input) => input.tagName === "DIV");
+          divs.forEach((input, index) => {
+            const sizeName = input.querySelector(`input[name="sizeName${i}_${index+1}"]`).value;
+            const sizePrice = input.querySelector(`input[name="sizePrice${i}_${index+1}"]`).value;
+            const sizeQuantity = input.querySelector(`input[name="sizeQuantity${i}_${index+1}"]`).value;
+
+            sizesAndPrices.push({
+              size: sizeName,
+              price: sizePrice,
+              quantity: sizeQuantity
+            });
+          });
+          // إضافة الصور مع أسماء مميزة
+          for (let file of files) {
+            const uniqueName = `${colorName}_${file.name}`;
+            formData.append("images", file, uniqueName);
+          }
+
+          // تخزين بيانات الألوان والمقاسات والأسعار
+          colorsSizePrice.push({
+            colorName,
+            sizesAndPrices
+          });
         }
-
-        const colorSize = {
-          color: colorName,
-          sizes: [
-            { size: "S", price: 900, quantity: 20 },
-            { size: "M", price: 800, quantity: 20 },
-            { size: "L", price: 500, quantity: 20 },
-            { size: "XXL", price: 700, quantity: 20 }
-          ]
-        };
-        colorsSizwprice.push(colorSize);
       }
 
-      formData.append("data", JSON.stringify({
-        title,
-        price,
-        discount: 10,
-        category: "67e78d6b590f7744d58d228e",
-        brand: "Twon Team",
-        sizes: ["S", "M", "L", "XL", "XXL"],
-        quantity: 20,
-        specifications: [
-          { key: "الخامة", value: "100% قطن ناعم ومتين" },
-          { key: "نوع الياقة", value: "ياقة دائرية مضللة بخياطة مزدوجة" }
-        ],
-        overview: [
-          { key: "المميزات", value: ["مريح", "مقاوم للتقلص", "تصميم عصري"] }
-        ],
-        colors
-      }));
+      // إضافة البيانات الأساسية للمنتج
+      formData.append(
+        "data",
+        JSON.stringify({
+          title,
+          discount: 10,
+          category: "67e78d6b590f7744d58d228e",
+          brand: "Twon Team",
+          specifications: [
+            { key: "الخامة", value: "100% قطن ناعم ومتين" },
+            { key: "نوع الياقة", value: "ياقة دائرية مضللة بخياطة مزدوجة" }
+          ],
+          overview: [
+            {
+              key: "المميزات",
+              value: ["مريح", "مقاوم للتقلص", "تصميم عصري"]
+            }
+          ],
+          colorsSizePrice
+        })
+      );
 
+      // إرسال البيانات إلى الخادم
       fetch("http://localhost:5000/api/v1/product", {
         method: "POST",
         body: formData
@@ -95,139 +137,7 @@
         .then((data) => console.log("تم رفع المنتج:", data))
         .catch((err) => console.error("خطأ:", err));
     });
-
   </script>
 </body>
 
 </html>
-
-<!-- <!DOCTYPE html>
-<html lang="ar">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>رفع منتج متعدد الألوان</title>
-  </head>
-  <body>
-    <h2>رفع منتج جديد</h2>
-    <form id="productForm">
-      <label>اسم المنتج:</label>
-      <input type="text" id="title" required /><br />
-
-      <label>السعر:</label>
-      <input type="number" id="price" required /><br />
-
-      <div id="colorInputs"></div>
-
-      <button type="button" onclick="addColorInput()">+ إضافة لون</button><br /><br />
-      <button type="submit">رفع المنتج</button>
-    </form>
-
-    <script>
-      let colorCount = 0;
-
-      // إضافة لون مع إمكانية اختيار المقاس والسعر
-      function addColorInput() {
-        const container = document.getElementById("colorInputs");
-
-        const div = document.createElement("div");
-        div.innerHTML = `
-        <hr />
-        <label>اللون:</label>
-        <input type="text" name="colorName${colorCount}" required />
-        <label>صور هذا اللون:</label>
-        <input type="file" name="colorImages${colorCount}" multiple required /><br/>
-
-        <label>المقاسات والأسعار:</label><br/>
-        <label>مقاس S:</label>
-        <input type="number" name="sizeSPrice${colorCount}" placeholder="السعر للمقاس S" required /><br/>
-
-        <label>مقاس M:</label>
-        <input type="number" name="sizeMPrice${colorCount}" placeholder="السعر للمقاس M" required /><br/>
-
-        <label>مقاس L:</label>
-        <input type="number" name="sizeLPrice${colorCount}" placeholder="السعر للمقاس L" required /><br/>
-
-        <label>مقاس XL:</label>
-        <input type="number" name="sizeXLPrice${colorCount}" placeholder="السعر للمقاس XL" required /><br/>
-
-        <label>مقاس XXL:</label>
-        <input type="number" name="sizeXXLPrice${colorCount}" placeholder="السعر للمقاس XXL" required /><br/><br/>
-      `;
-        container.appendChild(div);
-        colorCount++;
-      }
-
-      // عند إرسال البيانات
-      document.getElementById("productForm").addEventListener("submit", function (event) {
-        event.preventDefault();
-
-        const title = document.getElementById("title").value;
-        const price = document.getElementById("price").value;
-
-        const formData = new FormData();
-        const colors = [];
-
-        for (let i = 0; i < colorCount; i++) {
-          const colorName = document.querySelector(`input[name="colorName${i}"]`).value;
-          const files = document.querySelector(`input[name="colorImages${i}"]`).files;
-
-          // جمع بيانات المقاسات والأسعار الخاصة بكل لون
-          const sizesAndPrices = {
-            S: document.querySelector(`input[name="sizeSPrice${i}"]`).value,
-            M: document.querySelector(`input[name="sizeMPrice${i}"]`).value,
-            L: document.querySelector(`input[name="sizeLPrice${i}"]`).value,
-            XL: document.querySelector(`input[name="sizeXLPrice${i}"]`).value,
-            XXL: document.querySelector(`input[name="sizeXXLPrice${i}"]`).value
-          };
-
-          // إضافة الصور مع أسماء مميزة
-          for (let file of files) {
-            const uniqueName = `${colorName}_${file.name}`;
-            formData.append("images", file, uniqueName);
-          }
-
-          // تخزين بيانات الألوان والمقاسات والأسعار
-          colors.push({
-            colorName,
-            sizesAndPrices
-          });
-        }
-
-        // إضافة البيانات الأساسية للمنتج
-        formData.append(
-          "data",
-          JSON.stringify({
-            title,
-            price,
-            discount: 10,
-            category: "67e78d6b590f7744d58d228e",
-            brand: "Twon Team",
-            sizes: ["S", "M", "L", "XL", "XXL"],
-            quantity: 20,
-            specifications: [
-              { key: "الخامة", value: "100% قطن ناعم ومتين" },
-              { key: "نوع الياقة", value: "ياقة دائرية مضللة بخياطة مزدوجة" }
-            ],
-            overview: [
-              {
-                key: "المميزات",
-                value: ["مريح", "مقاوم للتقلص", "تصميم عصري"]
-              }
-            ],
-            colors
-          })
-        );
-
-        // إرسال البيانات إلى الخادم
-        fetch("http://localhost:5000/api/v1/product", {
-          method: "POST",
-          body: formData
-        })
-          .then((res) => res.json())
-          .then((data) => console.log("تم رفع المنتج:", data))
-          .catch((err) => console.error("خطأ:", err));
-      });
-    </script>
-  </body>
-</html> -->

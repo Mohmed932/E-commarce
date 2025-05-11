@@ -1,44 +1,29 @@
-import { Schema, model } from "mongoose";
+import { Schema,model } from "mongoose";
 
 const productSchema = new Schema({
   title: {
     type: String,
     required: [true, "العنوان مطلوب "],
-    minlength: [3, "يجب أن يكون العنوان اكبر من 3 حروف"],
-    maxlength: [150, "يجب أن يكون العنوان أقل من 150 حرفا "],
-  },
-  price: {
-    type: Number,
-    required: [true, "يجب اضافه سعر للمنتج"],
-    min: [1, "السعر يجب أن يكون أكبر من صفر"],
+    minlength: [3, "يجب أن يكون العنوان أكبر من 3 حروف"],
+    maxlength: [150, "يجب أن يكون العنوان أقل من 150 حرفاً "],
   },
   discount: {
     type: Number,
-    min: [1, "الخصم يجب أن يكون أكبر من  صفر"],
+    min: [1, "الخصم يجب أن يكون أكبر من صفر"],
     max: [100, "الخصم لا يمكن أن يتجاوز 100%"],
   },
   category: {
     type: Schema.Types.ObjectId,
     ref: "Category",
-    required: [true, "يجب ادخال فئه الممنتج"],
+    required: [true, "يجب إدخال فئة المنتج"],
   },
   average_rate: {
     type: Number,
   },
-  finalPrice: {
-    type: Number,
-    required: true,
-    default: function () {
-      if (this.discount > 0) {
-        return this.price - (this.price * this.discount) / 100;
-      }
-      return this.price;
-    },
-  },
-  colors: {
+  colorsSizePrice: {
     type: [
       {
-        color: { type: String, required: [true, "الرجاء تحديد اللون."] },
+        colorName: { type: String, required: [true, "الرجاء تحديد اللون."] },
         images: {
           type: [
             {
@@ -48,6 +33,39 @@ const productSchema = new Schema({
           ],
           required: [true, "الرجاء إضافة صور للمنتج."],
         },
+        sizesAndPrices: {
+          type: [
+            {
+              size: { type: String, required: [true, "الرجاء تحديد المقاس."] },
+              quantity: {
+                type: Number,
+                required: [true, "الكمية مطلوبة"],
+                min: [1, "الكمية يجب أن تكون أكبر من صفر"],
+              },
+              price: {
+                type: Number,
+                required: [true, "الكمية مطلوبة"],
+                min: [1, "الكمية يجب أن تكون أكبر من صفر"],
+              },
+              finalPrice: {
+                type: Number,
+                required: true,
+                default: function () {
+                  if (this.discount > 0) {
+                    return this.price - (this.price * this.discount) / 100;
+                  }
+                  return this.price;
+                },
+              },
+              available: {
+                type: Boolean,
+                default: function () {
+                  return this.quantity > 0;
+                },
+              },
+            }
+          ]
+        }
       },
     ],
     required: [true, "يجب إضافة الألوان والصور."],
@@ -57,9 +75,6 @@ const productSchema = new Schema({
       },
       message: "يجب إضافة الألوان والصور.",
     },
-  },
-  sizes: {
-    type: [String],
   },
   brand: {
     type: String,
@@ -75,27 +90,24 @@ const productSchema = new Schema({
       key: { type: String, required: true },
       value: { type: [String], required: true },
     },
-  ],
-  quantity: {
-    type: Number,
-    required: [true, "الكمية مطلوبة"],
-    min: [1, "الكمية يجب أن تكون أكبر من صفر"],
-  },
-  available: {
-    type: Boolean,
-    default: function () {
-      return this.quantity > 0;
-    },
-  },
+  ]
 });
 
 productSchema.pre("save", function (next) {
-  if (this.discount > 0) {
-    this.finalPrice = this.price - (this.price * this.discount) / 100;
-  } else {
-    this.finalPrice = this.price;
-  }
-  this.available = this.quantity > 0;
+  this.colorsSizePrice.forEach(({sizesAndPrices}) => {
+    sizesAndPrices.forEach(({finalPrice,price,available}) => {
+      // حساب finalPrice بشكل دقيق لكل حجم بناءً على الخصم
+      if (this.discount > 0) {
+        finalPrice = price - (price * this.discount) / 100;
+      } else {
+        finalPrice = price;
+      }
+
+      // تحديد ما إذا كانت الكمية متوفرة أم لا
+      available = quantity > 0;
+    });
+  });
+
   next();
 });
 

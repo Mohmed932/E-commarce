@@ -21,8 +21,12 @@ export const createProduct = async (req, res) => {
 
   // محاولة قراءة البيانات القادمة
   try {
+    if (!req.body.data) {
+      await deleteUploadedFiles(req.files);
+      return res.status(400).json({ message: "البيانات غير موجودة." });
+    }
+
     data = JSON.parse(req.body.data);
-    // console.log(data)
   } catch (e) {
     await deleteUploadedFiles(req.files);
     return res.status(400).json({ message: "صيغة البيانات غير صحيحة." });
@@ -30,17 +34,13 @@ export const createProduct = async (req, res) => {
 
   const {
     title,
-    price,
     discount,
-    sizes,
     brand,
     specifications,
     overview,
-    quantity,
-    colors,
+    colorsSizePrice,
     category,
   } = data;
-
   // التأكد من وجود صور
   if (!req.files || req.files.length === 0) {
     await deleteUploadedFiles(req.files);
@@ -48,13 +48,13 @@ export const createProduct = async (req, res) => {
   }
 
   // التحقق من صحة البيانات
-  // const { error } = validateProduct(data);
-  // if (error) {
-  //   await deleteUploadedFiles(req.files);
-  //   return res
-  //     .status(400)
-  //     .json({ message: error.details.map((detail) => detail.message) });
-  // }
+  const { error } = validateProduct(data);
+  if (error) {
+    await deleteUploadedFiles(req.files);
+    return res
+      .status(400)
+      .json({ message: error.details.map((detail) => detail.message) });
+  }
 
   try {
     // تجهيز الصور للرفع
@@ -65,6 +65,10 @@ export const createProduct = async (req, res) => {
 
     // رفع الصور إلى Cloudinary
     const uploadImages = await uploadMultipleImages(images);
+    if (!uploadImages || uploadImages.length === 0) {
+      await deleteUploadedFiles(req.files);
+      return res.status(500).json({ message: "فشل في رفع الصور." });
+    }
 
     // تجهيز روابط الصور
     const imageLinks = uploadImages.map((img) => ({
@@ -75,44 +79,44 @@ export const createProduct = async (req, res) => {
 
     // ربط الصور بالألوان
     const images_color = [];
-    for (let i = 0; i < colors.length; i++) {
-      const filtered = imageLinks.filter(({ original_filename }) =>
-        original_filename.includes(colors[i].color)
-      );
+    for (let i = 0; i < colorsSizePrice.length; i++) {
+      const color = colorsSizePrice[i];
 
-      if (filtered.length === 0) {
+      if (!color.colorName || !color.sizesAndPrices) {
+        await deleteUploadedFiles(req.files);
         return res.status(400).json({
-          message: `يجب رفع صور للون: ${colors[i]}`,
+          message: `اللون ${color.colorName} غير مكتمل البيانات.`,
+        });
+      }
+
+      const filtered = imageLinks.filter(({ original_filename }) =>
+        original_filename.toLowerCase().includes(color.colorName.toLowerCase())
+      );
+      if (filtered.length === 0) {
+        await deleteUploadedFiles(req.files);
+        return res.status(400).json({
+          message: `يجب رفع صور للون: ${color.colorName}`,
         });
       }
 
       images_color.push({
-        color: colors[i].color,
-        sizes: colors[i].sizes,
+        colorName: color.colorName,
+        sizesAndPrices: color.sizesAndPrices,
         images: filtered,
       });
     }
-    images_color.forEach(({sizes})=> {
-      sizes.forEach(siz=>{
-        console.log(siz)
-      })
-    })
-    // console.log(images_color)
-    // // حفظ المنتج في قاعدة البيانات
-    // const saveProduct = new Product({
-    //   title,
-    //   price,
-    //   discount,
-    //   sizes,
-    //   brand,
-    //   specifications,
-    //   overview,
-    //   quantity,
-    //   category,
-    //   colors: images_color,
-    // });
+    // حفظ المنتج في قاعدة البيانات
+    const saveProduct = new Product({
+      title,
+      discount,
+      brand,
+      specifications,
+      overview,
+      category,
+      colorsSizePrice: images_color,
+    });
 
-    // await saveProduct.save();
+    await saveProduct.save();
     return res.json({ message: "تم حفظ المنتج بنجاح" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
