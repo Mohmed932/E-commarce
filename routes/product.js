@@ -30,7 +30,7 @@ productRoute
   .route("/product/:id")
   .get(validateId, getSingleProduct)
   .delete(verifyUser, verifyPermission, validateId, deleteProduct)
-  .put(verifyUser, verifyPermission, validateId, updateProduct);
+  .put(updateProduct);
 
 productRoute
   .route("/product/images_color/:id")

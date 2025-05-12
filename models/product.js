@@ -9,7 +9,7 @@ const productSchema = new Schema({
   },
   discount: {
     type: Number,
-    min: [1, "الخصم يجب أن يكون أكبر من صفر"],
+    min: [0, "الخصم يجب أن لا يكون اقل من صفر"],
     max: [100, "الخصم لا يمكن أن يتجاوز 100%"],
   },
   category: {
@@ -40,7 +40,7 @@ const productSchema = new Schema({
               quantity: {
                 type: Number,
                 required: [true, "الكمية مطلوبة"],
-                min: [1, "الكمية يجب أن تكون أكبر من صفر"],
+                min: [0, "الكمية يجب أن لا تكون اقل من صفر"],
               },
               price: {
                 type: Number,
@@ -95,7 +95,7 @@ const productSchema = new Schema({
 
 productSchema.pre("save", function (next) {
   this.colorsSizePrice.forEach(({sizesAndPrices}) => {
-    sizesAndPrices.forEach(({finalPrice,price,available}) => {
+    sizesAndPrices.forEach(({finalPrice,price,available,quantity}) => {
       // حساب finalPrice بشكل دقيق لكل حجم بناءً على الخصم
       if (this.discount > 0) {
         finalPrice = price - (price * this.discount) / 100;

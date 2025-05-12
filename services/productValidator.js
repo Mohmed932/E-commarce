@@ -95,21 +95,51 @@ const updateproductValidationSchema = Joi.object({
     "string.max": "يجب أن يكون فئه الممنتج أقل من 40 حرفًا",
     "any.required": "فئه الممنتج مطلوب",
   }),
-  price: Joi.number().min(1).required().messages({
-    "number.base": "السعر يجب أن يكون رقمًا",
-    "number.min": "السعر يجب أن يكون أكبر من صفر",
-    "any.required": "يجب إضافة سعر للمنتج",
-  }),
 
-  discount: Joi.number().min(1).max(100).optional().messages({
+  discount: Joi.number().min(0).max(70).optional().messages({
     "number.base": "الخصم يجب أن يكون رقمًا",
-    "number.min": "الخصم يجب أن يكون أكبر من صفر",
-    "number.max": "الخصم لا يمكن أن يتجاوز 100%",
+    "number.min": "الخصم يجب أن لا يكون اقل من صفر",
+    "number.max": "الخصم لا يمكن أن يتجاوز 70%",
   }),
-  sizes: Joi.array().items(Joi.string()).optional(),
 
   brand: Joi.string().optional(),
-
+  colorsSizePrice: Joi.array().items(
+    Joi.object({
+      colorName: Joi.string().required().messages({
+        "any.required": "الرجاء تحديد اللون.",
+      }),
+      _id: Joi.string().required().messages({
+        "any.required": "الرجاء تحديد رقم المنتج.",
+      }),
+      sizesAndPrices: Joi.array()
+        .items(
+          Joi.object({
+            size: Joi.string().required().messages({
+              "any.required": "الرجاء تحديد المقاس.",
+            }),
+            quantity: Joi.number().min(1).required().messages({
+              "number.base": "الكمية يجب أن تكون رقمًا",
+              "number.min": "الكمية يجب أن تكون أكبر من صفر",
+              "any.required": "الكمية مطلوبة",
+            }),
+            price: Joi.number().min(1).required().messages({
+              "number.base": "السعر يجب أن يكون رقمًا",
+              "number.min": "السعر يجب أن يكون أكبر من صفر",
+              "any.required": "يجب إضافة سعر للمنتج",
+            }),
+            _id: Joi.string().required().messages({
+              "any.required": "الرجاء تحديد رقم المنتج.",
+            }),
+          })
+        )
+        .required()
+        .messages({
+          "any.required": "الرجاء تحديد المقاسات.",
+        }),
+    })
+  ).required().messages({
+    "any.required": "الرجاء تحديد اللون.",
+  }),
   specifications: Joi.array()
     .items(
       Joi.object({
@@ -135,12 +165,6 @@ const updateproductValidationSchema = Joi.object({
       })
     )
     .optional(),
-
-  quantity: Joi.number().min(1).required().messages({
-    "number.base": "الكمية يجب أن تكون رقمًا",
-    "number.min": "الكمية يجب أن تكون أكبر من صفر",
-    "any.required": "الكمية مطلوبة",
-  }),
 });
 
 export const updateValidateProduct = (data) => {

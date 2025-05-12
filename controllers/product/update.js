@@ -9,18 +9,45 @@ import {
 } from "../../utils/upload/cloudinary.js";
 import fs from "fs/promises";
 
+
+const updateColorsSizePrice = (checkProduct, colorsSizePrice, discount) => {
+  checkProduct.colorsSizePrice.forEach((item) => {
+    colorsSizePrice.forEach((it) => {
+      // تأكد أن اللون يطابق
+      if (item._id.toString() === it._id.toString()) {
+        item.colorName = it.colorName;
+        it.sizesAndPrices.forEach((updatedSize) => {
+          const index = item.sizesAndPrices.findIndex((existingSize) =>
+            existingSize._id.toString() === updatedSize._id.toString()
+          );
+          if (index !== -1) {
+            item.sizesAndPrices[index].price = updatedSize.price;
+            item.sizesAndPrices[index].size = updatedSize.size;
+            item.sizesAndPrices[index].quantity = updatedSize.quantity;
+            item.sizesAndPrices[index].finalPrice =
+              discount > 0
+                ? updatedSize.price - (updatedSize.price * discount) / 100
+                : updatedSize.price;
+            item.sizesAndPrices[index].available = updatedSize.quantity > 0;
+          }
+        });
+      }
+    });
+  });
+}
+
+
+
 export const updateProduct = async (req, res) => {
   const { id } = req.params;
   const {
     title,
-    price,
     discount,
-    sizes,
     brand,
     specifications,
     overview,
-    quantity,
     category,
+    colorsSizePrice
   } = req.body;
 
   const { error } = updateValidateProduct(req.body);
@@ -36,28 +63,16 @@ export const updateProduct = async (req, res) => {
       return res.status(404).json({ message: "This product is not found" });
     }
 
-    const finalPrice = discount > 0 ? price - (price * discount) / 100 : price;
-    const available = quantity > 0;
-
-    const updatedProduct = await Product.findByIdAndUpdate(
-      id,
-      {
-        title,
-        price,
-        discount,
-        sizes,
-        brand,
-        specifications,
-        overview,
-        quantity,
-        category,
-        finalPrice,
-        available,
-      },
-      { new: true }
-    );
-
-    return res.json({ data: updatedProduct });
+    // تحديث الحقول الرئيسية
+    checkProduct.title = title;
+    checkProduct.discount = discount;
+    checkProduct.brand = brand;
+    checkProduct.specifications = specifications;
+    checkProduct.overview = overview;
+    checkProduct.category = category;
+    updateColorsSizePrice(checkProduct, colorsSizePrice, discount)
+    await checkProduct.save();
+    return res.json({ data: checkProduct });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
