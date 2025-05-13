@@ -4,7 +4,7 @@ import { cartValidation } from "../../services/cartVaildator.js";
 
 export const addProductToCart = async (req, res) => {
   const { _id } = req.user;
-  const { product_id, colorsSizePrice } = req.body;
+  const { product_id, colorName, size, quantity } = req.body;
 
   // التحقق من صحة البيانات المدخلة
   const { error } = cartValidation.validate(req.body, { abortEarly: false });
@@ -20,27 +20,62 @@ export const addProductToCart = async (req, res) => {
       return res.status(404).json({ status: "not_found", message: "لم يتم العثور على المنتج." });
     }
 
-    const finishcart = async (finalPrice) => {
+    // الحصول على الصور من قاعدة البيانات بدل الطلب
+    const selectedColor = cartProduct.colorsSizePrice.find((color) => color.colorName === colorName);
+    if (!selectedColor) {
+      return res.status(400).json({ status: "color_not_found", message: "لم يتم العثور على اللون المحدد." });
+    }
+
+    const imageToUse = selectedColor.images || [];
+
+    // التحقق من الحجم والسعر والكمية
+    const sizeMatch = selectedColor.sizesAndPrices.find(({ size: s }) => s === size);
+    if (!sizeMatch) {
+      return res.status(400).json({ status: "size_not_found", message: "لم يتم العثور على المقاس المطلوب." });
+    }
+
+    const { finalPrice, available, quantity: availableQty } = sizeMatch;
+
+    if (!available) {
+      return res.status(400).json({ status: "product_unavailable", message: "هذا المنتج غير متاح." });
+    }
+
+    if (quantity > availableQty) {
+      return res.status(400).json({ status: "insufficient_quantity", message: "الكمية المطلوبة أكبر من المتاحة." });
+    }
+
+    // تابع الإضافة للسلة
       const checkUserCart = await Cart.findOne({ user: _id });
+
       if (checkUserCart) {
+        const existingProduct = checkUserCart.products.find((item) =>
+          item.product_id.toString() === product_id.toString() &&
+          item.colorName === colorName &&
+          item.size === size
+        );
+
+        if (existingProduct) {
+          return res.status(400).json({
+            status: "product_already_exists",
+            message: "هذا المنتج موجود بالفعل في السلة بنفس اللون والمقاس.",
+          });
+        }
+
         checkUserCart.products.push({
           product_id,
-          quantity: colorsSizePrice.sizesAndPrices.quantity,
-          size: colorsSizePrice.sizesAndPrices.size,
-          colorsSizePrice: {
-            colorName: colorsSizePrice.colorName,
-            images: colorsSizePrice.images,
-          },
+          quantity,
+          size,
+          colorName,
+          images: imageToUse,
           price: finalPrice,
         });
 
-        // حساب السعر الإجمالي
         const totalPrice = checkUserCart.products.reduce(
           (acc, item) => acc + item.price * item.quantity,
           0
         );
 
-        checkUserCart.totalPrice = Math.ceil(totalPrice * 10) / 10;
+        checkUserCart.totalPrice = Number(totalPrice.toFixed(1));
 
         await checkUserCart.save();
 
@@ -49,22 +84,21 @@ export const addProductToCart = async (req, res) => {
           message: "تمت إضافة المنتج وتحديث السعر الكلي",
           cart: checkUserCart,
         });
+
       } else {
         const newCart = new Cart({
           user: _id,
           products: [
             {
               product_id,
-              quantity: colorsSizePrice.sizesAndPrices.quantity,
-              size: colorsSizePrice.sizesAndPrices.size,
-              colorsSizePrice: {
-                colorName: colorsSizePrice.colorName,
-                images: colorsSizePrice.images,
-              },
+              quantity,
+              size,
+              colorName,
+              images: imageToUse,
               price: finalPrice,
             },
           ],
-          totalPrice: Math.ceil(colorsSizePrice.sizesAndPrices.quantity * finalPrice * 10) / 10,
+          totalPrice: Number((quantity * finalPrice).toFixed(1))
         });
 
         await newCart.save();
@@ -75,39 +109,7 @@ export const addProductToCart = async (req, res) => {
           cart: newCart,
         });
       }
-    };
-
-    let productFound = false;
-
-    // استبدال forEach بـ for...of مع await
-    for (const item of cartProduct.colorsSizePrice) {
-      // تحقق من اللون
-      if (item.colorName === colorsSizePrice.colorName) {
-        // تحقق من المقاس
-        for (const { size, finalPrice, available, quantity } of item.sizesAndPrices) {
-          if (available) {
-            if (size === colorsSizePrice.sizesAndPrices.size) {
-              if (quantity < colorsSizePrice.sizesAndPrices.quantity) {
-                return res.status(400).json({ status: "insufficient_quantity", message: "الكمية المطلوبة أكبر من المتاحة." });
-              } else {
-                productFound = true;
-                return finishcart(finalPrice); // إنهاء العملية بعد إضافة المنتج للسلة
-              }
-            } else {
-              return res.status(400).json({ status: "size_not_found", message: "لم يتم العثور على هذا المقاس." });
-            }
-          } else {
-            return res.status(400).json({ status: "product_unavailable", message: "هذا المنتج غير متاح." });
-          }
-        }
-      }
-    }
-
-    // إذا لم يتم العثور على المنتج في الألوان أو المقاسات المحددة
-    if (!productFound) {
-      return res.status(400).json({ status: "color_or_size_not_found", message: "لم يتم العثور على المنتج في الألوان أو المقاسات المحددة." });
-    }
-
+    
   } catch (error) {
     return res.status(500).json({ status: "server_error", message: "حدث خطأ في الخادم", error: error.message });
   }

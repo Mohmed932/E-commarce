@@ -14,39 +14,28 @@ export const cartValidation = Joi.object({
       "any.required": "يجب تحديد معرّف المنتج.",
       "any.invalid": "الـمعرف المنتج غير صالح",
     }),
-
-  colorsSizePrice: Joi.object({
-    colorName: Joi.string().required().messages({
-      "any.required": "الرجاء تحديد اللون.",
-    }),
-
-    sizesAndPrices: Joi.object({
-      size: Joi.string().required().messages({
-        "any.required": "الرجاء تحديد المقاس.",
-      }),
-      quantity: Joi.number().required().messages({
-        "any.required": "الرجاء تحديد الكمية.",
-      }),
-    }).required().messages({
-      "any.required": "الرجاء تحديد تفاصيل الحجم والسعر.",
-    }),
-
-    images: Joi.array()
-      .items(
-        Joi.object({
-          img: Joi.string().required().messages({
-            "any.required": "الرجاء إضافة صورة.",
-          }),
-          idOfImage: Joi.string().optional(),
-        })
-      )
-      .min(1)
-      .required()
-      .messages({
-        "array.min": "الرجاء إضافة صور للمنتج.",
-        "any.required": "الرجاء إضافة صور للمنتج.",
-      }),
-  }).required().messages({
-    "any.required": "يجب تحديد اللون والمقاس والسعر والصور.",
+  colorName: Joi.string().required().messages({
+    "any.required": "الرجاء تحديد اللون.",
   }),
+  size: Joi.string().required().messages({
+    "any.required": "الرجاء تحديد المقاس.",
+  }),
+  quantity: Joi.number().required().messages({
+    "any.required": "الرجاء تحديد الكمية.",
+  }),
+  images: Joi.array()
+    .items(
+      Joi.object({
+        img: Joi.string().required().messages({
+          "any.required": "الرجاء إضافة صورة.",
+        }),
+        idOfImage: Joi.string().optional(),
+      })
+    )
+    .min(1)
+    .required()
+    .messages({
+      "array.min": "الرجاء إضافة صور للمنتج.",
+      "any.required": "الرجاء إضافة صور للمنتج.",
+    }),
 });

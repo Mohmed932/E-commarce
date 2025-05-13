@@ -12,7 +12,7 @@ export const deleteProductFromCart = async (req, res) => {
     }
 
     const ishere = cartProduct.products.find(
-      (item) => item._id.toString() === id
+      (item) => item.product_id.toString() === id
     );
 
     if (!ishere) {
@@ -20,7 +20,7 @@ export const deleteProductFromCart = async (req, res) => {
     }
 
     cartProduct.products = cartProduct.products.filter(
-      (item) => item._id.toString() !== id
+      (item) => item.product_id.toString() !== id
     );
     // تحديث السعر الإجمالي
     const totalPrice = cartProduct.products.reduce(

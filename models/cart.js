@@ -19,23 +19,21 @@ const cartSchema = new Schema(
             type: String,
             required: [true, "الرجاء تحديد اللون."],
           },
-          colorsSizePrice: {
-            colorName: {
-              type: String,
-              required: [true, "الرجاء تحديد اللون."],
-            },
-            images: {
-              type: [
-                {
-                  img: {
-                    type: String,
-                    required: [true, "الرجاء إضافة صورة."],
-                  },
-                  idOfImage: { type: String },
+          colorName: {
+            type: String,
+            required: [true, "الرجاء تحديد اللون."],
+          },
+          images: {
+            type: [
+              {
+                img: {
+                  type: String,
+                  required: [true, "الرجاء إضافة صورة."],
                 },
-              ],
-              required: [true, "الرجاء إضافة صور للمنتج."],
-            },
+                idOfImage: { type: String },
+              },
+            ],
+            required: [true, "الرجاء إضافة صور للمنتج."],
           },
           price: {
             type: Number,
@@ -45,12 +43,6 @@ const cartSchema = new Schema(
         },
       ],
       required: [true, "يجب أن يكون هناك منتجات"],
-      validate: {
-        validator: function (arr) {
-          return arr.length > 0;
-        },
-        message: "السلة لا يمكن أن تكون فارغة",
-      },
     },
     totalPrice: {
       type: Number,
