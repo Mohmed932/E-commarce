@@ -3,7 +3,7 @@ import { Router } from "express";
 import { verifyUser } from "../middleware/verifyUser.js";
 import { verifyPermission } from "../middleware/verifyPermission.js";
 import { validateId } from "../middleware/validateId.js";
-import { uploadMultipleImages } from "../utils/upload/upload.js";
+import { uploadImagesMiddleware } from "../utils/upload/upload.js";
 import { handleFileUploadError } from "../middleware/handleFileUploadError.js";
 import { createProduct } from "../controllers/product/create.js";
 import { getProduct, getSingleProduct } from "../controllers/product/read.js";
@@ -19,9 +19,9 @@ export const productRoute = Router();
 productRoute
   .route("/product")
   .post(
-    // verifyUser,
-    // verifyPermission,
-    uploadMultipleImages,
+    verifyUser,
+    verifyPermission,
+    uploadImagesMiddleware,
     handleFileUploadError,
     createProduct
   );
@@ -30,18 +30,20 @@ productRoute
   .route("/product/:id")
   .get(validateId, getSingleProduct)
   .delete(verifyUser, verifyPermission, validateId, deleteProduct)
-  .put(updateProduct);
+  .put(verifyUser, verifyPermission, validateId, updateProduct);
 
 productRoute
-  .route("/product/images_color/:id")
+  .route("/product/add-images/:id")
   .post(
     verifyUser,
     verifyPermission,
     validateId,
-    uploadMultipleImages,
+    uploadImagesMiddleware,
     handleFileUploadError,
     addImagesColorProduct
   )
-  .delete(deleteImagesColorProduct);
+  .delete(verifyUser,
+    verifyPermission,
+    validateId, deleteImagesColorProduct);
 
 productRoute.route("/product/category/:category").get(getProduct);

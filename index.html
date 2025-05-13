@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="ar">
 
 <head>
@@ -140,4 +140,64 @@
   </script>
 </body>
 
+</html> -->
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>رفع صور المنتج حسب اللون</title>
+</head>
+<body>
+  <h2>رفع صور المنتج حسب اللون</h2>
+
+  <form id="uploadForm" enctype="multipart/form-data">
+    <label>Product ID:</label><br>
+    <input type="text" id="productId" placeholder="مثلاً: 6641b9..." required /><br><br>
+
+    <label>الألوان (بترتيب الصور):</label><br>
+    <input type="text" id="colors" placeholder='مثلاً ["أحمر", "أزرق"]' required /><br><br>
+
+    <label>اختر الصور (مرتبطة بأسماء الألوان):</label><br>
+    <input type="file" name="images" id="images" multiple required /><br><br>
+
+    <button type="submit">رفع الصور</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    const form = document.getElementById("uploadForm");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const productId = document.getElementById("productId").value.trim();
+      const colorsInput = document.getElementById("colors").value.trim();
+      const imagesInput = document.getElementById("images");
+
+      const formData = new FormData();
+      formData.append("color", JSON.stringify(colorsInput));
+
+      for (let i = 0; i < imagesInput.files.length; i++) {
+        formData.append("images", imagesInput.files[i],colorsInput);
+      }
+
+      try {
+        const response = await fetch(`http://localhost:5000/api/v1/product/add-images/${productId}`, {
+          method: "POST",
+          body: formData
+        });
+
+        const data = await response.json();
+        document.getElementById("result").innerText = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById("result").innerText = "حدث خطأ أثناء رفع الصور.";
+      }
+    });
+  </script>
+</body>
 </html>

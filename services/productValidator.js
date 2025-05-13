@@ -127,7 +127,7 @@ const updateproductValidationSchema = Joi.object({
               "number.min": "السعر يجب أن يكون أكبر من صفر",
               "any.required": "يجب إضافة سعر للمنتج",
             }),
-            _id: Joi.string().required().messages({
+            _id: Joi.string().optional().messages({
               "any.required": "الرجاء تحديد رقم المنتج.",
             }),
           })
@@ -171,12 +171,11 @@ export const updateValidateProduct = (data) => {
   return updateproductValidationSchema.validate(data, { abortEarly: false });
 };
 
-const addImagesProductValidationSchema = Joi.object({
-  colors: Joi.array().required().messages({
-    "any.required": "الرجاء تحديد اللون.",
-  }),
-});
-
+const addImagesProductValidationSchema = Joi.string().required().messages({
+  "any.required": "الرجاء تحديد اللون.",
+  "string.base": "اللون يجب أن يكون نصاً.",
+  "string.empty": "الرجاء عدم ترك اللون فارغاً.",
+})
 export const addImagesValidateProduct = (colors) => {
   return addImagesProductValidationSchema.validate(colors, {
     abortEarly: false,

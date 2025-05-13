@@ -27,15 +27,15 @@ export const handleFileUploadError = (err, req, res, next) => {
       }
     }
 
-    // 2. خطأ مخصص من عندك (مثل نوع الملف)
-    if (err.message === "فقط الصور بصيغ jpeg, jpg, png, gif مسموح بها") {
+    // 2. أخطاء الفلتر (مثل نوع الملف)
+    if (err.message.includes("فقط الصور بصيغ")) {
       return res.status(400).json({ message: err.message });
     }
 
-    // 3. خطأ عام
+    // 3. أي خطأ آخر
     return res.status(500).json({
       message: "حدث خطأ أثناء رفع الملف. يرجى المحاولة لاحقاً.",
-      error: err.message, // اختياري لعرض تفاصيل الخطأ في التطوير
+      error: err.message, // useful for dev/debug
     });
   }
 

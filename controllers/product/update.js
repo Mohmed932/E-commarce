@@ -17,24 +17,40 @@ const updateColorsSizePrice = (checkProduct, colorsSizePrice, discount) => {
       if (item._id.toString() === it._id.toString()) {
         item.colorName = it.colorName;
         it.sizesAndPrices.forEach((updatedSize) => {
-          const index = item.sizesAndPrices.findIndex((existingSize) =>
-            existingSize._id.toString() === updatedSize._id.toString()
-          );
-          if (index !== -1) {
-            item.sizesAndPrices[index].price = updatedSize.price;
-            item.sizesAndPrices[index].size = updatedSize.size;
-            item.sizesAndPrices[index].quantity = updatedSize.quantity;
-            item.sizesAndPrices[index].finalPrice =
-              discount > 0
-                ? updatedSize.price - (updatedSize.price * discount) / 100
-                : updatedSize.price;
-            item.sizesAndPrices[index].available = updatedSize.quantity > 0;
+          const finalPrice =
+            discount > 0
+              ? updatedSize.price - (updatedSize.price * discount) / 100
+              : updatedSize.price;
+
+          const newSizeData = {
+            ...updatedSize,
+            finalPrice,
+            available: updatedSize.quantity > 0,
+          };
+
+          if (updatedSize._id) {
+            const index = item.sizesAndPrices.findIndex(
+              (existingSize) =>
+                existingSize._id &&
+                existingSize._id.toString() === updatedSize._id.toString()
+            );
+
+            if (index !== -1) {
+              item.sizesAndPrices[index] = newSizeData;
+            } else {
+              item.sizesAndPrices.push(newSizeData);
+            }
+          } else {
+            // مقاس جديد مفيهوش _id → نضيفه
+            item.sizesAndPrices.push(newSizeData);
           }
         });
+
       }
     });
   });
-}
+};
+
 
 
 
@@ -78,86 +94,94 @@ export const updateProduct = async (req, res) => {
   }
 };
 
+
 export const addImagesColorProduct = async (req, res) => {
   const { id } = req.params;
-  const colors = JSON.parse(req.body.colors);
-
+  const color = JSON.parse(req.body.color);
+  // التحقق من وجود صور مرفقة في الطلب
   if (!req.files || req.files.length === 0) {
     return res.status(400).json({ message: "يجب إضافة صور." });
   }
 
-  const { error } = addImagesValidateProduct(colors);
+  // التحقق من صحة المدخلات الخاصة بالألوان
+  const { error } = addImagesValidateProduct(color);
   if (error) {
-    return res
-      .status(400)
-      .json({ message: error.details.map((detail) => detail.message) });
+    return res.status(400).json({
+      message: error.details.map((detail) => detail.message),
+    });
   }
-
+  let uploadedImages;
   try {
+    //     // التحقق من وجود المنتج في قاعدة البيانات
     const checkProduct = await Product.findById(id);
     if (!checkProduct) {
-      return res.status(404).json({ message: "This product is not found" });
+      return res.status(404).json({ message: "هذا المنتج غير موجود." });
+    }
+    //     // تجهيز روابط الصور المحلية المرفوعة
+    const images = req.files.map((img) => ({
+      path: img.path,
+      original_filename: img.originalname,
+    }));
+
+    //     // رفع الصور إلى خدمة التخزين (مثل Cloudinary)
+    uploadedImages = await uploadMultipleImages(images);
+    const imageLinks = uploadedImages.map((img) => ({
+      img: img.secure_url,
+      idOfImage: img.public_id,
+      original_filename: img.original_filename,
+    }));
+
+    const filtered = imageLinks.filter(({ original_filename }) =>
+      original_filename.includes(color)
+    );
+    if (filtered.length === 0) {
+      return res.status(400).json({
+        message: `يجب رفع صور للون: ${color}`,
+      });
     }
 
-    const images = req.files.map((img) => {
-      return { path: img.path, original_filename: img.originalname };
-    });
-
-    const uploadImages = await uploadMultipleImages(images);
-    const imageLinks = uploadImages.map((img) => {
-      return {
-        img: img.secure_url,
-        idOfImage: img.public_id,
-        original_filename: img.original_filename,
-      };
-    });
-
-    for (let i = 0; i < colors.colors.length; i++) {
-      const filtered = imageLinks.filter(({ original_filename }) =>
-        original_filename.includes(colors.colors[i])
-      );
-      if (filtered.length === 0) {
-        return res.status(400).json({
-          message: `يجب رفع صور للون: ${colors.colors[i]}`,
-        });
-      }
-
-      const colorExist = checkProduct.colors.find(
-        (item) => item.color === colors.colors[i]
-      );
-      if (colorExist) {
-        colorExist.images = colorExist.images.concat(filtered);
-      } else {
-        checkProduct.colors.push({
-          color: colors.colors[i],
-          images: filtered,
-        });
-      }
+    //       // إضافة الصور إلى المنتج
+    const colorExist = checkProduct.colorsSizePrice.find(
+      (item) => item.colorName === color
+    );
+    if (colorExist) {
+      colorExist.images = colorExist.images.concat(filtered);
+    } else {
+      checkProduct.colorsSizePrice.push({
+        colorName: color,
+        images: filtered,
+      });
     }
 
+    //     // حفظ التحديثات في المنتج
     await checkProduct.save();
     return res.json({ data: checkProduct });
+
   } catch (error) {
     return res.status(500).json({ message: error.message });
   } finally {
-    await Promise.all(
-      req.files.map(async (img) => {
-        try {
-          await fs.unlink(img.path);
-        } catch (err) {
-          console.error("Failed to delete:", err);
-        }
-      })
-    );
+    // حذف الصور المحلية المرفوعة بعد الانتهاء
+    if (req.files && req.files.length > 0) {
+      await Promise.all(
+        req.files.map(async (img) => {
+          try {
+            await fs.unlink(img.path);
+          } catch (err) {
+            console.error("فشل حذف الصورة المحلية:", err);
+          }
+        })
+      );
+    }
   }
 };
+
 
 export const deleteImagesColorProduct = async (req, res) => {
   const { id } = req.params;
   const idOfImages = req.body;
 
   if (!Array.isArray(idOfImages) || idOfImages.length === 0) {
-    return res.status(400).json({ message: "يجب اضافه الصور التي تريد حذفها" });
+    return res.status(400).json({ message: "يجب اضافه معرف  الصور التي تريد حذفها" });
   }
 
   try {
@@ -168,29 +192,27 @@ export const deleteImagesColorProduct = async (req, res) => {
 
     const idsToDelete = idOfImages.map((id) => id.toString());
 
-    const updatedColors = product.colors
-      .map((color) => {
-        color.images = color.images.filter((img) =>
+    const updatedColors = product.colorsSizePrice
+      .map((item) => {
+        item.images = item.images.filter((img) =>
           typeof img === "string"
             ? !idsToDelete.includes(img)
             : !idsToDelete.includes(img._id.toString())
         );
-        return color;
+        return item;
       })
       .filter(
-        (color) => Array.isArray(color.images) && color.images.length > 0
+        (item) => Array.isArray(item.images) && item.images.length > 0
       );
 
     const totalImagesRemaining = updatedColors.reduce(
-      (acc, color) => acc + color.images.length,
+      (acc, item) => acc + item.images.length,
       0
     );
 
     if (totalImagesRemaining === 0) {
       return res.status(400).json({ message: "لا يمكن ترك المنتج بدون صور" });
     }
-
-    product.colors = updatedColors;
     await product.save();
     await deleteImages(idsToDelete);
 

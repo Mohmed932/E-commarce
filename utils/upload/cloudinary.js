@@ -1,9 +1,10 @@
 import { v2 as cloudinary } from "cloudinary";
-
+import { config } from "dotenv";
+config(); // Load environment variables from .env file
 cloudinary.config({
-  cloud_name: "dbqujitb1",
-  api_key: "779544461378864",
-  api_secret: "ihXY4qCJvOjHtCR7kGIhwiV28Qc", // تأكد من أن هذه القيم سرية ولا يتم نشرها
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET, // تأكد من أن هذه القيم سرية ولا يتم نشرها
 });
 
 export const uploadAvatat = async (url) => {
