@@ -15,36 +15,26 @@ const cartSchema = new Schema(
             required: [true, "يجب إضافة منتج واحد على الأقل"],
             min: [1, "الكمية يجب أن تكون واحد على الأقل"],
           },
-          sizes: {
-            type: [String],
+          size: {
+            type: String,
+            required: [true, "الرجاء تحديد اللون."],
           },
-          colors: {
-            type: [
-              {
-                color: {
-                  type: String,
-                  required: [true, "الرجاء تحديد اللون."],
+          colorsSizePrice: {
+            colorName: {
+              type: String,
+              required: [true, "الرجاء تحديد اللون."],
+            },
+            images: {
+              type: [
+                {
+                  img: {
+                    type: String,
+                    required: [true, "الرجاء إضافة صورة."],
+                  },
+                  idOfImage: { type: String },
                 },
-                images: {
-                  type: [
-                    {
-                      img: {
-                        type: String,
-                        required: [true, "الرجاء إضافة صورة."],
-                      },
-                      idOfImage: { type: String },
-                    },
-                  ],
-                  required: [true, "الرجاء إضافة صور للمنتج."],
-                },
-              },
-            ],
-            required: [true, "يجب إضافة الألوان والصور."],
-            validate: {
-              validator: function (v) {
-                return v && v.length > 0;
-              },
-              message: "يجب إضافة الألوان والصور.",
+              ],
+              required: [true, "الرجاء إضافة صور للمنتج."],
             },
           },
           price: {
