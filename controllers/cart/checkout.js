@@ -29,18 +29,8 @@ export const checkout = async (req, res) => {
             if (!colorVariant) {
                 ignoredProducts.push({
                     product_id: item.product_id,
-                    name: product.name,
+                    title: product.title,
                     reason: `اللون ${item.colorName} غير متاح لهذا المنتج`
-                });
-                continue;
-            }
-
-            const availableVariant = colorVariant.sizesAndPrices.find(s => s.available === true);
-            if (!availableVariant) {
-                ignoredProducts.push({
-                    product_id: item.product_id,
-                    name: product.name,
-                    reason: `اللون ${item.colorName} غير متاح بأي مقاس حاليًا`
                 });
                 continue;
             }
@@ -49,7 +39,7 @@ export const checkout = async (req, res) => {
             if (!sizeVariant) {
                 ignoredProducts.push({
                     product_id: item.product_id,
-                    name: product.name,
+                    title: product.title,
                     reason: `المقاس ${item.size} غير متاح لهذا اللون`
                 });
                 continue;
@@ -57,21 +47,25 @@ export const checkout = async (req, res) => {
 
             // تحقق من الكمية المتاحة
             if (item.quantity > sizeVariant.quantity) {
+                
+                item.avaliableProduct = false;
                 ignoredProducts.push({
                     product_id: item.product_id,
-                    name: product.name,
-                    reason: `الكمية المطلوبة أكبر من الكمية المتاحة لهذا المنتج`
+                    title: product.title,
+                    reason: `الكمية المطلوبة أكبر من الكمية المتاحة لهذا المنتج`,
+                    requestedQuantity: item.quantity,
+                    availableQuantity: sizeVariant.quantity
                 });
                 continue;
             }
 
             // تحديث السعر والإجمالي
-            item.price = sizeVariant.price;
+            item.price = sizeVariant.finalPrice;
             totalPrice += item.price * item.quantity;
 
             updatedProducts.push({
                 product_id: item.product_id,
-                name: product.name,
+                title: product.title,
                 color: item.colorName,
                 size: item.size,
                 price: item.price,
