@@ -15,37 +15,25 @@ const orderSchema = new Schema(
             required: [true, "يجب إضافة منتج واحد على الأقل"],
             min: [1, "الكمية يجب أن تكون واحد على الأقل"],
           },
-          sizes: {
-            type: [String],
+          size: {
+            type: String,
+            required: [true, "الرجاء تحديد المقاس."],
           },
-          colors: {
+          colorName: {
+            type: String,
+            required: [true, "الرجاء تحديد اللون."],
+          },
+          images: {
             type: [
               {
-                color: {
+                img: {
                   type: String,
-                  required: [true, "الرجاء تحديد اللون."],
+                  required: [true, "الرجاء إضافة صورة."],
                 },
-                images: {
-                  type: [
-                    {
-                      img: {
-                        type: String,
-                        required: [true, "الرجاء إضافة صورة."],
-                      },
-                      idOfImage: { type: String },
-                    },
-                  ],
-                  required: [true, "الرجاء إضافة صور للمنتج."],
-                },
+                idOfImage: { type: String },
               },
             ],
-            required: [true, "يجب إضافة الألوان والصور."],
-            validate: {
-              validator: function (v) {
-                return v && v.length > 0;
-              },
-              message: "يجب إضافة الألوان والصور.",
-            },
+            required: [true, "الرجاء إضافة صور للمنتج."],
           },
           price: {
             type: Number,

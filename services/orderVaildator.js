@@ -14,49 +14,33 @@ const orderValidatorSchema = Joi.object({
           "number.min": "الكمية يجب أن تكون واحد على الأقل.",
           "any.required": "يجب إضافة منتج واحد على الأقل.",
         }),
-        sizes: Joi.array().items(Joi.string()).optional().messages({
-          "array.base": "الأحجام يجب أن تكون مصفوفة من النصوص.",
+        size: Joi.string().required().messages({
+          "string.base": "المقاس يجب أن يكون نصًا.",
+          "any.required": "الرجاء تحديد المقاس.",
         }),
-        // price: Joi.number().required().min(0).messages({
-        //   "number.base": "السعر يجب أن يكون رقمًا.",
-        //   "number.min": "السعر لا يمكن أن يكون بالسالب.",
-        //   "any.required": "يجب تحديد السعر.",
-        // }),
-        colors: Joi.array()
+        images: Joi.array()
           .items(
             Joi.object({
-              color: Joi.string().required().messages({
-                "string.base": "اللون يجب أن يكون نصًا.",
-                "any.required": "الرجاء تحديد اللون.",
+              img: Joi.string().required().messages({
+                "string.base": "الصورة يجب أن تكون نصًا.",
+                "any.required": "الرجاء إضافة صورة.",
               }),
-              images: Joi.array()
-                .items(
-                  Joi.object({
-                    img: Joi.string().required().messages({
-                      "string.base": "الصورة يجب أن تكون نصًا.",
-                      "any.required": "الرجاء إضافة صورة.",
-                    }),
-                    idOfImage: Joi.string().optional().messages({
-                      "string.base": "معرف الصورة يجب أن يكون نصًا.",
-                    }),
-                  })
-                )
-                .required()
-                .min(1)
-                .messages({
-                  "array.base": "الصور يجب أن تكون مصفوفة.",
-                  "array.min": "يجب إضافة صورة واحدة على الأقل.",
-                  "any.required": "الرجاء إضافة صور للمنتج.",
-                }),
+              idOfImage: Joi.string().optional().messages({
+                "string.base": "معرف الصورة يجب أن يكون نصًا.",
+              }),
             })
           )
           .required()
           .min(1)
           .messages({
-            "array.base": "الألوان يجب أن تكون مصفوفة.",
-            "array.min": "يجب إضافة لون واحد على الأقل.",
-            "any.required": "يجب إضافة الألوان والصور.",
+            "array.base": "الصور يجب أن تكون مصفوفة.",
+            "array.min": "يجب إضافة صورة واحدة على الأقل.",
+            "any.required": "الرجاء إضافة صور للمنتج.",
           }),
+        colorName: Joi.string().required().messages({
+          "string.base": "اللون يجب أن يكون نصًا.",
+          "any.required": "الرجاء تحديد اللون.",
+        }),
       })
     )
     .required()
