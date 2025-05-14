@@ -35,6 +35,10 @@ const cartSchema = new Schema(
             ],
             required: [true, "الرجاء إضافة صور للمنتج."],
           },
+          avaliableProduct:{
+            type:Boolean,
+            default:true
+          },
           price: {
             type: Number,
             required: [true, "يجب تحديد السعر"],

@@ -66,6 +66,7 @@ export const addProductToCart = async (req, res) => {
           quantity,
           size,
           colorName,
+          avaliableProduct: available,
           images: imageToUse,
           price: finalPrice,
         });
@@ -94,6 +95,7 @@ export const addProductToCart = async (req, res) => {
               quantity,
               size,
               colorName,
+              avaliableProduct: available,
               images: imageToUse,
               price: finalPrice,
             },
