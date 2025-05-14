@@ -32,7 +32,6 @@ export const createOrder = async (req, res) => {
       return res.status(401).json({ message: "يجب اضافه عنوانك." });
     }
 
-    // التحقق من صلاحية الـ IDs
     const validIds = productsData
       .map((item) => item.product_id)
       .filter((id) => mongoose.Types.ObjectId.isValid(id));
@@ -41,7 +40,6 @@ export const createOrder = async (req, res) => {
       return res.status(400).json({ message: "بعض المنتجات غير صالحة." });
     }
 
-    // تحميل كل المنتجات مرة واحدة
     const productDocs = await Product.find({ _id: { $in: validIds } });
     const productMap = new Map(productDocs.map(p => [p._id.toString(), p]));
 
@@ -75,7 +73,7 @@ export const createOrder = async (req, res) => {
         ignoredProducts.push({
           product_id: item.product_id,
           title: product.title,
-          reason: `المقاس ${item.size} غير متاح لللون ${item.colorName}`
+          reason: `المقاس ${item.size} غير متاح للون ${item.colorName}`
         });
         continue;
       }
@@ -98,7 +96,7 @@ export const createOrder = async (req, res) => {
         images: item.images
       });
 
-      // تحديث الكمية مباشرة في الذاكرة
+      // يتم خصم الكمية مؤقتاً في الذاكرة فقط، وسيتم تنفيذ الخصم الحقيقي لاحقاً إذا كانت كاش
       size.quantity -= item.quantity;
 
       bulkUpdates.push({
@@ -116,12 +114,6 @@ export const createOrder = async (req, res) => {
       });
     }
 
-    // تنفيذ التحديثات دفعة واحدة
-    if (bulkUpdates.length > 0) {
-      await Product.bulkWrite(bulkUpdates);
-    }
-
-    // حساب الأسعار
     const startPrice = requestedProducts.reduce((acc, item) => {
       return acc + item.price * item.quantity;
     }, 0);
@@ -139,8 +131,13 @@ export const createOrder = async (req, res) => {
       fullName: userAddress.fullName,
     };
 
-    // الطلب النقدي
+    // الدفع كاش
     if (paymentMethod === "cash") {
+      // يتم هنا تنفيذ الخصم فعليًا
+      if (bulkUpdates.length > 0) {
+        await Product.bulkWrite(bulkUpdates);
+      }
+
       const newOrder = new Order({
         user: _id,
         shippingCost,
@@ -160,7 +157,7 @@ export const createOrder = async (req, res) => {
       });
     }
 
-    // الطلب الإلكتروني
+    // الدفع إلكتروني - لا يتم خصم الكمية الآن
     const cachingOrder = new CachingOrder({
       user: _id,
       taxes,
