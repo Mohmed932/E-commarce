@@ -34,7 +34,14 @@ export const checkout = async (req, res) => {
                 });
                 continue;
             }
-
+            const availableVariant = colorVariant.sizesAndPrices.filter(s => s.available === false);
+            if (availableVariant.length > 0) {
+                availableVariant.forEach((variant) => {
+                    if (variant.size === item.size) {
+                        item.avaliableProduct = false;
+                    }
+                });
+            }
             const sizeVariant = colorVariant.sizesAndPrices.find(s => s.size === item.size);
             if (!sizeVariant) {
                 ignoredProducts.push({
@@ -47,7 +54,7 @@ export const checkout = async (req, res) => {
 
             // تحقق من الكمية المتاحة
             if (item.quantity > sizeVariant.quantity) {
-                
+
                 item.avaliableProduct = false;
                 ignoredProducts.push({
                     product_id: item.product_id,
@@ -57,6 +64,8 @@ export const checkout = async (req, res) => {
                     availableQuantity: sizeVariant.quantity
                 });
                 continue;
+            }else{
+                item.avaliableProduct = true;
             }
 
             // تحديث السعر والإجمالي
