@@ -13,15 +13,15 @@ import mongoose from "mongoose";
 export const createOrder = async (req, res) => {
   const { _id } = req.user;
   const { productsData, paymentMethod } = req.body;
+
   const { error } = orderValidator({ productsData, paymentMethod });
   if (error) {
     return res
       .status(400)
       .json({ message: error.details.map((detail) => detail.message) });
   }
-  try {
 
-    // تحقق من وجود المستخدم والعنوان
+  try {
     const user = await User.findById(_id);
     const userAddress = user?.address?.[0];
 
@@ -32,7 +32,7 @@ export const createOrder = async (req, res) => {
       return res.status(401).json({ message: "يجب اضافه عنوانك." });
     }
 
-    // // تحقق من صلاحية الـ IDs
+    // التحقق من صلاحية الـ IDs
     const validIds = productsData
       .map((item) => item.product_id)
       .filter((id) => mongoose.Types.ObjectId.isValid(id));
@@ -40,69 +40,96 @@ export const createOrder = async (req, res) => {
     if (validIds.length !== productsData.length) {
       return res.status(400).json({ message: "بعض المنتجات غير صالحة." });
     }
+
+    // تحميل كل المنتجات مرة واحدة
+    const productDocs = await Product.find({ _id: { $in: validIds } });
+    const productMap = new Map(productDocs.map(p => [p._id.toString(), p]));
+
     const requestedProducts = [];
     const ignoredProducts = [];
+    const bulkUpdates = [];
+
     for (const item of productsData) {
-      const products = await Product.findById(item.product_id);
+      const product = productMap.get(item.product_id);
+      if (!product) {
+        ignoredProducts.push({
+          product_id: item.product_id,
+          title: null,
+          reason: "المنتج غير موجود"
+        });
+        continue;
+      }
 
-      if (products.length === 0) {
-        return res
-          .status(400)
-          .json({ message: "لم يتم العثور على منتجات صالحة." });
-      }
-      const colorNameAvailable = products.colorsSizePrice.find(i => i.colorName === item.colorName);
-      if (!colorNameAvailable) {
+      const color = product.colorsSizePrice.find(i => i.colorName === item.colorName);
+      if (!color) {
         ignoredProducts.push({
           product_id: item.product_id,
-          title: products.title,
-          reason: `اللون ${item.colorName} غير متاح لهذا المنتج`
+          title: product.title,
+          reason: `اللون ${item.colorName} غير متاح`
         });
         continue;
       }
-      const sizeAvailable = colorNameAvailable.sizesAndPrices.find(i => i.size === item.size);
-      if (!sizeAvailable) {
+
+      const size = color.sizesAndPrices.find(i => i.size === item.size);
+      if (!size) {
         ignoredProducts.push({
           product_id: item.product_id,
-          title: products.title,
-          reason: `المقاس ${item.size} غير متاح لهذا اللون`
+          title: product.title,
+          reason: `المقاس ${item.size} غير متاح لللون ${item.colorName}`
         });
         continue;
       }
-      if (item.quantity < sizeAvailable.quantity) {
-        const data = {
+
+      if (item.quantity > size.quantity) {
+        ignoredProducts.push({
           product_id: item.product_id,
-          quantity: item.quantity,
-          size: item.size,
-          colorName: item.colorName,
-          images: item.images,
-          price: sizeAvailable.finalPrice,
+          title: product.title,
+          reason: `الكمية المطلوبة (${item.quantity}) أكبر من المتاحة (${size.quantity})`
+        });
+        continue;
+      }
+
+      requestedProducts.push({
+        product_id: item.product_id,
+        quantity: item.quantity,
+        size: item.size,
+        colorName: item.colorName,
+        price: size.finalPrice,
+        images: item.images
+      });
+
+      // تحديث الكمية مباشرة في الذاكرة
+      size.quantity -= item.quantity;
+
+      bulkUpdates.push({
+        updateOne: {
+          filter: { _id: product._id },
+          update: { $set: { colorsSizePrice: product.colorsSizePrice } }
         }
-        requestedProducts.push(data)
-      } else {
-        ignoredProducts.push({
-          product_id: item.product_id,
-          title: products.title,
-          reason: `الكمية المطلوبة (${item.quantity}) أكبر من المتاحة (${sizeAvailable.quantity})`
-        });
-      }
-    }
-    for (const item of requestedProducts) {
-      const products = await Product.findById(item.product_id);
-      const colorNameAvailable = products.colorsSizePrice.find(i => i.colorName === item.colorName);
-      const sizeAvailable = colorNameAvailable.sizesAndPrices.find(i => i.size === item.size);
-      sizeAvailable.quantity = sizeAvailable.quantity - item.quantity;
-      await products.save();
+      });
     }
 
+    if (requestedProducts.length === 0) {
+      return res.status(400).json({
+        message: "لم يتم العثور على منتجات صالحة للطلب.",
+        ignoredProducts
+      });
+    }
+
+    // تنفيذ التحديثات دفعة واحدة
+    if (bulkUpdates.length > 0) {
+      await Product.bulkWrite(bulkUpdates);
+    }
+
+    // حساب الأسعار
     const startPrice = requestedProducts.reduce((acc, item) => {
       return acc + item.price * item.quantity;
     }, 0);
-    // حساب الشحن والضرائب
+
     const shippingCost = startPrice > 2000 ? 50 : 0;
     const taxes = paymentMethod !== "cash" ? (3 / 100) * startPrice : 0;
     const fullTotal = startPrice + shippingCost + taxes;
 
-    // التحقق من العنوان 
     const addressInfo = {
       governorate: userAddress.governorate,
       center: userAddress.center,
@@ -112,7 +139,7 @@ export const createOrder = async (req, res) => {
       fullName: userAddress.fullName,
     };
 
-    // // في حالة الدفع النقدي
+    // الطلب النقدي
     if (paymentMethod === "cash") {
       const newOrder = new Order({
         user: _id,
@@ -126,10 +153,14 @@ export const createOrder = async (req, res) => {
       });
 
       await newOrder.save();
-      return res.json({ order: newOrder });
+
+      return res.json({
+        order: newOrder,
+        ignoredProducts
+      });
     }
 
-    // // في حالة الدفع الإلكتروني
+    // الطلب الإلكتروني
     const cachingOrder = new CachingOrder({
       user: _id,
       taxes,
@@ -155,9 +186,11 @@ export const createOrder = async (req, res) => {
     );
 
     return res.json({
-      payment_token: payment_token,
+      payment_token,
       cachingOrderId: cachingOrder._id,
+      ignoredProducts
     });
+
   } catch (error) {
     console.error("Error in createOrder:", error);
     return res.status(500).json({ message: "حدث خطأ أثناء معالجة الطلب." });
