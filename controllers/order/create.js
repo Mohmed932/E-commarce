@@ -169,21 +169,21 @@ export const createOrder = async (req, res) => {
 
     await cachingOrder.save();
 
-    const authToken = await getPaymobToken();
-    const orderId = await createPaymobOrder(
-      authToken,
-      fullTotal,
-      cachingOrder._id
-    );
-    const payment_token = await createPaymentKey(
-      authToken,
-      orderId,
-      user,
-      fullTotal
-    );
+    // const authToken = await getPaymobToken();
+    // const orderId = await createPaymobOrder(
+    //   authToken,
+    //   fullTotal,
+    //   cachingOrder._id
+    // );
+    // const payment_token = await createPaymentKey(
+    //   authToken,
+    //   orderId,
+    //   user,
+    //   fullTotal
+    // );
 
     return res.json({
-      payment_token,
+      // payment_token,
       cachingOrderId: cachingOrder._id,
       ignoredProducts
     });
