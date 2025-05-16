@@ -6,6 +6,7 @@ import { productRoute } from "./product.js";
 import { RateProductRoute } from "./RateProduct.js";
 import { subCategoryRoute } from "./subCategory.js";
 import { uesrRouter } from "./user.js";
+import { wishlistRoute } from "./wishlist.js";
 
 export const routes = (server) => {
   const path = `/api/v1`;
@@ -16,5 +17,6 @@ export const routes = (server) => {
   server.use(`${path}`, subCategoryRoute);
   server.use(`${path}`, brandRoute);
   server.use(`${path}`, cartRoute);
-  server.use(`${path}`, orderRoute);
+ server.use(`${path}`, orderRoute);
+  server.use(`${path}`, wishlistRoute);
 };
