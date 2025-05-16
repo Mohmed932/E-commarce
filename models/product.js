@@ -93,6 +93,9 @@ const productSchema = new Schema({
   ]
 });
 
+
+productSchema.index({ title: "text" });
+
 productSchema.pre("save", function (next) {
   this.colorsSizePrice.forEach(({sizesAndPrices}) => {
     sizesAndPrices.forEach(({finalPrice,price,available,quantity}) => {
