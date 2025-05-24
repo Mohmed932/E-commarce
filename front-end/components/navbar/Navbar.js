@@ -30,7 +30,7 @@ export default function Navbar() {
   ]
 
   return (
-    <nav className="bg-white text-gray-900 p-4 shadow-md sticky top-0 z-50">
+    <nav className="bg-white text-gray-900 p-4 shadow-md sticky top-0 z-50 ">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link href="/" className="text-xl font-bold hover:text-orange-500">

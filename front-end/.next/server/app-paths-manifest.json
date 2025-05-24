@@ -1,0 +1,14 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/auth/forgot_password/page": "app/auth/forgot_password/page.js",
+  "/auth/login/page": "app/auth/login/page.js",
+  "/auth/signup/page": "app/auth/signup/page.js",
+  "/categories/women/page": "app/categories/women/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/kids/page": "app/kids/page.js",
+  "/men/page": "app/men/page.js",
+  "/new-arrivals/page": "app/new-arrivals/page.js",
+  "/page": "app/page.js",
+  "/sale/page": "app/sale/page.js",
+  "/women/page": "app/women/page.js"
+}
