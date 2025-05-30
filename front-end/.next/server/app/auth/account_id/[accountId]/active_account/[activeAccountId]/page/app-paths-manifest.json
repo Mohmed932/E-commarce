@@ -1,0 +1,3 @@
+{
+  "/auth/account_id/[accountId]/active_account/[activeAccountId]/page": "app/auth/account_id/[accountId]/active_account/[activeAccountId]/page.js"
+}

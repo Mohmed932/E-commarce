@@ -16,6 +16,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { handlelogin } from "@/redux/slices/auth/login";
 
 // ✅ مخطط zod للتحقق
 const formSchema = z.object({
@@ -24,6 +26,8 @@ const formSchema = z.object({
 });
 
 export default function LoginComponent() {
+  const dispatch = useDispatch()
+  const { user, loading, error } = useSelector(state => state.login)
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -33,7 +37,8 @@ export default function LoginComponent() {
   });
 
   const onSubmit = (values) => {
-    console.log("✅ البيانات:", values);
+    dispatch(handlelogin(values))
+    console.log({ user, loading, error })
   };
 
   return (

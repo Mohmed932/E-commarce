@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///home/kmfhabib/Desktop/E-commarce/front-end/components/activeAccount/ActiveAccount.js"],"sourcesContent":["'use client';\n\nimport { handleActiveAccount } from '@/redux/slices/auth/active_account';\nimport { useDispatch } from 'react-redux';\n\nconst ActiveAccount = () => {\n    const accountId = \"6839ed9f9576d2a0f6475667\";\n    const activeAccountId = \"4d12de6d651589081e6a23138d0040117cc10021ae2b2f24d8297564f52ad2c1\"\n    const dispatch = useDispatch();\n    useEffect(() => {\n        dispatch(handleActiveAccount({ accountId, activeAccountId}));\n    }, [dispatch, accountId, activeAccountId]);\n    return (\n        <div>ActiveAccount</div>\n    )\n}\n\nexport default ActiveAccount"],"names":[],"mappings":";;;;AAEA;AACA;AAHA;;;;AAKA,MAAM,gBAAgB;IAClB,MAAM,YAAY;IAClB,MAAM,kBAAkB;IACxB,MAAM,WAAW,CAAA,GAAA,yJAAA,CAAA,cAAW,AAAD;IAC3B,UAAU;QACN,SAAS,CAAA,GAAA,yIAAA,CAAA,sBAAmB,AAAD,EAAE;YAAE;YAAW;QAAe;IAC7D,GAAG;QAAC;QAAU;QAAW;KAAgB;IACzC,qBACI,8OAAC;kBAAI;;;;;;AAEb;uCAEe","debugId":null}}]
+}

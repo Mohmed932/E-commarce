@@ -16,18 +16,24 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useDispatch,  useSelector } from "react-redux";
+import { handleregister } from "@/redux/slices/auth/register";
 
-// ✅ مخطط zod للتحقق
+// ✅ مخطط التحقق zod
 const formSchema = z.object({
+  name: z.string().min(3, "الاسم يجب أن يكون 3 أحرف على الأقل"),
   username: z.string().min(3, "اسم المستخدم يجب أن يكون 3 أحرف على الأقل"),
   email: z.string().email("البريد الإلكتروني غير صالح"),
   password: z.string().min(6, "كلمة المرور يجب أن تكون 6 أحرف على الأقل"),
 });
 
 export default function SignUpComponents() {
+  const dispatch = useDispatch();
+  const { newUser, loading, error } = useSelector(state => state.register)
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      name: "",
       username: "",
       email: "",
       password: "",
@@ -35,18 +41,34 @@ export default function SignUpComponents() {
   });
 
   const onSubmit = (values) => {
-    console.log("✅ البيانات:", values);
+    dispatch(handleregister(values));
+    console.log({ newUser, loading, error } )
   };
 
   return (
-    <div
-      className="w-full min-h-screen bg-[#f3f4f6] flex justify-center items-center p-4"
-    >
+    <div className="w-full min-h-screen bg-[#f3f4f6] flex justify-center items-center p-4">
       <div className="w-full max-w-lg bg-white backdrop-blur-md rounded-3xl shadow-2xl p-10" dir="rtl">
         <h1 className="text-4xl font-bold text-[#03071e] mb-8 text-center">إنشاء حساب</h1>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+
+            {/* ✅ خانة الاسم الكامل */}
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-[#370617]">الاسم الكامل</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="الاسم الكامل" className="text-right border-[#e85d04] focus:ring-[#dc2f02]" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* اسم المستخدم */}
             <FormField
               control={form.control}
               name="username"
@@ -61,6 +83,7 @@ export default function SignUpComponents() {
               )}
             />
 
+            {/* البريد الإلكتروني */}
             <FormField
               control={form.control}
               name="email"
@@ -75,6 +98,7 @@ export default function SignUpComponents() {
               )}
             />
 
+            {/* كلمة المرور */}
             <FormField
               control={form.control}
               name="password"
@@ -100,7 +124,6 @@ export default function SignUpComponents() {
             >
               إنشاء حساب
             </Button>
-
           </form>
         </Form>
 

@@ -8,7 +8,9 @@ import { createToken } from "../../../utils/token/token.js";
 
 export const loginAccount = async (req, res) => {
   const { email, password } = req.body;
-
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password are required" });
+  }
   try {
     // التحقق من صحة البيانات المدخلة
     const { error } = loginVaildator.validate(req.body, { abortEarly: false });
@@ -42,7 +44,7 @@ export const loginAccount = async (req, res) => {
       await activeUser.save();
 
       // إنشاء رابط التفعيل
-      const activeLink = `${process.env.DOMAIN}/api/v1/auth/account_id/${user._id}/active_account/${token}`;
+      const activeLink = `${process.env.FRONT_DOMAIN}/auth/account_id/${user._id}/active_account/${token}`;
 
       // إرسال رابط التفعيل إلى البريد الإلكتروني
       const kind = "activeAccount";

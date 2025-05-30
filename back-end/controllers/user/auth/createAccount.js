@@ -57,8 +57,7 @@ export const createAccount = async (req, res) => {
     await activeUser.save();
 
     // إنشاء رابط التفعيل
-    const activeLink = `${process.env.DOMAIN}/api/v1/auth/account_id/${newUser._id}/active_account/${token}`;
-
+    const activeLink = `${process.env.FRONT_DOMAIN}/auth/account_id/${newUser._id}/active_account/${token}`;
     // إرسال رابط التفعيل إلى البريد الإلكتروني
     const kind = "activeAccount";
     await SendEmail(email, activeLink, kind);
