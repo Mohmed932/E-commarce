@@ -34,6 +34,7 @@ uesrRouter
   .route("/account_id/:id/reset_password/:token")
   .put(apiLimiterAuth, validateId, resetPassword);
 uesrRouter.route("/profile").get(verifyUser, readProfile);
+uesrRouter.route("/check_user").get( verifyUser, readProfile);
 uesrRouter
   .route("/avatar")
   .post(verifyUser, upload, handleFileUploadError, createAvatar)

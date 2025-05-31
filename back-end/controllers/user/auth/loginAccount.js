@@ -9,7 +9,7 @@ import { createToken } from "../../../utils/token/token.js";
 export const loginAccount = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return res.status(400).json({ message: "Email and password are required" });
+    return res.status(400).json({ message: "البريد الإلكتروني وكلمة المرور مطلوبان" });
   }
   try {
     // التحقق من صحة البيانات المدخلة

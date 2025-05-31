@@ -3,12 +3,16 @@ import { configureStore } from "@reduxjs/toolkit";
 import loginReducer from './slices/auth/login'
 import Authregister from './slices/auth/register'
 import ActiveAccountSlice from './slices/auth/active_account'
+import profileSlice from './slices/auth/readProfile'
+import ResetPasswordSlice from './slices/auth/resetPassword'
 
 const store = configureStore({
   reducer: {
     login: loginReducer,
     register:Authregister,
-    active:ActiveAccountSlice
+    active:ActiveAccountSlice,
+    profile: profileSlice,
+    resetPassword: ResetPasswordSlice
   },
 });
 

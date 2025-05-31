@@ -1,6 +1,9 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
+  "/account/page": "app/account/page.js",
   "/auth/account_id/[accountId]/active_account/[activeAccountId]/page": "app/auth/account_id/[accountId]/active_account/[activeAccountId]/page.js",
+  "/auth/forgot_password/account_id/[accountId]/check_link/[checkLink]/page": "app/auth/forgot_password/account_id/[accountId]/check_link/[checkLink]/page.js",
+  "/auth/forgot_password/page": "app/auth/forgot_password/page.js",
   "/auth/login/page": "app/auth/login/page.js",
   "/auth/signup/page": "app/auth/signup/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",

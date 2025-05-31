@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {Menu, X,} from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import Logo from './Logo'
@@ -11,10 +11,13 @@ import Wishlist from './Wishlist'
 import Cart from './Cart'
 import UserDropdown from './UserDropdown'
 import MobileMenu from './MobileMenu'
+import { readProfile } from '@/redux/slices/auth/readProfile'
+import { useDispatch } from 'react-redux'
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
   const toggleMenu = () => setOpen(!open)
+  const dispatch = useDispatch()
 
   // عداد مؤقت - ممكن تربطه بـ Zustand أو Context لاحقًا
   const cartCount = 3
@@ -28,6 +31,9 @@ export default function Navbar() {
     { name: 'أطفال', href: '/kids' },
     // { name: 'اتصل بنا', href: '/contact' },
   ]
+    useEffect(() => {
+      dispatch(readProfile());
+    }, [dispatch]);
 
   return (
     <nav className="bg-white text-gray-900 p-4 shadow-md sticky top-0 z-50 ">

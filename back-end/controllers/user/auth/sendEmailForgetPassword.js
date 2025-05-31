@@ -19,7 +19,7 @@ export const sendEmailForgetPassword = async (req, res) => {
     await resetPassword.save();
 
     // إنشاء رابط التفعيل
-    const activeLink = `${process.env.DOMAIN}/api/v1/auth/account_id/${existingUser._id}/check_link/${token}`;
+    const activeLink = `${process.env.FRONT_DOMAIN}/auth/forgot_password/account_id/${existingUser._id}/check_link/${token}`;
 
     // إرسال رابط التفعيل إلى البريد الإلكتروني
     const kind = "resetPassword";

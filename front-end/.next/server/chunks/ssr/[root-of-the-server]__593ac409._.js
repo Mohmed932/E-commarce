@@ -1134,7 +1134,6 @@ const handleActiveAccount = (0, __TURBOPACK__imported__module__$5b$project$5d2f$
         }
         return res;
     } catch (error) {
-        console.log(error);
         return thunkAPI.rejectWithValue({
             message: "Network error"
         });
@@ -1185,7 +1184,8 @@ const store = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2
     reducer: {
         login: __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$auth$2f$login$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"],
         register: __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$auth$2f$register$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"],
-        active: __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$auth$2f$active_account$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"]
+        active: __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$auth$2f$active_account$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"],
+        profile: profileSlice
     }
 });
 const __TURBOPACK__default__export__ = store;
