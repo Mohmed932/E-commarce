@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -10,14 +10,27 @@ import { Separator } from "@/components/ui/separator"
 import { Pencil } from "lucide-react"
 import { Progress } from "@/components/ui/progress"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useSelector } from "react-redux"
 
 export default function AccountSettings() {
   const [uploading, setUploading] = useState(false)
   const [progress, setProgress] = useState(0)
+
+  const { profile, profileLoading, profileError } = useSelector((state) => state.profile)
+
   const [selectedImage, setSelectedImage] = useState(null)
-  const [name, setName] = useState("صوفيا كارتر");
-  const [username, setUsername] = useState("sophia.carter");
-  const [email, setEmail] = useState("mohmed@gmail.com");
+  const [name, setName] = useState("")
+  const [username, setUsername] = useState("")
+  const [email, setEmail] = useState("")
+
+  useEffect(() => {
+    if (profile && profile.user) {
+      setSelectedImage(profile.user.avatar?.img || null)
+      setName(profile.user.name || "")
+      setUsername(profile.user.username || "")
+      setEmail(profile.user.email || "")
+    }
+  }, [profile])
 
   function handleFileChange(e) {
     const file = e.target.files && e.target.files[0]
@@ -41,6 +54,26 @@ export default function AccountSettings() {
     }, 200)
   }
 
+  if (profileLoading) {
+    return (
+      <div className="max-w-4xl mx-auto py-10 px-4">
+        <h1 className="text-2xl font-bold mb-4">تحميل البيانات...</h1>
+        <Skeleton className="h-10 mb-2 rounded-md" />
+        <Skeleton className="h-10 mb-2 rounded-md" />
+        <Skeleton className="h-32 w-32 rounded-md" />
+      </div>
+    )
+  }
+
+  if (profileError) {
+    return (
+      <div className="max-w-4xl mx-auto py-10 px-4 text-red-500">
+        <h1 className="text-2xl font-bold mb-4">حدث خطأ أثناء تحميل البيانات</h1>
+        <p className="text-sm">{profileError}</p>
+      </div>
+    )
+  }
+
   return (
     <div dir="rtl" className="max-w-4xl mx-auto py-10 px-4 font-sans">
       <h1 className="text-3xl font-bold">الحساب</h1>
@@ -48,55 +81,27 @@ export default function AccountSettings() {
 
       <Tabs defaultValue="general" className="mt-6" dir="rtl">
         <TabsList className="mb-6 bg-[#ff6900] flex gap-2 p-1 rounded-lg">
-          <TabsTrigger
-            value="general"
-            className="data-[state=active]:bg-white data-[state=active]:text-[#ff6900] transition-all duration-300 px-4 py-2 rounded-md text-white"
-          >
-            عام
-          </TabsTrigger>
-          <TabsTrigger
-            value="password"
-            className="data-[state=active]:bg-white data-[state=active]:text-[#ff6900] transition-all duration-300 px-4 py-2 rounded-md text-white"
-          >
-            كلمة المرور
-          </TabsTrigger>
-          <TabsTrigger
-            value="addresses"
-            className="data-[state=active]:bg-white data-[state=active]:text-[#ff6900] transition-all duration-300 px-4 py-2 rounded-md text-white"
-          >
-            العناوين
-          </TabsTrigger>
+          <TabsTrigger value="general" className="data-[state=active]:bg-white data-[state=active]:text-[#ff6900] transition-all duration-300 px-4 py-2 rounded-md text-white">عام</TabsTrigger>
+          <TabsTrigger value="password" className="data-[state=active]:bg-white data-[state=active]:text-[#ff6900] transition-all duration-300 px-4 py-2 rounded-md text-white">كلمة المرور</TabsTrigger>
+          <TabsTrigger value="addresses" className="data-[state=active]:bg-white data-[state=active]:text-[#ff6900] transition-all duration-300 px-4 py-2 rounded-md text-white">العناوين</TabsTrigger>
         </TabsList>
 
-        {/* الملف الشخصي */}
+        {/* عام */}
         <TabsContent value="general">
           <h2 className="text-xl font-semibold mb-4">الملف الشخصي</h2>
           <div className="flex flex-row-reverse gap-6 items-start" dir="ltr">
             <div className="flex flex-col items-center gap-4">
-              <label
-                htmlFor="file-upload"
-                className="cursor-pointer inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-400 to-red-500 text-white font-semibold rounded-lg shadow-lg hover:scale-105 transition-transform"
-              >
+              <label htmlFor="file-upload" className="cursor-pointer inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-400 to-red-500 text-white font-semibold rounded-lg shadow-lg hover:scale-105 transition-transform">
                 <Pencil className="w-5 h-5" />
                 اختر صورة
               </label>
 
-              <input
-                type="file"
-                id="file-upload"
-                accept="image/*"
-                onChange={handleFileChange}
-                className="hidden"
-              />
+              <input type="file" id="file-upload" accept="image/*" onChange={handleFileChange} className="hidden" />
 
               {uploading ? (
                 <Skeleton className="mt-4 w-32 h-32 rounded-lg" />
               ) : selectedImage ? (
-                <img
-                  src={selectedImage}
-                  alt="معاينة الصورة"
-                  className="mt-4 w-32 h-32 object-cover rounded-lg shadow-md border"
-                />
+                <img src={selectedImage} alt="معاينة الصورة" className="mt-4 w-32 h-32 object-cover rounded-lg shadow-md border" />
               ) : null}
             </div>
           </div>
@@ -107,13 +112,7 @@ export default function AccountSettings() {
               {uploading ? (
                 <Skeleton className="h-10 w-full rounded-md" />
               ) : (
-                <Input
-                  className="bg-white"
-                  id="name"
-                  placeholder="الاسم"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
+                <Input id="name" className="bg-white" value={name} onChange={(e) => setName(e.target.value)} />
               )}
             </div>
             <div>
@@ -121,13 +120,7 @@ export default function AccountSettings() {
               {uploading ? (
                 <Skeleton className="h-10 w-full rounded-md" />
               ) : (
-                <Input
-                  className="bg-white"
-                  id="username"
-                  placeholder="اسم المستخدم"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
+                <Input id="username" className="bg-white" value={username} onChange={(e) => setUsername(e.target.value)} />
               )}
             </div>
             <div>
@@ -135,13 +128,7 @@ export default function AccountSettings() {
               {uploading ? (
                 <Skeleton className="h-10 w-full rounded-md" />
               ) : (
-                <Input
-                  className="bg-white"
-                  id="email"
-                  placeholder="البريد الإلكتروني"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
+                <Input id="email" className="bg-white" value={email} onChange={(e) => setEmail(e.target.value)} />
               )}
             </div>
           </div>
@@ -170,16 +157,16 @@ export default function AccountSettings() {
             ) : (
               <>
                 <div>
-                  <Label className="my-3" htmlFor="current-password">كلمة المرور الحالية</Label>
-                  <Input className="bg-white" id="current-password" type="password" placeholder="أدخل كلمة المرور الحالية" />
+                  <Label htmlFor="current-password">كلمة المرور الحالية</Label>
+                  <Input id="current-password" type="password" placeholder="أدخل كلمة المرور الحالية" />
                 </div>
                 <div>
-                  <Label className="my-3" htmlFor="new-password">كلمة المرور الجديدة</Label>
-                  <Input className="bg-white" id="new-password" type="password" placeholder="أدخل كلمة المرور الجديدة" />
+                  <Label htmlFor="new-password">كلمة المرور الجديدة</Label>
+                  <Input id="new-password" type="password" placeholder="أدخل كلمة المرور الجديدة" />
                 </div>
                 <div>
-                  <Label className="my-3" htmlFor="confirm-password">تأكيد كلمة المرور الجديدة</Label>
-                  <Input className="bg-white" id="confirm-password" type="password" placeholder="أكد كلمة المرور الجديدة" />
+                  <Label htmlFor="confirm-password">تأكيد كلمة المرور الجديدة</Label>
+                  <Input id="confirm-password" type="password" placeholder="أكد كلمة المرور الجديدة" />
                 </div>
               </>
             )}

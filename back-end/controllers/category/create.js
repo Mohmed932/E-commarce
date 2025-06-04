@@ -5,6 +5,7 @@ import { categoryVaildator } from "../../services/categoryVaildator.js";
 export const createCategory = async (req, res) => {
   const { _id } = req.user;
   const { name } = req.body;
+  // console.log("req.user", req.user);
   try {
     // التحقق من صحة البيانات المدخلة
     const { error } = categoryVaildator.validate(req.body, {
