@@ -19,7 +19,7 @@ export const handleActiveAccount = createAsyncThunk(
       }
       return res;
     } catch (error) {
-      return thunkAPI.rejectWithValue({ message: "Network error" });
+      return thunkAPI.rejectWithValue({ message: error.message || "An error occurred" });
     }
   }
 );

@@ -5,6 +5,7 @@ import Authregister from './slices/auth/register'
 import ActiveAccountSlice from './slices/auth/active_account'
 import profileSlice from './slices/auth/readProfile'
 import ResetPasswordSlice from './slices/auth/resetPassword'
+import subCategorySlice from './slices/category/subCategory'
 
 const store = configureStore({
   reducer: {
@@ -12,7 +13,8 @@ const store = configureStore({
     register:Authregister,
     active:ActiveAccountSlice,
     profile: profileSlice,
-    resetPassword: ResetPasswordSlice
+    resetPassword: ResetPasswordSlice,
+    subCategory: subCategorySlice,
   },
 });
 

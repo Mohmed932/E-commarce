@@ -1330,7 +1330,7 @@ const handleActiveAccount = (0, __TURBOPACK__imported__module__$5b$project$5d2f$
         return res;
     } catch (error) {
         return thunkAPI.rejectWithValue({
-            message: "Network error"
+            message: error.message || "An error occurred"
         });
     }
 });
@@ -1532,7 +1532,8 @@ const store = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2
         register: __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$auth$2f$register$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"],
         active: __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$auth$2f$active_account$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"],
         profile: __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$auth$2f$readProfile$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"],
-        resetPassword: __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$auth$2f$resetPassword$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"]
+        resetPassword: __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$auth$2f$resetPassword$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"],
+        subCategory: subCategorySlice
     }
 });
 const __TURBOPACK__default__export__ = store;
