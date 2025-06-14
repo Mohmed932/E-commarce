@@ -1,4 +1,4 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar">
 
 <head>
@@ -13,9 +13,29 @@
     <label>اسم المنتج:</label>
     <input type="text" id="title" required /><br />
 
-    <div id="colorInputs"></div>
+    <label>نسبة الخصم:</label>
+    <input type="number" id="discount" value="10" /><br />
 
+    <label>التصنيف (ID):</label>
+    <input type="text" id="category" value="68407b787192141aeca28d7e" /><br />
+
+    <label>اسم الماركة:</label>
+    <input type="text" id="brand" value="Twon Team" /><br />
+
+    <h3>المواصفات:</h3>
+    <div id="specificationsInputs">
+      <button type="button" onclick="addSpecification()">+ إضافة مواصفة</button><br />
+    </div>
+
+    <h3>نظرة عامة (Overview):</h3>
+    <div id="overviewInputs">
+      <button type="button" onclick="addOverview()">+ إضافة نقطة مميزة</button><br />
+    </div>
+
+    <h3>ألوان المنتج:</h3>
+    <div id="colorInputs"></div>
     <button type="button" onclick="addColorInput()">+ إضافة لون</button><br /><br />
+
     <button type="submit">رفع المنتج</button>
   </form>
 
@@ -49,20 +69,54 @@
 
       const sizeDiv = document.createElement("div");
       sizeDiv.innerHTML = `
-    <label>مقاس جديد:</label>
-    <input type="text" name="sizeName${colorCount}_${sizeContainer.children.length - 1}" placeholder="اسم المقاس" required />
-    <label>السعر:</label>
-    <input type="number" name="sizePrice${colorCount}_${sizeContainer.children.length - 1}" placeholder="السعر للمقاس" required />
-    <label>الكمية:</label>
-    <input type="number" name="sizeQuantity${colorCount}_${sizeContainer.children.length - 1}" placeholder="الكمية للمقاس" required /><br/><br/>
-  `;
+        <label>مقاس جديد:</label>
+        <input type="text" name="sizeName${colorCount}_${sizeContainer.children.length - 1}" placeholder="اسم المقاس" required />
+        <label>السعر:</label>
+        <input type="number" name="sizePrice${colorCount}_${sizeContainer.children.length - 1}" placeholder="السعر للمقاس" required />
+        <label>الكمية:</label>
+        <input type="number" name="sizeQuantity${colorCount}_${sizeContainer.children.length - 1}" placeholder="الكمية للمقاس" required /><br/><br/>
+      `;
       sizeContainer.appendChild(sizeDiv);
+    }
+
+    function addSpecification() {
+      const container = document.getElementById("specificationsInputs");
+      const div = document.createElement("div");
+      div.innerHTML = `
+        <input type="text" placeholder="العنوان (مثل: الخامة)" class="spec-key" required />
+        <input type="text" placeholder="القيمة (مثل: 100% قطن)" class="spec-value" required /><br />
+      `;
+      container.appendChild(div);
+    }
+
+    function addOverview() {
+      const container = document.getElementById("overviewInputs");
+      const div = document.createElement("div");
+      div.innerHTML = `
+        <input type="text" placeholder="نقطة مميزة (مثل: مريح)" class="overview-item" required /><br />
+      `;
+      container.appendChild(div);
     }
 
     document.getElementById("productForm").addEventListener("submit", function (event) {
       event.preventDefault();
 
       const title = document.getElementById("title").value;
+      const discount = document.getElementById("discount").value;
+      const category = document.getElementById("category").value;
+      const brand = document.getElementById("brand").value;
+
+      const specifications = [];
+      document.querySelectorAll("#specificationsInputs div").forEach((div) => {
+        const key = div.querySelector(".spec-key").value;
+        const value = div.querySelector(".spec-value").value;
+        specifications.push({ key, value });
+      });
+
+      const overviewItems = Array.from(document.querySelectorAll(".overview-item")).map(
+        (input) => input.value
+      );
+      const overview = [{ key: "المميزات", value: overviewItems }];
 
       const formData = new FormData();
       const colorsSizePrice = [];
@@ -71,12 +125,10 @@
         const colorNameInput = document.querySelector(`input[name="colorName${i}"]`);
         const filesInput = document.querySelector(`input[name="colorImages${i}"]`);
 
-        // التحقق من وجود الحقول قبل الوصول إليها
         if (colorNameInput && filesInput) {
           const colorName = colorNameInput.value;
           const files = filesInput.files;
 
-          // جمع بيانات المقاسات والأسعار الخاصة بكل لون
           const sizesAndPrices = [];
           const sizeInputs = document.getElementById(`sizeInputs${i}`);
           const sizeInputsArray = Array.from(sizeInputs.children);
@@ -92,13 +144,12 @@
               quantity: sizeQuantity
             });
           });
-          // إضافة الصور مع أسماء مميزة
+
           for (let file of files) {
             const uniqueName = `${colorName}_${file.name}`;
             formData.append("images", file, uniqueName);
           }
 
-          // تخزين بيانات الألوان والمقاسات والأسعار
           colorsSizePrice.push({
             colorName,
             sizesAndPrices
@@ -106,31 +157,22 @@
         }
       }
 
-      // إضافة البيانات الأساسية للمنتج
       formData.append(
         "data",
         JSON.stringify({
           title,
-          discount: 10,
-          category: "67e78d6b590f7744d58d228e",
-          brand: "Twon Team",
-          specifications: [
-            { key: "الخامة", value: "100% قطن ناعم ومتين" },
-            { key: "نوع الياقة", value: "ياقة دائرية مضللة بخياطة مزدوجة" }
-          ],
-          overview: [
-            {
-              key: "المميزات",
-              value: ["مريح", "مقاوم للتقلص", "تصميم عصري"]
-            }
-          ],
+          discount,
+          category,
+          brand,
+          specifications,
+          overview,
           colorsSizePrice
         })
       );
 
-      // إرسال البيانات إلى الخادم
       fetch("http://localhost:5000/api/v1/product", {
         method: "POST",
+        credentials:"include",
         body: formData
       })
         .then((res) => res.json())
@@ -140,13 +182,14 @@
   </script>
 </body>
 
-</html> -->
+</html>
 
 
 
 
 
-<!DOCTYPE html>
+
+<!-- <!DOCTYPE html>
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
@@ -200,4 +243,4 @@
     });
   </script>
 </body>
-</html>
+</html> -->

@@ -1001,6 +1001,9 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Collection$2f$FillterCollection$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/Collection/FillterCollection.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/sheet.jsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/button.jsx [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-redux/dist/react-redux.mjs [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$product$2f$read$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/redux/slices/product/read.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [app-ssr] (ecmascript)");
 "use client";
 ;
 ;
@@ -1009,669 +1012,30 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2
 ;
 ;
 ;
-const products = [
-    {
-        name: "تيشيرت كلاسيكي",
-        price: 99,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "tshirts",
-        size: "s",
-        color: "black",
-        rating: 5,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "بنطال تشينو",
-        price: 66,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "trousers",
-        size: "m",
-        color: "green",
-        rating: 4,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "جاكيت بومبر",
-        price: 80,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "jackets",
-        size: "l",
-        color: "brown",
-        rating: 2,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "أحذية تشيلسي",
-        price: 104,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "shoes",
-        size: "xl",
-        color: "beige",
-        rating: 5,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "قميص بولو",
-        price: 22,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "tshirts",
-        size: "s",
-        color: "blue",
-        rating: 3,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "بنطال كارغو",
-        price: 95,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "trousers",
-        size: "m",
-        color: "black",
-        rating: 2,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "سترة مبطنة",
-        price: 91,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "jackets",
-        size: "l",
-        color: "green",
-        rating: 4,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "أحذية لوفر",
-        price: 38,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "shoes",
-        size: "xl",
-        color: "brown",
-        rating: 1,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "تيشيرت جرافيك",
-        price: 77,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "tshirts",
-        size: "s",
-        color: "beige",
-        rating: 4,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "جاكيت جينز",
-        price: 29,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "jackets",
-        size: "m",
-        color: "blue",
-        rating: 2,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "قميص كتان",
-        price: 83,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "tshirts",
-        size: "l",
-        color: "black",
-        rating: 5,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "بنطال جينز",
-        price: 79,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "trousers",
-        size: "xl",
-        color: "green",
-        rating: 3,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "جاكيت مطري",
-        price: 92,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "jackets",
-        size: "s",
-        color: "brown",
-        rating: 4,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "أحذية رياضية",
-        price: 61,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "shoes",
-        size: "m",
-        color: "beige",
-        rating: 2,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "قميص رسمي",
-        price: 106,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "tshirts",
-        size: "l",
-        color: "blue",
-        rating: 5,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "سويت شيرت",
-        price: 63,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "tshirts",
-        size: "xl",
-        color: "black",
-        rating: 1,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "بنطال رياضي",
-        price: 58,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "trousers",
-        size: "s",
-        color: "green",
-        rating: 3,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "جاكيت منفوخ",
-        price: 72,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "jackets",
-        size: "m",
-        color: "brown",
-        rating: 4,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "أحذية جلدية",
-        price: 44,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "shoes",
-        size: "l",
-        color: "beige",
-        rating: 5,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "قميص نص كم",
-        price: 55,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "tshirts",
-        size: "xl",
-        color: "blue",
-        rating: 3,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "تيشيرت بفتحة",
-        price: 35,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "tshirts",
-        size: "s",
-        color: "black",
-        rating: 2,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "شورت كاجوال",
-        price: 68,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "trousers",
-        size: "m",
-        color: "green",
-        rating: 4,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "معطف صوفي",
-        price: 108,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "jackets",
-        size: "l",
-        color: "brown",
-        rating: 5,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "أحذية برقبة",
-        price: 116,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "shoes",
-        size: "xl",
-        color: "beige",
-        rating: 1,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "قميص كاجوال",
-        price: 49,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "tshirts",
-        size: "s",
-        color: "blue",
-        rating: 3,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "كنزة صوف",
-        price: 85,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "tshirts",
-        size: "m",
-        color: "black",
-        rating: 2,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "شورت جينز",
-        price: 41,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "trousers",
-        size: "l",
-        color: "green",
-        rating: 4,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "جاكيت رسمي",
-        price: 93,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "jackets",
-        size: "xl",
-        color: "brown",
-        rating: 5,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "أحذية سنيكرز",
-        price: 111,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "shoes",
-        size: "s",
-        color: "beige",
-        rating: 3,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "قميص مخطط",
-        price: 74,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "tshirts",
-        size: "m",
-        color: "blue",
-        rating: 4,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "تيشيرت بدون أكمام",
-        price: 36,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "tshirts",
-        size: "l",
-        color: "black",
-        rating: 1,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "بنطال برباط",
-        price: 86,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "trousers",
-        size: "xl",
-        color: "green",
-        rating: 2,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "معطف طويل",
-        price: 120,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "jackets",
-        size: "s",
-        color: "brown",
-        rating: 5,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "أحذية جلد سويدي",
-        price: 87,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "shoes",
-        size: "m",
-        color: "beige",
-        rating: 4,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "قميص زري",
-        price: 70,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "tshirts",
-        size: "l",
-        color: "blue",
-        rating: 3,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "كنزة برقبة عالية",
-        price: 62,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "tshirts",
-        size: "xl",
-        color: "black",
-        rating: 5,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "شورت قطني",
-        price: 47,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "trousers",
-        size: "s",
-        color: "green",
-        rating: 2,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "جاكيت مبطن",
-        price: 69,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "jackets",
-        size: "m",
-        color: "brown",
-        rating: 4,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "أحذية رسمية",
-        price: 101,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "shoes",
-        size: "l",
-        color: "beige",
-        rating: 5,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "قميص مزخرف",
-        price: 73,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "tshirts",
-        size: "xl",
-        color: "blue",
-        rating: 1,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "تيشيرت بطبعة",
-        price: 42,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "tshirts",
-        size: "s",
-        color: "black",
-        rating: 3,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "بنطال رسمي",
-        price: 81,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "trousers",
-        size: "m",
-        color: "green",
-        rating: 2,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "جاكيت خفيف",
-        price: 109,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "jackets",
-        size: "l",
-        color: "brown",
-        rating: 4,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "أحذية تريل",
-        price: 107,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "shoes",
-        size: "xl",
-        color: "beige",
-        rating: 5,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "قميص بجيوب",
-        price: 90,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "tshirts",
-        size: "s",
-        color: "blue",
-        rating: 3,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "كنزة خفيفة",
-        price: 76,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "tshirts",
-        size: "m",
-        color: "black",
-        rating: 2,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "بنطال بجيوب",
-        price: 31,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "trousers",
-        size: "l",
-        color: "green",
-        rating: 4,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "جاكيت بغطاء",
-        price: 94,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "jackets",
-        size: "xl",
-        color: "brown",
-        rating: 5,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "أحذية شتوية",
-        price: 53,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "shoes",
-        size: "s",
-        color: "beige",
-        rating: 1,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    },
-    {
-        name: "قميص ملون",
-        price: 60,
-        image: "https://townteam.com/cdn/shop/files/TSH25SXRO20344TM1-Black-2_1880x.jpg",
-        category: "tshirts",
-        size: "m",
-        color: "blue",
-        rating: 4,
-        colors: [
-            "#f0e0ee",
-            "#ff9900"
-        ]
-    }
-];
-function Collection({ nameCollection }) {
+;
+;
+;
+function Collection({ nameCollection, mainCategories }) {
     const [category, setCategory] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [size, setSize] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [color, setColor] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [rating, setRating] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
     const [maxPrice, setMaxPrice] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(150);
+    const dispatch = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useDispatch"])();
+    const { products, loading, error } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useSelector"])((state)=>state.readproducts);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$product$2f$read$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fetchProductsByCategory"])({
+            id: mainCategories.id,
+            type: mainCategories.label
+        }));
+    }, []);
+    const data = products[mainCategories.label]?.data;
     const filtered = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMemo"])(()=>{
-        return products.filter((p)=>{
-            return (!category || p.category === category) && (!size || p.size === size) && (!color || p.color === color) && (!rating || p.rating >= parseInt(rating)) && p.price <= maxPrice;
+        return data?.filter((p)=>{
+            return (!category || p.category === category) && (!size || p.size === size) && (!color || p.colorsSizePrice.some((c)=>c.colorName === color)) && (!rating || p.rating >= parseInt(rating)) && p.colorsSizePrice[0].sizesAndPrices[0].finalPrice <= maxPrice;
         });
     }, [
+        data,
         category,
         size,
         color,
@@ -1700,12 +1064,12 @@ function Collection({ nameCollection }) {
                                 children: "فتح الفلاتر"
                             }, void 0, false, {
                                 fileName: "[project]/components/Collection/Collection.js",
-                                lineNumber: 98,
+                                lineNumber: 53,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/components/Collection/Collection.js",
-                            lineNumber: 97,
+                            lineNumber: 52,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SheetContent"], {
@@ -1721,23 +1085,23 @@ function Collection({ nameCollection }) {
                                 resetFilters: resetFilters
                             }, void 0, false, {
                                 fileName: "[project]/components/Collection/Collection.js",
-                                lineNumber: 105,
+                                lineNumber: 60,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/components/Collection/Collection.js",
-                            lineNumber: 104,
+                            lineNumber: 59,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/Collection/Collection.js",
-                    lineNumber: 96,
+                    lineNumber: 51,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/Collection/Collection.js",
-                lineNumber: 95,
+                lineNumber: 50,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1752,12 +1116,12 @@ function Collection({ nameCollection }) {
                     resetFilters: resetFilters
                 }, void 0, false, {
                     fileName: "[project]/components/Collection/Collection.js",
-                    lineNumber: 120,
+                    lineNumber: 74,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/Collection/Collection.js",
-                lineNumber: 119,
+                lineNumber: 73,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -1768,89 +1132,178 @@ function Collection({ nameCollection }) {
                         children: nameCollection
                     }, void 0, false, {
                         fileName: "[project]/components/Collection/Collection.js",
-                        lineNumber: 133,
+                        lineNumber: 85,
                         columnNumber: 9
                     }, this),
+                    loading ? // Skeleton أثناء التحميل
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6",
-                        children: filtered.map((product)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
-                                className: "rounded-2xl shadow-md relative overflow-hidden",
+                        className: "flex flex-wrap gap-6 justify-center",
+                        children: Array.from({
+                            length: 10
+                        }).map((_, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
+                                className: "w-[250px] rounded-2xl shadow-md overflow-hidden bg-white",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
-                                    className: "p-4",
+                                    className: "p-2",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "animate-pulse space-y-2",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "w-full h-[150px] bg-gray-200 rounded-lg"
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/Collection/Collection.js",
+                                                lineNumber: 94,
+                                                columnNumber: 21
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "h-4 bg-gray-200 rounded w-3/4"
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/Collection/Collection.js",
+                                                lineNumber: 95,
+                                                columnNumber: 21
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "h-3 bg-gray-200 rounded w-1/2"
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/Collection/Collection.js",
+                                                lineNumber: 96,
+                                                columnNumber: 21
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "h-3 bg-gray-200 rounded w-1/3"
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/Collection/Collection.js",
+                                                lineNumber: 97,
+                                                columnNumber: 21
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex gap-1 justify-end mt-2",
+                                                children: [
+                                                    1,
+                                                    2,
+                                                    3
+                                                ].map((c)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "w-4 h-4 rounded-full bg-gray-300"
+                                                    }, c, false, {
+                                                        fileName: "[project]/components/Collection/Collection.js",
+                                                        lineNumber: 100,
+                                                        columnNumber: 25
+                                                    }, this))
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/Collection/Collection.js",
+                                                lineNumber: 98,
+                                                columnNumber: 21
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/components/Collection/Collection.js",
+                                        lineNumber: 93,
+                                        columnNumber: 19
+                                    }, this)
+                                }, void 0, false, {
+                                    fileName: "[project]/components/Collection/Collection.js",
+                                    lineNumber: 92,
+                                    columnNumber: 17
+                                }, this)
+                            }, idx, false, {
+                                fileName: "[project]/components/Collection/Collection.js",
+                                lineNumber: 91,
+                                columnNumber: 15
+                            }, this))
+                    }, void 0, false, {
+                        fileName: "[project]/components/Collection/Collection.js",
+                        lineNumber: 89,
+                        columnNumber: 11
+                    }, this) : error ? // عرض الخطأ
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "text-center text-red-500 font-semibold",
+                        children: "حدث خطأ أثناء تحميل المنتجات، يرجى المحاولة لاحقًا."
+                    }, void 0, false, {
+                        fileName: "[project]/components/Collection/Collection.js",
+                        lineNumber: 110,
+                        columnNumber: 11
+                    }, this) : // عرض المنتجات بعد التحميل بنجاح
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "flex flex-wrap gap-6 justify-center",
+                        children: data?.map((product, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
+                                className: "w-[250px] rounded-2xl shadow-md overflow-hidden bg-white",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
+                                    className: "p-2",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "relative",
+                                            className: "relative flex flex-col items-center justify-center",
                                             children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
-                                                    src: product.image,
-                                                    alt: product.name,
-                                                    className: "w-full h-48 object-cover rounded-xl"
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                                                    src: product.colorsSizePrice[0].images[0].img,
+                                                    alt: product.title,
+                                                    width: 150,
+                                                    height: 150,
+                                                    className: "object-cover rounded-lg"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/Collection/Collection.js",
-                                                    lineNumber: 140,
-                                                    columnNumber: 19
+                                                    lineNumber: 124,
+                                                    columnNumber: 23
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "absolute top-2 right-2 flex flex-col gap-2",
+                                                    className: "absolute top-1 right-1 flex flex-col gap-1 z-10",
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                            className: "bg-white p-2 rounded-full shadow hover:bg-rose-100 transition-all duration-200 hover:scale-110 active:scale-95",
+                                                            className: "bg-white p-1 rounded-full shadow hover:bg-rose-100 transition-all duration-200 hover:scale-110 active:scale-95",
                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$heart$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Heart$3e$__["Heart"], {
-                                                                className: "text-rose-500 w-5 h-5"
+                                                                className: "text-rose-500 w-4 h-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/Collection/Collection.js",
-                                                                lineNumber: 149,
-                                                                columnNumber: 23
+                                                                lineNumber: 133,
+                                                                columnNumber: 27
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/Collection/Collection.js",
-                                                            lineNumber: 148,
-                                                            columnNumber: 21
+                                                            lineNumber: 132,
+                                                            columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                            className: "bg-white p-2 rounded-full shadow hover:bg-blue-100 transition-all duration-200 hover:scale-110 active:scale-95",
+                                                            className: "bg-white p-1 rounded-full shadow hover:bg-blue-100 transition-all duration-200 hover:scale-110 active:scale-95",
                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shopping$2d$cart$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ShoppingCart$3e$__["ShoppingCart"], {
-                                                                className: "text-blue-500 w-5 h-5"
+                                                                className: "text-blue-500 w-4 h-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/Collection/Collection.js",
-                                                                lineNumber: 152,
-                                                                columnNumber: 23
+                                                                lineNumber: 136,
+                                                                columnNumber: 27
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/Collection/Collection.js",
-                                                            lineNumber: 151,
-                                                            columnNumber: 21
+                                                            lineNumber: 135,
+                                                            columnNumber: 25
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/Collection/Collection.js",
-                                                    lineNumber: 147,
-                                                    columnNumber: 19
+                                                    lineNumber: 131,
+                                                    columnNumber: 23
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/Collection/Collection.js",
-                                            lineNumber: 139,
-                                            columnNumber: 17
+                                            lineNumber: 123,
+                                            columnNumber: 21
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                            className: "text-lg font-semibold mt-4",
-                                            children: product.name
+                                            className: "text-sm font-semibold mt-2 line-clamp-2",
+                                            children: product.title
                                         }, void 0, false, {
                                             fileName: "[project]/components/Collection/Collection.js",
-                                            lineNumber: 157,
-                                            columnNumber: 17
+                                            lineNumber: 141,
+                                            columnNumber: 21
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-sm text-muted-foreground",
+                                            className: "text-xs text-muted-foreground",
                                             children: [
-                                                "$",
-                                                product.price
+                                                Math.floor(product.colorsSizePrice[0].sizesAndPrices[0].finalPrice),
+                                                " جنيه مصري"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/Collection/Collection.js",
-                                            lineNumber: 158,
-                                            columnNumber: 17
+                                            lineNumber: 142,
+                                            columnNumber: 21
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                             className: "text-xs text-yellow-500",
@@ -1861,52 +1314,52 @@ function Collection({ nameCollection }) {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/Collection/Collection.js",
-                                            lineNumber: 159,
-                                            columnNumber: 17
+                                            lineNumber: 145,
+                                            columnNumber: 21
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "flex gap-1 justify-end",
-                                            children: product.colors.map((color, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "flex gap-1 justify-end mt-2",
+                                            children: product.colorsSizePrice.map((color, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                     className: "w-4 h-4 rounded-full border border-gray-300",
                                                     style: {
-                                                        backgroundColor: color
+                                                        backgroundColor: color.colorName
                                                     }
                                                 }, idx, false, {
                                                     fileName: "[project]/components/Collection/Collection.js",
-                                                    lineNumber: 162,
-                                                    columnNumber: 21
+                                                    lineNumber: 148,
+                                                    columnNumber: 25
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/components/Collection/Collection.js",
-                                            lineNumber: 160,
-                                            columnNumber: 17
+                                            lineNumber: 146,
+                                            columnNumber: 21
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/Collection/Collection.js",
-                                    lineNumber: 138,
-                                    columnNumber: 15
+                                    lineNumber: 122,
+                                    columnNumber: 19
                                 }, this)
-                            }, product.name, false, {
+                            }, idx, false, {
                                 fileName: "[project]/components/Collection/Collection.js",
-                                lineNumber: 137,
-                                columnNumber: 13
+                                lineNumber: 118,
+                                columnNumber: 17
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/components/Collection/Collection.js",
-                        lineNumber: 135,
-                        columnNumber: 9
+                        lineNumber: 115,
+                        columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/Collection/Collection.js",
-                lineNumber: 132,
+                lineNumber: 84,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/Collection/Collection.js",
-        lineNumber: 93,
+        lineNumber: 49,
         columnNumber: 5
     }, this);
 }
@@ -2135,95 +1588,149 @@ __turbopack_context__.s({
     "default": (()=>__TURBOPACK__default__export__)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-redux/dist/react-redux.mjs [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$category$2f$subCategory$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/redux/slices/category/subCategory.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/card.jsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/button.jsx [app-ssr] (ecmascript)");
 "use client";
 ;
 ;
 ;
+;
+;
+;
+;
+const CATEGORY_IDS = {
+    woman: "68407b787192141aeca28d7e",
+    man: "68407b897192141aeca28d81",
+    boys: "68409d7a7192141aeca28dcd",
+    girls: "68409db77192141aeca28dd0"
+};
 const Categories = ()=>{
-    const categories = Array.from({
-        length: 10
-    }, (_, index)=>({
-            id: index + 1,
-            name: "ملابس السباحة",
-            image: "https://eg.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/81/0189031/1.jpg"
+    const dispatch = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useDispatch"])();
+    const [selectedCategory, setSelectedCategory] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("woman");
+    const { categories, loading, error } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useSelector"])((state)=>state.subCategory);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$category$2f$subCategory$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["collectSubCategory"])({
+            id: CATEGORY_IDS["woman"],
+            type: "woman"
         }));
+    }, [
+        dispatch
+    ]);
+    const handleCategoryClick = (type)=>{
+        setSelectedCategory(type);
+        dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$category$2f$subCategory$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["collectSubCategory"])({
+            id: CATEGORY_IDS[type],
+            type
+        }));
+    };
+    const items = selectedCategory ? categories?.[selectedCategory] : [];
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "flex flex-col items-center justify-center my-14",
+        className: "flex flex-col items-center justify-center my-14 px-4",
+        dir: "rtl",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "w-2/3 m-5 shadow-md max-lg:w-3/4 max-md:w-11/12",
-            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "bg-white py-8 text-center",
-                dir: "rtl",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                        className: "text-2xl font-bold mb-6",
-                        children: "تسوق حسب الفئة"
-                    }, void 0, false, {
-                        fileName: "[project]/components/share/Categories.js",
-                        lineNumber: 17,
-                        columnNumber: 11
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex flex-wrap justify-center gap-4",
-                        children: categories.map((item)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
-                                className: "w-full max-w-[210px] h-[200px] relative overflow-hidden rounded-md hover:scale-105 transition-transform duration-300",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                                        src: item.image,
-                                        alt: item.name,
-                                        fill: true,
-                                        className: "object-cover"
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/share/Categories.js",
-                                        lineNumber: 24,
-                                        columnNumber: 17
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "absolute bottom-0 left-0 right-0 bg-black/50 py-2",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-white text-center text-sm font-semibold",
-                                            children: item.name
-                                        }, void 0, false, {
-                                            fileName: "[project]/components/share/Categories.js",
-                                            lineNumber: 31,
-                                            columnNumber: 19
-                                        }, this)
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/share/Categories.js",
-                                        lineNumber: 30,
-                                        columnNumber: 17
-                                    }, this)
-                                ]
-                            }, item.id, true, {
+            className: "w-full max-w-7xl bg-white py-8",
+            children: [
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
+                    className: "text-3xl font-bold mb-8 text-center",
+                    children: "تسوق حسب الفئة"
+                }, void 0, false, {
+                    fileName: "[project]/components/share/Categories.js",
+                    lineNumber: 36,
+                    columnNumber: 9
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "flex flex-wrap gap-4 justify-center mb-8",
+                    children: Object.keys(CATEGORY_IDS).map((type)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
+                            variant: selectedCategory === type ? "default" : "outline",
+                            onClick: ()=>handleCategoryClick(type),
+                            children: getArabicLabel(type)
+                        }, type, false, {
+                            fileName: "[project]/components/share/Categories.js",
+                            lineNumber: 41,
+                            columnNumber: 13
+                        }, this))
+                }, void 0, false, {
+                    fileName: "[project]/components/share/Categories.js",
+                    lineNumber: 39,
+                    columnNumber: 9
+                }, this),
+                loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                    className: "text-gray-500 text-center",
+                    children: "جاري التحميل..."
+                }, void 0, false, {
+                    fileName: "[project]/components/share/Categories.js",
+                    lineNumber: 52,
+                    columnNumber: 21
+                }, this),
+                error?.[selectedCategory] && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                    className: "text-red-500 text-center",
+                    children: [
+                        "خطأ في تحميل فئة ",
+                        getArabicLabel(selectedCategory),
+                        ":",
+                        " ",
+                        error[selectedCategory]?.message || "حدث خطأ"
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/components/share/Categories.js",
+                    lineNumber: 54,
+                    columnNumber: 11
+                }, this),
+                !loading && items?.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4",
+                    children: items.map((item, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
+                            className: "w-full h-[300px] relative overflow-hidden rounded-xl shadow-md hover:scale-[1.02] transition-transform",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                                src: item.image?.img || "/placeholder.png",
+                                alt: item.name || "صورة المنتج",
+                                fill: true,
+                                className: "object-cover"
+                            }, void 0, false, {
                                 fileName: "[project]/components/share/Categories.js",
-                                lineNumber: 20,
-                                columnNumber: 15
-                            }, this))
-                    }, void 0, false, {
-                        fileName: "[project]/components/share/Categories.js",
-                        lineNumber: 18,
-                        columnNumber: 11
-                    }, this)
-                ]
-            }, void 0, true, {
-                fileName: "[project]/components/share/Categories.js",
-                lineNumber: 16,
-                columnNumber: 9
-            }, this)
-        }, void 0, false, {
+                                lineNumber: 68,
+                                columnNumber: 17
+                            }, this)
+                        }, idx, false, {
+                            fileName: "[project]/components/share/Categories.js",
+                            lineNumber: 64,
+                            columnNumber: 15
+                        }, this))
+                }, void 0, false, {
+                    fileName: "[project]/components/share/Categories.js",
+                    lineNumber: 62,
+                    columnNumber: 11
+                }, this)
+            ]
+        }, void 0, true, {
             fileName: "[project]/components/share/Categories.js",
-            lineNumber: 15,
+            lineNumber: 35,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/components/share/Categories.js",
-        lineNumber: 14,
+        lineNumber: 34,
         columnNumber: 5
     }, this);
 };
 const __TURBOPACK__default__export__ = Categories;
+function getArabicLabel(type) {
+    switch(type){
+        case "woman":
+            return "نساء";
+        case "man":
+            return "رجال";
+        case "boys":
+            return "أولاد";
+        case "girls":
+            return "بنات";
+        default:
+            return type;
+    }
+}
 }}),
 
 };

@@ -1509,6 +1509,12 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$auth$2f$a
 var __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$auth$2f$readProfile$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/redux/slices/auth/readProfile.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$auth$2f$resetPassword$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/redux/slices/auth/resetPassword.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$category$2f$subCategory$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/redux/slices/category/subCategory.js [app-ssr] (ecmascript)");
+(()=>{
+    const e = new Error("Cannot find module './slices/product/productsSlice'");
+    e.code = 'MODULE_NOT_FOUND';
+    throw e;
+})();
+;
 ;
 ;
 ;
@@ -1523,7 +1529,8 @@ const store = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2
         active: __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$auth$2f$active_account$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"],
         profile: __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$auth$2f$readProfile$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"],
         resetPassword: __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$auth$2f$resetPassword$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"],
-        subCategory: __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$category$2f$subCategory$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"]
+        subCategory: __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$category$2f$subCategory$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"],
+        readproducts: productsSlice
     }
 });
 const __TURBOPACK__default__export__ = store;

@@ -3,14 +3,19 @@ import { validateProduct } from "../../services/productValidator.js";
 import { uploadMultipleImages } from "../../utils/upload/cloudinary.js";
 import fs from "fs/promises";
 
-// دالة لحذف الصور من السيرفر
+// دالة لتعقيم اسم الملف (إزالة الرموز غير المسموح بها)
+const sanitizeFilename = (filename) =>
+  filename.replace(/[^a-zA-Z0-9-_\.]/g, "_").toLowerCase();
+
+// دالة لحذف الصور من السيرفر بعد التأكد من وجودها
 const deleteUploadedFiles = async (files) => {
   for (const img of files || []) {
     if (img?.path) {
       try {
-        await fs.unlink(img.path);
+        await fs.access(img.path); // تأكد أن الملف موجود
+        await fs.unlink(img.path); // ثم احذفه
       } catch (err) {
-        console.error("فشل حذف الصورة:", err);
+        console.error("فشل حذف الصورة أو غير موجودة:", err.message);
       }
     }
   }
@@ -19,7 +24,6 @@ const deleteUploadedFiles = async (files) => {
 export const createProduct = async (req, res) => {
   let data;
 
-  // محاولة قراءة البيانات القادمة
   try {
     if (!req.body.data) {
       await deleteUploadedFiles(req.files);
@@ -40,14 +44,14 @@ export const createProduct = async (req, res) => {
     overview,
     colorsSizePrice,
     category,
+    subCategory,
   } = data;
-  // التأكد من وجود صور
+
   if (!req.files || req.files.length === 0) {
     await deleteUploadedFiles(req.files);
     return res.status(400).json({ message: "يجب إضافة صور." });
   }
 
-  // التحقق من صحة البيانات
   const { error } = validateProduct(data);
   if (error) {
     await deleteUploadedFiles(req.files);
@@ -57,10 +61,10 @@ export const createProduct = async (req, res) => {
   }
 
   try {
-    // تجهيز الصور للرفع
+    // تعقيم أسماء الملفات
     const images = req.files.map((img) => ({
       path: img.path,
-      original_filename: img.originalname,
+      original_filename: sanitizeFilename(img.originalname),
     }));
 
     // رفع الصور إلى Cloudinary
@@ -90,8 +94,9 @@ export const createProduct = async (req, res) => {
       }
 
       const filtered = imageLinks.filter(({ original_filename }) =>
-        original_filename.toLowerCase().includes(color.colorName.toLowerCase())
+        original_filename.includes(color.colorName.toLowerCase())
       );
+
       if (filtered.length === 0) {
         await deleteUploadedFiles(req.files);
         return res.status(400).json({
@@ -105,6 +110,7 @@ export const createProduct = async (req, res) => {
         images: filtered,
       });
     }
+
     // حفظ المنتج في قاعدة البيانات
     const saveProduct = new Product({
       title,
@@ -113,6 +119,7 @@ export const createProduct = async (req, res) => {
       specifications,
       overview,
       category,
+      subCategory,
       colorsSizePrice: images_color,
     });
 
@@ -121,7 +128,6 @@ export const createProduct = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: error.message });
   } finally {
-    // حذف الصور المؤقتة في جميع الحالات
     await deleteUploadedFiles(req.files);
   }
 };

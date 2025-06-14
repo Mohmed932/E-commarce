@@ -13,6 +13,12 @@ const productValidationSchema = Joi.object({
     "string.max": "يجب أن يكون فئه الممنتج أقل من 40 حرفًا",
     "any.required": "فئه الممنتج مطلوب",
   }),
+  subCategory: Joi.string().min(3).max(40).required().messages({
+    "string.base": "فئه الممنتج يجب أن يكون نصًا",
+    "string.min": "يجب أن يكون فئه الممنتج أكثر من 3 حروف",
+    "string.max": "يجب أن يكون فئه الممنتج أقل من 40 حرفًا",
+    "any.required": "فئه الممنتج مطلوب",
+  }),
   discount: Joi.number().min(1).max(100).optional().messages({
     "number.base": "الخصم يجب أن يكون رقمًا",
     "number.min": "الخصم يجب أن يكون أكبر من صفر",

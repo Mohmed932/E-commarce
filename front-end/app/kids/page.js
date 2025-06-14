@@ -4,7 +4,7 @@ import React from 'react'
 const page = () => {
   const nameCollection = "مجموعة الأطفال"
   return (
-    <div><Collection nameCollection={nameCollection}/></div>
+    <div><Collection nameCollection={nameCollection} /></div>
   )
 }
 

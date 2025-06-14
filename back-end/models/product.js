@@ -1,4 +1,4 @@
-import { Schema,model } from "mongoose";
+import { Schema, model } from "mongoose";
 
 const productSchema = new Schema({
   title: {
@@ -15,6 +15,10 @@ const productSchema = new Schema({
   category: {
     type: Schema.Types.ObjectId,
     ref: "Category",
+    required: [true, "يجب إدخال فئة المنتج"],
+  },
+  subCategory: {
+    type: String,
     required: [true, "يجب إدخال فئة المنتج"],
   },
   average_rate: {
@@ -97,21 +101,20 @@ const productSchema = new Schema({
 productSchema.index({ title: "text" });
 
 productSchema.pre("save", function (next) {
-  this.colorsSizePrice.forEach(({sizesAndPrices}) => {
-    sizesAndPrices.forEach(({finalPrice,price,available,quantity}) => {
-      // حساب finalPrice بشكل دقيق لكل حجم بناءً على الخصم
+  this.colorsSizePrice.forEach(colorSizePrice => {
+    colorSizePrice.sizesAndPrices.forEach(sizePrice => {
       if (this.discount > 0) {
-        finalPrice = price - (price * this.discount) / 100;
+        sizePrice.finalPrice = sizePrice.price - (sizePrice.price * this.discount) / 100;
       } else {
-        finalPrice = price;
+        sizePrice.finalPrice = sizePrice.price;
       }
 
-      // تحديد ما إذا كانت الكمية متوفرة أم لا
-      available = quantity > 0;
+      sizePrice.available = sizePrice.quantity > 0;
     });
   });
 
   next();
 });
+
 
 export const Product = model("Product", productSchema);
