@@ -10,40 +10,21 @@ import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductsByCategory } from "@/redux/slices/product/read";
 import Image from "next/image";
+import { collectSubCategory } from "@/redux/slices/category/subCategory";
+// import { fetchProducts } from "@/redux/slices/product/filter";
 
 
 export default function Collection({ nameCollection, mainCategories }) {
-  const [category, setCategory] = useState("");
-  const [size, setSize] = useState("");
-  const [color, setColor] = useState("");
-  const [rating, setRating] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(150);
   const dispatch = useDispatch()
   const { products, loading, error } = useSelector((state) => state.readproducts)
+    // const { items} = useSelector((state) => state.filterProduct)
+    // console.log(items)
   useEffect(() => {
     dispatch(fetchProductsByCategory({ id: mainCategories.id, type: mainCategories.label }));
-  }, [])
+    dispatch(collectSubCategory({ id: mainCategories.id, type: mainCategories.label }));
+    // dispatch(fetchProducts({category: mainCategories.id}))
+  }, [mainCategories.id])
   const data = products[mainCategories.label]?.data;
-  const filtered = useMemo(() => {
-    return data?.filter((p) => {
-      return (
-        (!category || p.category === category) &&
-        (!size || p.size === size) &&
-        (!color || p.colorsSizePrice.some(c => c.colorName === color)) &&
-        (!rating || p.rating >= parseInt(rating)) &&
-        p.colorsSizePrice[0].sizesAndPrices[0].finalPrice <= maxPrice
-      );
-    });
-  }, [data, category, size, color, rating, maxPrice]);
-
-
-  const resetFilters = () => {
-    setCategory("");
-    setSize("");
-    setColor("");
-    setRating(0);
-    setMaxPrice(150);
-  };
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen px-4 sm:px-6 py-10 gap-10" dir="rtl">
@@ -58,13 +39,8 @@ export default function Collection({ nameCollection, mainCategories }) {
           </SheetTrigger>
           <SheetContent side="left" className="w-[100vw] max-w-xs p-4">
             <FillterCollection
-              setCategory={setCategory}
-              setSize={setSize}
-              setColor={setColor}
-              setRating={setRating}
-              maxPrice={maxPrice}
-              setMaxPrice={setMaxPrice}
-              resetFilters={resetFilters}
+              label={mainCategories.label}
+              category={mainCategories.id}
             />
           </SheetContent>
         </Sheet>
@@ -72,13 +48,8 @@ export default function Collection({ nameCollection, mainCategories }) {
 
       <div className="hidden lg:block w-full lg:w-1/4 mt-20">
         <FillterCollection
-          setCategory={setCategory}
-          setSize={setSize}
-          setColor={setColor}
-          setRating={setRating}
-          maxPrice={maxPrice}
-          setMaxPrice={setMaxPrice}
-          resetFilters={resetFilters}
+          label={mainCategories.label}
+          category={mainCategories.id}
         />
       </div>
       <main className="w-full lg:w-3/4">

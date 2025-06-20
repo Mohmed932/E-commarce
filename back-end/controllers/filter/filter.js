@@ -5,15 +5,14 @@ export const filterProducts = async (req, res) => {
     try {
         const {
             category,
-            brand,
             minDiscount,
             maxDiscount,
             minRate,
             maxRate,
-            color,
             size,
             minPrice,
             maxPrice,
+            subCategory
         } = req.query;
 
         const filters = {};
@@ -23,9 +22,9 @@ export const filterProducts = async (req, res) => {
             filters.category = category;
         }
 
-        // ✅ ماركة
-        if (brand) {
-            filters.brand = brand;
+        // ✅ الفئة الفرعية
+        if (subCategory) {
+            filters.subCategory = subCategory;
         }
 
         // ✅ خصم
@@ -43,10 +42,9 @@ export const filterProducts = async (req, res) => {
         }
 
         // ✅ الألوان والمقاسات والأسعار
-        if (color || size || minPrice || maxPrice) {
+        if ( size || minPrice || maxPrice) {
             filters.colorsSizePrice = {
                 $elemMatch: {
-                    ...(color && { colorName: color }),
                     ...(size || minPrice || maxPrice
                         ? {
                             sizesAndPrices: {

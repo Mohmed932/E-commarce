@@ -2,10 +2,16 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import {Menu, X,} from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem
+} from "@/components/ui/dropdown-menu"
+
 import Logo from './Logo'
-import DesktopNav from './DesktopNav'
 import SearchNav from './Search'
 import Wishlist from './Wishlist'
 import Cart from './Cart'
@@ -23,20 +29,26 @@ export default function Navbar() {
   const cartCount = 3
   const wishlistCount = 2
 
-  const navItems = [
+  // عناصر الدروب داون
+  const categoryItems = [
     { name: 'رجالي', href: '/men' },
     { name: 'نسائي', href: '/women' },
-    { name: 'وصل حديثًا', href: '/new-arrivals' },
-    { name: 'تخفيضات', href: '/sale' },
-    { name: 'أطفال', href: '/kids' },
-    // { name: 'اتصل بنا', href: '/contact' },
+    { name: 'اولاد', href: '/boys' },
+    { name: 'بنات', href: '/girls' }
   ]
-    useEffect(() => {
-      dispatch(readProfile());
-    }, [dispatch]);
+
+  // عناصر عادية بجانب الدروب داون
+  const mainItems = [
+    { name: 'وصل حديثًا', href: '/new-arrivals' },
+    { name: 'تخفيضات', href: '/sale' }
+  ]
+
+  useEffect(() => {
+    dispatch(readProfile())
+  }, [dispatch])
 
   return (
-    <nav className="bg-white text-gray-900 p-4 shadow-md sticky top-0 z-50 ">
+    <nav className="bg-white text-gray-900 p-4 shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link href="/" className="text-xl font-bold hover:text-orange-500">
@@ -44,20 +56,41 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Nav */}
-        <DesktopNav navItems={navItems} />
+        <div className="hidden md:flex items-center space-x-6">
+          {/* Dropdown for categories */}
+          <DropdownMenu>
+            <DropdownMenuTrigger className="text-sm font-medium hover:text-orange-500 cursor-pointer">
+              فئات
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {categoryItems.map((item) => (
+                <DropdownMenuItem key={item.href}>
+                  <Link href={item.href} className="w-full">
+                    {item.name}
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* باقي العناصر */}
+          {mainItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="text-sm font-medium hover:text-orange-500"
+            >
+              {item.name}
+            </Link>
+          ))}
+        </div>
 
         {/* Search & Icons */}
         <div className="hidden md:flex items-center space-x-4">
           <SearchNav />
-          {/* Wishlist */}
           <Wishlist wishlistCount={wishlistCount} />
-
-          {/* Cart */}
           <Cart cartCount={cartCount} />
-
-          {/* User Dropdown */}
           <UserDropdown />
-
         </div>
 
         {/* Mobile Menu Button */}
@@ -69,7 +102,12 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Menu */}
-      <MobileMenu navItems={navItems} open={open} wishlistCount={wishlistCount} cartCount={cartCount}/>
+      <MobileMenu
+        navItems={[...categoryItems, ...mainItems]}
+        open={open}
+        wishlistCount={wishlistCount}
+        cartCount={cartCount}
+      />
     </nav>
   )
 }

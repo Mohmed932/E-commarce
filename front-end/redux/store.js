@@ -7,6 +7,7 @@ import profileSlice from './slices/auth/readProfile'
 import ResetPasswordSlice from './slices/auth/resetPassword'
 import subCategorySlice from './slices/category/subCategory'
 import productsSlice from './slices/product/read'
+import filterProductSlice from './slices/product/filter'
 
 const store = configureStore({
   reducer: {
@@ -16,7 +17,8 @@ const store = configureStore({
     profile: profileSlice,
     resetPassword: ResetPasswordSlice,
     subCategory: subCategorySlice,
-    readproducts: productsSlice
+    readproducts: productsSlice,
+    filterProduct: filterProductSlice
   },
 });
 

@@ -1,108 +1,157 @@
+'use client'
+
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '../ui/select'
-import { Slider } from '../ui/slider'
-import { Button } from '../ui/button'
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select"
+import { Slider } from "../ui/slider"
+import { Button } from "../ui/button"
+import { useDispatch, useSelector } from "react-redux"
+import { useState } from "react"
+import { fetchProducts } from "@/redux/slices/product/filter"
 
-const FillterCollection = ({
-    setCategory,
-    setSize,
-    setColor,
-    setRating,
-    maxPrice,
-    setMaxPrice,
-    resetFilters,
-}) => {
-    return (
-        <aside className="w-full space-y-6 p-4 md:p-5 rounded-lg  lg:shadow-sm lg:sticky bg-white top-36">
-            <h2 className="text-xl font-semibold">تصفيه المنتجات</h2>
+const FillterCollection = ({ label ,category}) => {
+  const dispatch = useDispatch();
+  const { categories, loading, error } = useSelector((state) => state.subCategory);
+  const data = categories[label];
 
-            <div>
-                <label className="block mb-2 font-medium">الفئة</label>
-                <Select onValueChange={setCategory}>
-                    <SelectTrigger className="w-full bg-gray-100">
-                        <SelectValue placeholder="اختر فئة" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="tshirts">تيشيرتات</SelectItem>
-                        <SelectItem value="trousers">بناطيل</SelectItem>
-                        <SelectItem value="jackets">جاكيتات</SelectItem>
-                        <SelectItem value="shoes">أحذية</SelectItem>
-                    </SelectContent>
-                </Select>
-            </div>
+  const [subCategory, setSubCategory] = useState("")
+  const [size, setSize] = useState("")
+  const [minDiscount, setMinDiscount] = useState(0)
+  const [maxDiscount, setMaxDiscount] = useState(100)
+  const [minRate, setMinRate] = useState(1)
+  const [maxRate, setMaxRate] = useState(5)
+  const [minPrice, setMinPrice] = useState(0)
+  const [maxPrice, setMaxPrice] = useState(1000)
 
-            <div>
-                <label className="block mb-2 font-medium">المقاس</label>
-                <Select onValueChange={setSize}>
-                    <SelectTrigger className="w-full bg-gray-100">
-                        <SelectValue placeholder="اختر المقاس" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="s">صغير (S)</SelectItem>
-                        <SelectItem value="m">متوسط (M)</SelectItem>
-                        <SelectItem value="l">كبير (L)</SelectItem>
-                        <SelectItem value="xl">كبير جدًا (XL)</SelectItem>
-                    </SelectContent>
-                </Select>
-            </div>
+  const resetFilters = () => {
+    setSubCategory("")
+    setSize("")
+    setMinDiscount(0)
+    setMaxDiscount(100)
+    setMinRate(1)
+    setMaxRate(5)
+    setMinPrice(0)
+    setMaxPrice(1000)
+    dispatch(fetchProducts()) // إعادة تحميل الكل
+  }
 
-            <div>
-                <label className="block mb-2 font-medium">اللون</label>
-                <Select onValueChange={setColor}>
-                    <SelectTrigger className="w-full bg-gray-100">
-                        <SelectValue placeholder="اختر اللون" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="green">أخضر</SelectItem>
-                        <SelectItem value="brown">بني</SelectItem>
-                        <SelectItem value="black">أسود</SelectItem>
-                        <SelectItem value="beige">بيج</SelectItem>
-                        <SelectItem value="blue">أزرق</SelectItem>
-                    </SelectContent>
-                </Select>
-            </div>
+  const applyFilters = () => {
+    dispatch(fetchProducts({
+      ...(subCategory && { subCategory }),
+      ...(size && { size }),
+      category,
+      minDiscount,
+      maxDiscount,
+      minRate,
+      maxRate,
+      minPrice,
+      maxPrice,
+    }))
+  }
 
-            <div>
-                <label className="block mb-2 font-medium">التقييم</label>
-                <Select onValueChange={setRating}>
-                    <SelectTrigger className="w-full bg-gray-100">
-                        <SelectValue placeholder="اختر التقييم" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="1">نجمة واحدة أو أكثر</SelectItem>
-                        <SelectItem value="2">نجمتان أو أكثر</SelectItem>
-                        <SelectItem value="3">3 نجمات أو أكثر</SelectItem>
-                        <SelectItem value="4">4 نجمات أو أكثر</SelectItem>
-                        <SelectItem value="5">5 نجمات</SelectItem>
-                    </SelectContent>
-                </Select>
-            </div>
+  return (
+    <aside className="w-full space-y-6 p-4 md:p-5 rounded-lg lg:shadow-sm lg:sticky bg-white top-36">
+      <h2 className="text-xl font-semibold">تصفية المنتجات</h2>
 
-            <div>
-                <label className="block mb-2 font-medium">
-                    السعر الأقصى: ${maxPrice}
-                </label>
-                <Slider
-                    min={20}
-                    max={150}
-                    step={1}
-                    defaultValue={[150]}
-                    value={[maxPrice]}
-                    className="bg-amber-500"
-                    onValueChange={(value) => setMaxPrice(value[0])}
-                />
-            </div>
+      {/* ✅ الفئة */}
+      <div>
+        <label className="block mb-2 font-medium">الفئة</label>
+        {loading ? (
+          <p>جاري التحميل...</p>
+        ) : error ? (
+          <p className="text-red-500">حدث خطأ أثناء جلب الفئات</p>
+        ) : (
+          <Select value={subCategory} onValueChange={setSubCategory}>
+            <SelectTrigger className="w-full bg-gray-100">
+              <SelectValue placeholder="اختر فئة" />
+            </SelectTrigger>
+            <SelectContent>
+              {data?.map((cat, idx) => (
+                <SelectItem key={idx} value={cat.name}>{cat.name}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
+      </div>
 
-            <Button onClick={resetFilters} className="w-full mt-4 bg-amber-500">
-                إعادة تعيين الفلاتر
-            </Button>
-        </aside>
-    )
+      {/* ✅ المقاس */}
+      <div>
+        <label className="block mb-2 font-medium">المقاس</label>
+        <Select value={size} onValueChange={setSize}>
+          <SelectTrigger className="w-full bg-gray-100">
+            <SelectValue placeholder="اختر المقاس" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="S">صغير (S)</SelectItem>
+            <SelectItem value="M">متوسط (M)</SelectItem>
+            <SelectItem value="L">كبير (L)</SelectItem>
+            <SelectItem value="XL">كبير جدًا (XL)</SelectItem>
+            <SelectItem value="XXL">كبير جدًا (XXL)</SelectItem>
+            <SelectItem value="XXXL">كبير جدًا (XXXL)</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* ✅ الخصم */}
+      <div>
+        <label className="block mb-2 font-medium">الخصم: من {minDiscount}% إلى {maxDiscount}%</label>
+        <Slider
+          min={0}
+          max={100}
+          step={1}
+          value={[minDiscount, maxDiscount]}
+          onValueChange={(val) => {
+            setMinDiscount(val[0])
+            setMaxDiscount(val[1])
+          }}
+        />
+      </div>
+
+      {/* ✅ التقييم */}
+      <div>
+        <label className="block mb-2 font-medium">التقييم: من {minRate} إلى {maxRate}</label>
+        <Slider
+          min={1}
+          max={5}
+          step={1}
+          value={[minRate, maxRate]}
+          onValueChange={(val) => {
+            setMinRate(val[0])
+            setMaxRate(val[1])
+          }}
+        />
+      </div>
+
+      {/* ✅ السعر */}
+      <div>
+        <label className="block mb-2 font-medium">السعر: من {minPrice} إلى {maxPrice} جنيه</label>
+        <Slider
+          min={0}
+          max={2000}
+          step={10}
+          value={[minPrice, maxPrice]}
+          onValueChange={(val) => {
+            setMinPrice(val[0])
+            setMaxPrice(val[1])
+          }}
+        />
+      </div>
+
+      {/* ✅ الأزرار */}
+      <div className="flex flex-col gap-3 mt-4">
+        <Button onClick={applyFilters} className="w-full bg-green-600 hover:bg-green-700 text-white">
+          تطبيق الفلاتر
+        </Button>
+        <Button onClick={resetFilters} className="w-full bg-amber-500 hover:bg-amber-600 text-white">
+          إعادة تعيين الفلاتر
+        </Button>
+      </div>
+    </aside>
+  )
 }
 
 export default FillterCollection

@@ -462,21 +462,72 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/select.jsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$slider$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/slider.jsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/button.jsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-redux/dist/react-redux.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$product$2f$filter$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/redux/slices/product/filter.js [app-client] (ecmascript)");
+;
+var _s = __turbopack_context__.k.signature();
+'use client';
 ;
 ;
 ;
 ;
-const FillterCollection = ({ setCategory, setSize, setColor, setRating, maxPrice, setMaxPrice, resetFilters })=>{
+;
+;
+const FillterCollection = ({ label, category })=>{
+    _s();
+    const dispatch = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDispatch"])();
+    const { categories, loading, error } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSelector"])({
+        "FillterCollection.useSelector": (state)=>state.subCategory
+    }["FillterCollection.useSelector"]);
+    const data = categories[label];
+    const [subCategory, setSubCategory] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
+    const [size, setSize] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
+    const [minDiscount, setMinDiscount] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
+    const [maxDiscount, setMaxDiscount] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(100);
+    const [minRate, setMinRate] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(1);
+    const [maxRate, setMaxRate] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(5);
+    const [minPrice, setMinPrice] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
+    const [maxPrice, setMaxPrice] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(1000);
+    const resetFilters = ()=>{
+        setSubCategory("");
+        setSize("");
+        setMinDiscount(0);
+        setMaxDiscount(100);
+        setMinRate(1);
+        setMaxRate(5);
+        setMinPrice(0);
+        setMaxPrice(1000);
+        dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$product$2f$filter$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["fetchProducts"])()) // إعادة تحميل الكل
+        ;
+    };
+    const applyFilters = ()=>{
+        dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$product$2f$filter$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["fetchProducts"])({
+            ...subCategory && {
+                subCategory
+            },
+            ...size && {
+                size
+            },
+            category,
+            minDiscount,
+            maxDiscount,
+            minRate,
+            maxRate,
+            minPrice,
+            maxPrice
+        }));
+    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("aside", {
-        className: "w-full space-y-6 p-4 md:p-5 rounded-lg  lg:shadow-sm lg:sticky bg-white top-36",
+        className: "w-full space-y-6 p-4 md:p-5 rounded-lg lg:shadow-sm lg:sticky bg-white top-36",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                 className: "text-xl font-semibold",
-                children: "تصفيه المنتجات"
+                children: "تصفية المنتجات"
             }, void 0, false, {
                 fileName: "[project]/components/Collection/FillterCollection.js",
-                lineNumber: 22,
-                columnNumber: 13
+                lineNumber: 58,
+                columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 children: [
@@ -485,11 +536,25 @@ const FillterCollection = ({ setCategory, setSize, setColor, setRating, maxPrice
                         children: "الفئة"
                     }, void 0, false, {
                         fileName: "[project]/components/Collection/FillterCollection.js",
-                        lineNumber: 25,
-                        columnNumber: 17
+                        lineNumber: 62,
+                        columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
-                        onValueChange: setCategory,
+                    loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        children: "جاري التحميل..."
+                    }, void 0, false, {
+                        fileName: "[project]/components/Collection/FillterCollection.js",
+                        lineNumber: 64,
+                        columnNumber: 11
+                    }, this) : error ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-red-500",
+                        children: "حدث خطأ أثناء جلب الفئات"
+                    }, void 0, false, {
+                        fileName: "[project]/components/Collection/FillterCollection.js",
+                        lineNumber: 66,
+                        columnNumber: 11
+                    }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
+                        value: subCategory,
+                        onValueChange: setSubCategory,
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectTrigger"], {
                                 className: "w-full bg-gray-100",
@@ -497,65 +562,39 @@ const FillterCollection = ({ setCategory, setSize, setColor, setRating, maxPrice
                                     placeholder: "اختر فئة"
                                 }, void 0, false, {
                                     fileName: "[project]/components/Collection/FillterCollection.js",
-                                    lineNumber: 28,
-                                    columnNumber: 25
+                                    lineNumber: 70,
+                                    columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/Collection/FillterCollection.js",
-                                lineNumber: 27,
-                                columnNumber: 21
+                                lineNumber: 69,
+                                columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                        value: "tshirts",
-                                        children: "تيشيرتات"
-                                    }, void 0, false, {
+                                children: data?.map((cat, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
+                                        value: cat.name,
+                                        children: cat.name
+                                    }, idx, false, {
                                         fileName: "[project]/components/Collection/FillterCollection.js",
-                                        lineNumber: 31,
-                                        columnNumber: 25
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                        value: "trousers",
-                                        children: "بناطيل"
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/Collection/FillterCollection.js",
-                                        lineNumber: 32,
-                                        columnNumber: 25
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                        value: "jackets",
-                                        children: "جاكيتات"
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/Collection/FillterCollection.js",
-                                        lineNumber: 33,
-                                        columnNumber: 25
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                        value: "shoes",
-                                        children: "أحذية"
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/Collection/FillterCollection.js",
-                                        lineNumber: 34,
-                                        columnNumber: 25
-                                    }, this)
-                                ]
-                            }, void 0, true, {
+                                        lineNumber: 74,
+                                        columnNumber: 17
+                                    }, this))
+                            }, void 0, false, {
                                 fileName: "[project]/components/Collection/FillterCollection.js",
-                                lineNumber: 30,
-                                columnNumber: 21
+                                lineNumber: 72,
+                                columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/Collection/FillterCollection.js",
-                        lineNumber: 26,
-                        columnNumber: 17
+                        lineNumber: 68,
+                        columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/Collection/FillterCollection.js",
-                lineNumber: 24,
-                columnNumber: 13
+                lineNumber: 61,
+                columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 children: [
@@ -564,10 +603,11 @@ const FillterCollection = ({ setCategory, setSize, setColor, setRating, maxPrice
                         children: "المقاس"
                     }, void 0, false, {
                         fileName: "[project]/components/Collection/FillterCollection.js",
-                        lineNumber: 40,
-                        columnNumber: 17
+                        lineNumber: 83,
+                        columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
+                        value: size,
                         onValueChange: setSize,
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectTrigger"], {
@@ -576,292 +616,238 @@ const FillterCollection = ({ setCategory, setSize, setColor, setRating, maxPrice
                                     placeholder: "اختر المقاس"
                                 }, void 0, false, {
                                     fileName: "[project]/components/Collection/FillterCollection.js",
-                                    lineNumber: 43,
-                                    columnNumber: 25
+                                    lineNumber: 86,
+                                    columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/Collection/FillterCollection.js",
-                                lineNumber: 42,
-                                columnNumber: 21
+                                lineNumber: 85,
+                                columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                        value: "s",
+                                        value: "S",
                                         children: "صغير (S)"
                                     }, void 0, false, {
                                         fileName: "[project]/components/Collection/FillterCollection.js",
-                                        lineNumber: 46,
-                                        columnNumber: 25
+                                        lineNumber: 89,
+                                        columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                        value: "m",
+                                        value: "M",
                                         children: "متوسط (M)"
                                     }, void 0, false, {
                                         fileName: "[project]/components/Collection/FillterCollection.js",
-                                        lineNumber: 47,
-                                        columnNumber: 25
+                                        lineNumber: 90,
+                                        columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                        value: "l",
+                                        value: "L",
                                         children: "كبير (L)"
                                     }, void 0, false, {
                                         fileName: "[project]/components/Collection/FillterCollection.js",
-                                        lineNumber: 48,
-                                        columnNumber: 25
+                                        lineNumber: 91,
+                                        columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                        value: "xl",
+                                        value: "XL",
                                         children: "كبير جدًا (XL)"
                                     }, void 0, false, {
                                         fileName: "[project]/components/Collection/FillterCollection.js",
-                                        lineNumber: 49,
-                                        columnNumber: 25
+                                        lineNumber: 92,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
+                                        value: "XXL",
+                                        children: "كبير جدًا (XXL)"
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/Collection/FillterCollection.js",
+                                        lineNumber: 93,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
+                                        value: "XXXL",
+                                        children: "كبير جدًا (XXXL)"
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/Collection/FillterCollection.js",
+                                        lineNumber: 94,
+                                        columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/Collection/FillterCollection.js",
-                                lineNumber: 45,
-                                columnNumber: 21
+                                lineNumber: 88,
+                                columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/Collection/FillterCollection.js",
-                        lineNumber: 41,
-                        columnNumber: 17
+                        lineNumber: 84,
+                        columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/Collection/FillterCollection.js",
-                lineNumber: 39,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                        className: "block mb-2 font-medium",
-                        children: "اللون"
-                    }, void 0, false, {
-                        fileName: "[project]/components/Collection/FillterCollection.js",
-                        lineNumber: 55,
-                        columnNumber: 17
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
-                        onValueChange: setColor,
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectTrigger"], {
-                                className: "w-full bg-gray-100",
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectValue"], {
-                                    placeholder: "اختر اللون"
-                                }, void 0, false, {
-                                    fileName: "[project]/components/Collection/FillterCollection.js",
-                                    lineNumber: 58,
-                                    columnNumber: 25
-                                }, this)
-                            }, void 0, false, {
-                                fileName: "[project]/components/Collection/FillterCollection.js",
-                                lineNumber: 57,
-                                columnNumber: 21
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                        value: "green",
-                                        children: "أخضر"
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/Collection/FillterCollection.js",
-                                        lineNumber: 61,
-                                        columnNumber: 25
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                        value: "brown",
-                                        children: "بني"
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/Collection/FillterCollection.js",
-                                        lineNumber: 62,
-                                        columnNumber: 25
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                        value: "black",
-                                        children: "أسود"
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/Collection/FillterCollection.js",
-                                        lineNumber: 63,
-                                        columnNumber: 25
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                        value: "beige",
-                                        children: "بيج"
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/Collection/FillterCollection.js",
-                                        lineNumber: 64,
-                                        columnNumber: 25
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                        value: "blue",
-                                        children: "أزرق"
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/Collection/FillterCollection.js",
-                                        lineNumber: 65,
-                                        columnNumber: 25
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/components/Collection/FillterCollection.js",
-                                lineNumber: 60,
-                                columnNumber: 21
-                            }, this)
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/components/Collection/FillterCollection.js",
-                        lineNumber: 56,
-                        columnNumber: 17
-                    }, this)
-                ]
-            }, void 0, true, {
-                fileName: "[project]/components/Collection/FillterCollection.js",
-                lineNumber: 54,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                        className: "block mb-2 font-medium",
-                        children: "التقييم"
-                    }, void 0, false, {
-                        fileName: "[project]/components/Collection/FillterCollection.js",
-                        lineNumber: 71,
-                        columnNumber: 17
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
-                        onValueChange: setRating,
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectTrigger"], {
-                                className: "w-full bg-gray-100",
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectValue"], {
-                                    placeholder: "اختر التقييم"
-                                }, void 0, false, {
-                                    fileName: "[project]/components/Collection/FillterCollection.js",
-                                    lineNumber: 74,
-                                    columnNumber: 25
-                                }, this)
-                            }, void 0, false, {
-                                fileName: "[project]/components/Collection/FillterCollection.js",
-                                lineNumber: 73,
-                                columnNumber: 21
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                        value: "1",
-                                        children: "نجمة واحدة أو أكثر"
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/Collection/FillterCollection.js",
-                                        lineNumber: 77,
-                                        columnNumber: 25
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                        value: "2",
-                                        children: "نجمتان أو أكثر"
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/Collection/FillterCollection.js",
-                                        lineNumber: 78,
-                                        columnNumber: 25
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                        value: "3",
-                                        children: "3 نجمات أو أكثر"
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/Collection/FillterCollection.js",
-                                        lineNumber: 79,
-                                        columnNumber: 25
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                        value: "4",
-                                        children: "4 نجمات أو أكثر"
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/Collection/FillterCollection.js",
-                                        lineNumber: 80,
-                                        columnNumber: 25
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                        value: "5",
-                                        children: "5 نجمات"
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/Collection/FillterCollection.js",
-                                        lineNumber: 81,
-                                        columnNumber: 25
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/components/Collection/FillterCollection.js",
-                                lineNumber: 76,
-                                columnNumber: 21
-                            }, this)
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/components/Collection/FillterCollection.js",
-                        lineNumber: 72,
-                        columnNumber: 17
-                    }, this)
-                ]
-            }, void 0, true, {
-                fileName: "[project]/components/Collection/FillterCollection.js",
-                lineNumber: 70,
-                columnNumber: 13
+                lineNumber: 82,
+                columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
                         className: "block mb-2 font-medium",
                         children: [
-                            "السعر الأقصى: $",
-                            maxPrice
+                            "الخصم: من ",
+                            minDiscount,
+                            "% إلى ",
+                            maxDiscount,
+                            "%"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/Collection/FillterCollection.js",
-                        lineNumber: 87,
-                        columnNumber: 17
+                        lineNumber: 101,
+                        columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$slider$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Slider"], {
-                        min: 20,
-                        max: 150,
+                        min: 0,
+                        max: 100,
                         step: 1,
-                        defaultValue: [
-                            150
-                        ],
                         value: [
-                            maxPrice
+                            minDiscount,
+                            maxDiscount
                         ],
-                        className: "bg-amber-500",
-                        onValueChange: (value)=>setMaxPrice(value[0])
+                        onValueChange: (val)=>{
+                            setMinDiscount(val[0]);
+                            setMaxDiscount(val[1]);
+                        }
                     }, void 0, false, {
                         fileName: "[project]/components/Collection/FillterCollection.js",
-                        lineNumber: 90,
-                        columnNumber: 17
+                        lineNumber: 102,
+                        columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/Collection/FillterCollection.js",
-                lineNumber: 86,
-                columnNumber: 13
+                lineNumber: 100,
+                columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                onClick: resetFilters,
-                className: "w-full mt-4 bg-amber-500",
-                children: "إعادة تعيين الفلاتر"
-            }, void 0, false, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                        className: "block mb-2 font-medium",
+                        children: [
+                            "التقييم: من ",
+                            minRate,
+                            " إلى ",
+                            maxRate
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/components/Collection/FillterCollection.js",
+                        lineNumber: 116,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$slider$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Slider"], {
+                        min: 1,
+                        max: 5,
+                        step: 1,
+                        value: [
+                            minRate,
+                            maxRate
+                        ],
+                        onValueChange: (val)=>{
+                            setMinRate(val[0]);
+                            setMaxRate(val[1]);
+                        }
+                    }, void 0, false, {
+                        fileName: "[project]/components/Collection/FillterCollection.js",
+                        lineNumber: 117,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
                 fileName: "[project]/components/Collection/FillterCollection.js",
-                lineNumber: 101,
-                columnNumber: 13
+                lineNumber: 115,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                        className: "block mb-2 font-medium",
+                        children: [
+                            "السعر: من ",
+                            minPrice,
+                            " إلى ",
+                            maxPrice,
+                            " جنيه"
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/components/Collection/FillterCollection.js",
+                        lineNumber: 131,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$slider$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Slider"], {
+                        min: 0,
+                        max: 2000,
+                        step: 10,
+                        value: [
+                            minPrice,
+                            maxPrice
+                        ],
+                        onValueChange: (val)=>{
+                            setMinPrice(val[0]);
+                            setMaxPrice(val[1]);
+                        }
+                    }, void 0, false, {
+                        fileName: "[project]/components/Collection/FillterCollection.js",
+                        lineNumber: 132,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/components/Collection/FillterCollection.js",
+                lineNumber: 130,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex flex-col gap-3 mt-4",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                        onClick: applyFilters,
+                        className: "w-full bg-green-600 hover:bg-green-700 text-white",
+                        children: "تطبيق الفلاتر"
+                    }, void 0, false, {
+                        fileName: "[project]/components/Collection/FillterCollection.js",
+                        lineNumber: 146,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                        onClick: resetFilters,
+                        className: "w-full bg-amber-500 hover:bg-amber-600 text-white",
+                        children: "إعادة تعيين الفلاتر"
+                    }, void 0, false, {
+                        fileName: "[project]/components/Collection/FillterCollection.js",
+                        lineNumber: 149,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/components/Collection/FillterCollection.js",
+                lineNumber: 145,
+                columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/Collection/FillterCollection.js",
-        lineNumber: 21,
-        columnNumber: 9
+        lineNumber: 57,
+        columnNumber: 5
     }, this);
 };
+_s(FillterCollection, "n1u3S0zEx42KpdFE6vh+f3jyQVc=", false, function() {
+    return [
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDispatch"],
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSelector"]
+    ];
+});
 _c = FillterCollection;
 const __TURBOPACK__default__export__ = FillterCollection;
 var _c;
@@ -1087,6 +1073,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-redux/dist/react-redux.mjs [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$product$2f$read$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/redux/slices/product/read.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$category$2f$subCategory$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/redux/slices/category/subCategory.js [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
@@ -1099,13 +1086,9 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
+;
 function Collection({ nameCollection, mainCategories }) {
     _s();
-    const [category, setCategory] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
-    const [size, setSize] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
-    const [color, setColor] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
-    const [rating, setRating] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
-    const [maxPrice, setMaxPrice] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(150);
     const dispatch = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDispatch"])();
     const { products, loading, error } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSelector"])({
         "Collection.useSelector": (state)=>state.readproducts
@@ -1116,34 +1099,15 @@ function Collection({ nameCollection, mainCategories }) {
                 id: mainCategories.id,
                 type: mainCategories.label
             }));
+            dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$category$2f$subCategory$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["collectSubCategory"])({
+                id: mainCategories.id,
+                type: mainCategories.label
+            }));
         }
-    }["Collection.useEffect"], []);
-    const data = products[mainCategories.label]?.data;
-    const filtered = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
-        "Collection.useMemo[filtered]": ()=>{
-            return data?.filter({
-                "Collection.useMemo[filtered]": (p)=>{
-                    return (!category || p.category === category) && (!size || p.size === size) && (!color || p.colorsSizePrice.some({
-                        "Collection.useMemo[filtered]": (c)=>c.colorName === color
-                    }["Collection.useMemo[filtered]"])) && (!rating || p.rating >= parseInt(rating)) && p.colorsSizePrice[0].sizesAndPrices[0].finalPrice <= maxPrice;
-                }
-            }["Collection.useMemo[filtered]"]);
-        }
-    }["Collection.useMemo[filtered]"], [
-        data,
-        category,
-        size,
-        color,
-        rating,
-        maxPrice
+    }["Collection.useEffect"], [
+        mainCategories.id
     ]);
-    const resetFilters = ()=>{
-        setCategory("");
-        setSize("");
-        setColor("");
-        setRating(0);
-        setMaxPrice(150);
-    };
+    const data = products[mainCategories.label]?.data;
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "flex flex-col lg:flex-row min-h-screen px-4 sm:px-6 py-10 gap-10",
         dir: "rtl",
@@ -1159,64 +1123,54 @@ function Collection({ nameCollection, mainCategories }) {
                                 children: "فتح الفلاتر"
                             }, void 0, false, {
                                 fileName: "[project]/components/Collection/Collection.js",
-                                lineNumber: 53,
+                                lineNumber: 30,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/components/Collection/Collection.js",
-                            lineNumber: 52,
+                            lineNumber: 29,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$sheet$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SheetContent"], {
                             side: "left",
                             className: "w-[100vw] max-w-xs p-4",
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Collection$2f$FillterCollection$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                setCategory: setCategory,
-                                setSize: setSize,
-                                setColor: setColor,
-                                setRating: setRating,
-                                maxPrice: maxPrice,
-                                setMaxPrice: setMaxPrice,
-                                resetFilters: resetFilters
+                                label: mainCategories.label,
+                                category: mainCategories.id
                             }, void 0, false, {
                                 fileName: "[project]/components/Collection/Collection.js",
-                                lineNumber: 60,
+                                lineNumber: 37,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/components/Collection/Collection.js",
-                            lineNumber: 59,
+                            lineNumber: 36,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/Collection/Collection.js",
-                    lineNumber: 51,
+                    lineNumber: 28,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/Collection/Collection.js",
-                lineNumber: 50,
+                lineNumber: 27,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "hidden lg:block w-full lg:w-1/4 mt-20",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Collection$2f$FillterCollection$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                    setCategory: setCategory,
-                    setSize: setSize,
-                    setColor: setColor,
-                    setRating: setRating,
-                    maxPrice: maxPrice,
-                    setMaxPrice: setMaxPrice,
-                    resetFilters: resetFilters
+                    label: mainCategories.label,
+                    category: mainCategories.id
                 }, void 0, false, {
                     fileName: "[project]/components/Collection/Collection.js",
-                    lineNumber: 74,
+                    lineNumber: 46,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/Collection/Collection.js",
-                lineNumber: 73,
+                lineNumber: 45,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -1227,7 +1181,7 @@ function Collection({ nameCollection, mainCategories }) {
                         children: nameCollection
                     }, void 0, false, {
                         fileName: "[project]/components/Collection/Collection.js",
-                        lineNumber: 85,
+                        lineNumber: 52,
                         columnNumber: 9
                     }, this),
                     loading ? // Skeleton أثناء التحميل
@@ -1246,28 +1200,28 @@ function Collection({ nameCollection, mainCategories }) {
                                                 className: "w-full h-[150px] bg-gray-200 rounded-lg"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/Collection/Collection.js",
-                                                lineNumber: 94,
+                                                lineNumber: 61,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "h-4 bg-gray-200 rounded w-3/4"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/Collection/Collection.js",
-                                                lineNumber: 95,
+                                                lineNumber: 62,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "h-3 bg-gray-200 rounded w-1/2"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/Collection/Collection.js",
-                                                lineNumber: 96,
+                                                lineNumber: 63,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "h-3 bg-gray-200 rounded w-1/3"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/Collection/Collection.js",
-                                                lineNumber: 97,
+                                                lineNumber: 64,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1280,33 +1234,33 @@ function Collection({ nameCollection, mainCategories }) {
                                                         className: "w-4 h-4 rounded-full bg-gray-300"
                                                     }, c, false, {
                                                         fileName: "[project]/components/Collection/Collection.js",
-                                                        lineNumber: 100,
+                                                        lineNumber: 67,
                                                         columnNumber: 25
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/components/Collection/Collection.js",
-                                                lineNumber: 98,
+                                                lineNumber: 65,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/Collection/Collection.js",
-                                        lineNumber: 93,
+                                        lineNumber: 60,
                                         columnNumber: 19
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/Collection/Collection.js",
-                                    lineNumber: 92,
+                                    lineNumber: 59,
                                     columnNumber: 17
                                 }, this)
                             }, idx, false, {
                                 fileName: "[project]/components/Collection/Collection.js",
-                                lineNumber: 91,
+                                lineNumber: 58,
                                 columnNumber: 15
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/components/Collection/Collection.js",
-                        lineNumber: 89,
+                        lineNumber: 56,
                         columnNumber: 11
                     }, this) : error ? // عرض الخطأ
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1314,7 +1268,7 @@ function Collection({ nameCollection, mainCategories }) {
                         children: "حدث خطأ أثناء تحميل المنتجات، يرجى المحاولة لاحقًا."
                     }, void 0, false, {
                         fileName: "[project]/components/Collection/Collection.js",
-                        lineNumber: 110,
+                        lineNumber: 77,
                         columnNumber: 11
                     }, this) : // عرض المنتجات بعد التحميل بنجاح
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1335,7 +1289,7 @@ function Collection({ nameCollection, mainCategories }) {
                                                     className: "object-cover rounded-lg"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/Collection/Collection.js",
-                                                    lineNumber: 124,
+                                                    lineNumber: 91,
                                                     columnNumber: 23
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1347,12 +1301,12 @@ function Collection({ nameCollection, mainCategories }) {
                                                                 className: "text-rose-500 w-4 h-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/Collection/Collection.js",
-                                                                lineNumber: 133,
+                                                                lineNumber: 100,
                                                                 columnNumber: 27
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/Collection/Collection.js",
-                                                            lineNumber: 132,
+                                                            lineNumber: 99,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1361,24 +1315,24 @@ function Collection({ nameCollection, mainCategories }) {
                                                                 className: "text-blue-500 w-4 h-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/Collection/Collection.js",
-                                                                lineNumber: 136,
+                                                                lineNumber: 103,
                                                                 columnNumber: 27
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/Collection/Collection.js",
-                                                            lineNumber: 135,
+                                                            lineNumber: 102,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/Collection/Collection.js",
-                                                    lineNumber: 131,
+                                                    lineNumber: 98,
                                                     columnNumber: 23
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/Collection/Collection.js",
-                                            lineNumber: 123,
+                                            lineNumber: 90,
                                             columnNumber: 21
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1386,7 +1340,7 @@ function Collection({ nameCollection, mainCategories }) {
                                             children: product.title
                                         }, void 0, false, {
                                             fileName: "[project]/components/Collection/Collection.js",
-                                            lineNumber: 141,
+                                            lineNumber: 108,
                                             columnNumber: 21
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1397,7 +1351,7 @@ function Collection({ nameCollection, mainCategories }) {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/Collection/Collection.js",
-                                            lineNumber: 142,
+                                            lineNumber: 109,
                                             columnNumber: 21
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1409,7 +1363,7 @@ function Collection({ nameCollection, mainCategories }) {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/Collection/Collection.js",
-                                            lineNumber: 145,
+                                            lineNumber: 112,
                                             columnNumber: 21
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1421,44 +1375,44 @@ function Collection({ nameCollection, mainCategories }) {
                                                     }
                                                 }, idx, false, {
                                                     fileName: "[project]/components/Collection/Collection.js",
-                                                    lineNumber: 148,
+                                                    lineNumber: 115,
                                                     columnNumber: 25
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/components/Collection/Collection.js",
-                                            lineNumber: 146,
+                                            lineNumber: 113,
                                             columnNumber: 21
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/Collection/Collection.js",
-                                    lineNumber: 122,
+                                    lineNumber: 89,
                                     columnNumber: 19
                                 }, this)
                             }, idx, false, {
                                 fileName: "[project]/components/Collection/Collection.js",
-                                lineNumber: 118,
+                                lineNumber: 85,
                                 columnNumber: 17
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/components/Collection/Collection.js",
-                        lineNumber: 115,
+                        lineNumber: 82,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/Collection/Collection.js",
-                lineNumber: 84,
+                lineNumber: 51,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/Collection/Collection.js",
-        lineNumber: 49,
+        lineNumber: 26,
         columnNumber: 5
     }, this);
 }
-_s(Collection, "4ZQ3TsBiXZNr8q8+nl9pq1yWSSQ=", false, function() {
+_s(Collection, "PKhOwtxObuB+te22yg4N2foPzSo=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDispatch"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSelector"]
