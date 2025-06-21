@@ -1,30 +1,25 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { fetchProducts } from '@/redux/slices/product/filter';
+import { useEffect } from "react";
 import { Heart, ShoppingCart } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-
 import FillterCollection from "./FillterCollection";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProductsByCategory } from "@/redux/slices/product/read";
 import Image from "next/image";
 import { collectSubCategory } from "@/redux/slices/category/subCategory";
-// import { fetchProducts } from "@/redux/slices/product/filter";
 
+const Collection = ({ nameCollection, mainCategories }) => {
+  const { items, loading, error } = useSelector((state) => state.filterProduct);
+  const dispatch = useDispatch();
 
-export default function Collection({ nameCollection, mainCategories }) {
-  const dispatch = useDispatch()
-  const { products, loading, error } = useSelector((state) => state.readproducts)
-    // const { items} = useSelector((state) => state.filterProduct)
-    // console.log(items)
   useEffect(() => {
-    dispatch(fetchProductsByCategory({ id: mainCategories.id, type: mainCategories.label }));
+    dispatch(fetchProducts({ category: mainCategories.id, limit: 40 }));
     dispatch(collectSubCategory({ id: mainCategories.id, type: mainCategories.label }));
-    // dispatch(fetchProducts({category: mainCategories.id}))
-  }, [mainCategories.id])
-  const data = products[mainCategories.label]?.data;
+  }, [mainCategories.id]);
+  console.log(items)
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen px-4 sm:px-6 py-10 gap-10" dir="rtl">
@@ -52,6 +47,7 @@ export default function Collection({ nameCollection, mainCategories }) {
           category={mainCategories.id}
         />
       </div>
+
       <main className="w-full lg:w-3/4">
         <h1 className="text-3xl font-bold mb-6">{nameCollection}</h1>
 
@@ -81,11 +77,16 @@ export default function Collection({ nameCollection, mainCategories }) {
           <div className="text-center text-red-500 font-semibold">
             حدث خطأ أثناء تحميل المنتجات، يرجى المحاولة لاحقًا.
           </div>
+        ) : items.products?.length === 0 ? (
+          // إذا كانت المنتجات غير موجودة
+          <div className="text-center text-gray-500 font-semibold">
+            لا توجد منتجات في هذه الفئة حالياً.
+          </div>
         ) : (
           // عرض المنتجات بعد التحميل بنجاح
           <div className="flex flex-wrap gap-6 justify-center">
             {
-              data?.map((product, idx) => (
+              items.products?.map((product, idx) => (
                 <Card
                   key={idx}
                   className="w-[250px] rounded-2xl shadow-md overflow-hidden bg-white"
@@ -111,7 +112,7 @@ export default function Collection({ nameCollection, mainCategories }) {
 
                     <h3 className="text-sm font-semibold mt-2 line-clamp-2">{product.title}</h3>
                     <p className="text-xs text-muted-foreground">
-                      {Math.floor(product.colorsSizePrice[0].sizesAndPrices[0].finalPrice)} جنيه مصري
+                      {Math.floor(product?.colorsSizePrice[0]?.sizesAndPrices[0]?.finalPrice)} جنيه مصري
                     </p>
                     <p className="text-xs text-yellow-500">التقييم: {product.rating}★</p>
                     <div className="flex gap-1 justify-end mt-2">
@@ -130,9 +131,8 @@ export default function Collection({ nameCollection, mainCategories }) {
           </div>
         )}
       </main>
-
     </div>
   );
-}
+};
 
-
+export default Collection;

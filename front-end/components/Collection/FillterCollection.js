@@ -50,6 +50,8 @@ const FillterCollection = ({ label ,category}) => {
       maxRate,
       minPrice,
       maxPrice,
+      page: 1,
+      limit: 20
     }))
   }
 

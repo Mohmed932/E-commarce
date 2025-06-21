@@ -9,6 +9,7 @@ __turbopack_context__.s({
     "default": (()=>__TURBOPACK__default__export__)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$product$2f$filter$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/redux/slices/product/filter.js [app-client] (ecmascript)");
 // import { useEffect, useMemo, useState } from "react";
 // import { Heart, ShoppingCart } from "lucide-react";
 // import { Card, CardContent } from "@/components/ui/card";
@@ -17,118 +18,124 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 // import { Button } from "../ui/button";
 // import { useDispatch, useSelector } from "react-redux";
 // import { fetchProductsByCategory } from "@/redux/slices/product/read";
-// export default function Collection({ nameCollection ,mainCategories}) {
-//   const [category, setCategory] = useState("");
-//   const [size, setSize] = useState("");
-//   const [color, setColor] = useState("");
-//   const [rating, setRating] = useState(0);
-//   const [maxPrice, setMaxPrice] = useState(150);
+// import Image from "next/image";
+// import { collectSubCategory } from "@/redux/slices/category/subCategory";
+// // import { fetchProducts } from "@/redux/slices/product/filter";
+// export default function Collection({ nameCollection, mainCategories }) {
 //   const dispatch = useDispatch()
-//   const { products ,loading,error} = useSelector((state) => state.readproducts)
-//   useEffect(()=>{
-//     dispatch(fetchProductsByCategory({ id: mainCategories.id, type:mainCategories.label }));
-//     // console.log(products?.men)
-//   },[])
-//   // const filtered = useMemo(() => {
-//   //   return products.man.data.filter((p) => {
-//   //     return (
-//   //       (!category || p.category === category) &&
-//   //       (!size || p.size === size) &&
-//   //       (!color || p.color === color) &&
-//   //       (!rating || p.rating >= parseInt(rating)) &&
-//   //       p.price <= maxPrice
-//   //     );
-//   //   });
-//   // }, [category, size, color, rating, maxPrice]);
-//   const resetFilters = () => {
-//     setCategory("");
-//     setSize("");
-//     setColor("");
-//     setRating(0);
-//     setMaxPrice(150);
-//   };
+//   const { products, loading, error } = useSelector((state) => state.readproducts)
+//     // const { items} = useSelector((state) => state.filterProduct)
+//     // console.log(items)
+//   useEffect(() => {
+//     dispatch(fetchProductsByCategory({ id: mainCategories.id, type: mainCategories.label }));
+//     dispatch(collectSubCategory({ id: mainCategories.id, type: mainCategories.label }));
+//     // dispatch(fetchProducts({category: mainCategories.id}))
+//   }, [mainCategories.id])
+//   const data = products[mainCategories.label]?.data;
 //   return (
 //     <div className="flex flex-col lg:flex-row min-h-screen px-4 sm:px-6 py-10 gap-10" dir="rtl">
-//       {/* الزر يظهر فقط في الشاشات الصغيرة */}
-// klk;l
+//       <div className="lg:hidden">
+//         <Sheet>
+//           <SheetTrigger asChild>
+//             <Button
+//               className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 bg-orange-500 backdrop-blur-md shadow-md border"
+//             >
+//               فتح الفلاتر
+//             </Button>
+//           </SheetTrigger>
+//           <SheetContent side="left" className="w-[100vw] max-w-xs p-4">
+//             <FillterCollection
+//               label={mainCategories.label}
+//               category={mainCategories.id}
+//             />
+//           </SheetContent>
+//         </Sheet>
+//       </div>
+//       <div className="hidden lg:block w-full lg:w-1/4 mt-20">
+//         <FillterCollection
+//           label={mainCategories.label}
+//           category={mainCategories.id}
+//         />
+//       </div>
+//       <main className="w-full lg:w-3/4">
+//         <h1 className="text-3xl font-bold mb-6">{nameCollection}</h1>
+//         {loading ? (
+//           // Skeleton أثناء التحميل
+//           <div className="flex flex-wrap gap-6 justify-center">
+//             {Array.from({ length: 10 }).map((_, idx) => (
+//               <Card key={idx} className="w-[250px] rounded-2xl shadow-md overflow-hidden bg-white">
+//                 <CardContent className="p-2">
+//                   <div className="animate-pulse space-y-2">
+//                     <div className="w-full h-[150px] bg-gray-200 rounded-lg"></div>
+//                     <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+//                     <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+//                     <div className="h-3 bg-gray-200 rounded w-1/3"></div>
+//                     <div className="flex gap-1 justify-end mt-2">
+//                       {[1, 2, 3].map((c) => (
+//                         <span key={c} className="w-4 h-4 rounded-full bg-gray-300"></span>
+//                       ))}
+//                     </div>
+//                   </div>
+//                 </CardContent>
+//               </Card>
+//             ))}
+//           </div>
+//         ) : error ? (
+//           // عرض الخطأ
+//           <div className="text-center text-red-500 font-semibold">
+//             حدث خطأ أثناء تحميل المنتجات، يرجى المحاولة لاحقًا.
+//           </div>
+//         ) : (
+//           // عرض المنتجات بعد التحميل بنجاح
+//           <div className="flex flex-wrap gap-6 justify-center">
+//             {
+//               data?.map((product, idx) => (
+//                 <Card
+//                   key={idx}
+//                   className="w-[250px] rounded-2xl shadow-md overflow-hidden bg-white"
+//                 >
+//                   <CardContent className="p-2">
+//                     <div className="relative flex flex-col items-center justify-center">
+//                       <Image
+//                         src={product.colorsSizePrice[0].images[0].img}
+//                         alt={product.title}
+//                         width={150}
+//                         height={150}
+//                         className="object-cover rounded-lg"
+//                       />
+//                       <div className="absolute top-1 right-1 flex flex-col gap-1 z-10">
+//                         <button className="bg-white p-1 rounded-full shadow hover:bg-rose-100 transition-all duration-200 hover:scale-110 active:scale-95">
+//                           <Heart className="text-rose-500 w-4 h-4" />
+//                         </button>
+//                         <button className="bg-white p-1 rounded-full shadow hover:bg-blue-100 transition-all duration-200 hover:scale-110 active:scale-95">
+//                           <ShoppingCart className="text-blue-500 w-4 h-4" />
+//                         </button>
+//                       </div>
+//                     </div>
+//                     <h3 className="text-sm font-semibold mt-2 line-clamp-2">{product.title}</h3>
+//                     <p className="text-xs text-muted-foreground">
+//                       {Math.floor(product.colorsSizePrice[0].sizesAndPrices[0].finalPrice)} جنيه مصري
+//                     </p>
+//                     <p className="text-xs text-yellow-500">التقييم: {product.rating}★</p>
+//                     <div className="flex gap-1 justify-end mt-2">
+//                       {product.colorsSizePrice.map((color, idx) => (
+//                         <span
+//                           key={idx}
+//                           className="w-4 h-4 rounded-full border border-gray-300"
+//                           style={{ backgroundColor: color.colorName }}
+//                         ></span>
+//                       ))}
+//                     </div>
+//                   </CardContent>
+//                 </Card>
+//               ))
+//             }
+//           </div>
+//         )}
+//       </main>
 //     </div>
 //   );
 // }
-//       // <div className="lg:hidden">
-//       //   <Sheet>
-//       //     <SheetTrigger asChild>
-//       //       <Button
-//       //         className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 bg-orange-500 backdrop-blur-md shadow-md border"
-//       //       >
-//       //         فتح الفلاتر
-//       //       </Button>
-//       //     </SheetTrigger>
-//       //     <SheetContent side="left" className="w-[100vw] max-w-xs p-4">
-//       //       <FillterCollection
-//       //         setCategory={setCategory}
-//       //         setSize={setSize}
-//       //         setColor={setColor}
-//       //         setRating={setRating}
-//       //         maxPrice={maxPrice}
-//       //         setMaxPrice={setMaxPrice}
-//       //         resetFilters={resetFilters}
-//       //       />
-//       //     </SheetContent>
-//       //   </Sheet>
-//       // </div>
-//       // {/* الفلاتر تظهر مباشرة فقط في الشاشات الكبيرة */}
-//       // <div className="hidden lg:block w-full lg:w-1/4 mt-20">
-//       //   <FillterCollection
-//       //     setCategory={setCategory}
-//       //     setSize={setSize}
-//       //     setColor={setColor}
-//       //     setRating={setRating}
-//       //     maxPrice={maxPrice}
-//       //     setMaxPrice={setMaxPrice}
-//       //     resetFilters={resetFilters}
-//       //   />
-//       // </div>
-//       // {/* شبكة المنتجات */}
-//       // <main className="w-full lg:w-3/4">
-//       //   <h1 className="text-3xl font-bold mb-6">{nameCollection}</h1>
-//       //   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-//       //     {filtered.map((product) => (
-//       //       <Card key={product.name} className="rounded-2xl shadow-md relative overflow-hidden">
-//       //         <CardContent className="p-4">
-//       //           <div className="relative">
-//       //             <img
-//       //               src={product.image}
-//       //               alt={product.name}
-//       //               className="w-full h-48 object-cover rounded-xl"
-//       //             />
-//       //             {/* أيقونات ثابتة أعلى الصورة */}
-//       //             <div className="absolute top-2 right-2 flex flex-col gap-2">
-//       //               <button className="bg-white p-2 rounded-full shadow hover:bg-rose-100 transition-all duration-200 hover:scale-110 active:scale-95">
-//       //                 <Heart className="text-rose-500 w-5 h-5" />
-//       //               </button>
-//       //               <button className="bg-white p-2 rounded-full shadow hover:bg-blue-100 transition-all duration-200 hover:scale-110 active:scale-95">
-//       //                 <ShoppingCart className="text-blue-500 w-5 h-5" />
-//       //               </button>
-//       //             </div>
-//       //           </div>
-//       //           <h3 className="text-lg font-semibold mt-4">{product.name}</h3>
-//       //           <p className="text-sm text-muted-foreground">${product.price}</p>
-//       //           <p className="text-xs text-yellow-500">التقييم: {product.rating}★</p>
-//       //           <div className="flex gap-1 justify-end">
-//       //             {product.colors.map((color, idx) => (
-//       //               <span
-//       //                 key={idx}
-//       //                 className="w-4 h-4 rounded-full border border-gray-300"
-//       //                 style={{ backgroundColor: color }}
-//       //               ></span>
-//       //             ))}
-//       //           </div>
-//       //         </CardContent>
-//       //       </Card>
-//       //     ))}
-//       //   </div>
-//       // </main>
-var __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$product$2f$read$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/redux/slices/product/read.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-redux/dist/react-redux.mjs [app-client] (ecmascript)");
 ;
@@ -139,62 +146,33 @@ var _s = __turbopack_context__.k.signature();
 ;
 const Collection = ({ nameCollection, mainCategories })=>{
     _s();
-    const dispatch = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDispatch"])();
-    const { products, loading, error } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSelector"])({
-        "Collection.useSelector": (state)=>state.readproducts
+    const { items, loading, error } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSelector"])({
+        "Collection.useSelector": (state)=>state.filterProduct
     }["Collection.useSelector"]);
+    console.log(items.products);
+    const dispatch = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDispatch"])();
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "Collection.useEffect": ()=>{
-            dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$product$2f$read$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["fetchProductsByCategory"])({
-                id: mainCategories.id,
-                type: mainCategories.label
+            dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$redux$2f$slices$2f$product$2f$filter$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["fetchProducts"])({
+                category: mainCategories.id,
+                limit: 40
             }));
         }
     }["Collection.useEffect"], [
-        dispatch,
-        mainCategories.id,
-        mainCategories.label
+        mainCategories.id
     ]);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                children: nameCollection
-            }, void 0, false, {
-                fileName: "[project]/components/Collection/Collection.js",
-                lineNumber: 151,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                children: [
-                    "Category ID: ",
-                    mainCategories.id
-                ]
-            }, void 0, true, {
-                fileName: "[project]/components/Collection/Collection.js",
-                lineNumber: 152,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                children: [
-                    "Category Label: ",
-                    mainCategories.label
-                ]
-            }, void 0, true, {
-                fileName: "[project]/components/Collection/Collection.js",
-                lineNumber: 153,
-                columnNumber: 7
-            }, this)
-        ]
-    }, void 0, true, {
+        children: "Collection"
+    }, void 0, false, {
         fileName: "[project]/components/Collection/Collection.js",
-        lineNumber: 150,
+        lineNumber: 151,
         columnNumber: 5
     }, this);
 };
-_s(Collection, "m5hX0UZ4h4DJZbFA8vW0ZTb/IEM=", false, function() {
+_s(Collection, "4T2qnacKnS5jPAahdCUgLM50Ank=", false, function() {
     return [
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDispatch"],
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSelector"]
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSelector"],
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDispatch"]
     ];
 });
 _c = Collection;

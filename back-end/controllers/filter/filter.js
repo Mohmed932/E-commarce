@@ -14,6 +14,8 @@ export const filterProducts = async (req, res) => {
             maxPrice,
             subCategory
         } = req.query;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
 
         const filters = {};
 
@@ -42,7 +44,7 @@ export const filterProducts = async (req, res) => {
         }
 
         // ✅ الألوان والمقاسات والأسعار
-        if ( size || minPrice || maxPrice) {
+        if (size || minPrice || maxPrice) {
             filters.colorsSizePrice = {
                 $elemMatch: {
                     ...(size || minPrice || maxPrice
@@ -64,8 +66,25 @@ export const filterProducts = async (req, res) => {
                 },
             };
         }
-        const products = await Product.find(filters);
-        return res.json(products);
+
+        // حساب العدد الكلي للمنتجات
+        const totalProducts = await Product.countDocuments(filters);
+
+        // الحصول على المنتجات مع pagination
+        const products = await Product.find(filters)
+            .skip((page - 1) * limit)
+            .limit(limit);
+
+        // إرجاع المنتجات والبيانات الخاصة بالـ pagination
+        return res.json({
+            products,
+            pagination: {
+                totalProducts,
+                totalPages: Math.ceil(totalProducts / limit),
+                currentPage: Number(page),
+                perPage: Number(limit),
+            }
+        });
     } catch (err) {
         res.status(500).json({
             error: "حدث خطأ أثناء فلترة المنتجات",
